@@ -1,14 +1,10 @@
 package lp;
 
-import lp.be.service.LoggerService;
-import lp.be.serviceimpl.LoggerServiceImpl;
-import org.apache.log4j.Logger;
+import lp.be.Sudoku;
 
 public class Manager {
 
     private static Manager manager;
-    private final LoggerService loggerService = LoggerServiceImpl.getInstance(Manager.class);
-    private Logger log = loggerService.getLog();
 
     public static Manager getInstance() {
         if (manager == null) {
@@ -18,10 +14,15 @@ public class Manager {
     }
 
     private Manager() {
+    }
 
+    public void test() {
+        Sudoku sudoku = new Sudoku();
+        sudoku.loadSudoku(getClass().getClassLoader().getResourceAsStream("testfiles/sudoku1.txt"));
+        sudoku.output();
     }
 
     public static void main(String[] args) {
-        getInstance();
+        getInstance().test();
     }
 }
