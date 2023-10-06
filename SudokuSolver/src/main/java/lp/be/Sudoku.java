@@ -48,6 +48,9 @@ public class Sudoku {
 
     public void process() {
         numberChooser.processRow(numberChooser.getFieldList().get(0));
+        numberChooser.processColumn(0);
+        numberChooser.processSquare(1);
+        numberChooser.checkResult();
     }
 
     public void output() {
