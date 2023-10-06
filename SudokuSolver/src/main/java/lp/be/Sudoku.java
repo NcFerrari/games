@@ -19,6 +19,7 @@ public class Sudoku {
 
     private final LoggerService loggerService = LoggerServiceImpl.getInstance(Manager.class);
     private final Logger log = loggerService.getLog();
+    private NumberChooser numberChooser;
     private int[][] sudokuData;
 
     public void loadSudoku(File file) {
@@ -42,16 +43,26 @@ public class Sudoku {
         } catch (IOException e) {
             log.error(e);
         }
+        numberChooser = new NumberChooser(this);
+    }
+
+    public void process() {
+        numberChooser.processRow(numberChooser.getFieldList().get(0));
     }
 
     public void output() {
-        for (int[] data : sudokuData) {
-            StringBuilder text = new StringBuilder();
-            for (int anInt : data) {
-                text.append(anInt).append(" ");
-            }
-            log.info(text.toString());
-        }
+        numberChooser.getFieldList().forEach(fields -> {
+            fields.forEach(field -> System.out.print(field.getResultNumber() + "\t\t"));
+            System.out.println();
+        });
+    }
+
+    public boolean isSudokuLoaded() {
+        return sudokuData.length != 0;
+    }
+
+    public int[][] getData() {
+        return sudokuData;
     }
 
     private int[] getIntArray(String line) {

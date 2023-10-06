@@ -16,13 +16,14 @@ public class Manager {
     private Manager() {
     }
 
-    public void test() {
+    public void process() {
         Sudoku sudoku = new Sudoku();
-        sudoku.loadSudoku(getClass().getClassLoader().getResourceAsStream("testfiles/sudoku1.txt"));
+        sudoku.loadSudoku(getClass().getClassLoader().getResourceAsStream("testfiles/sudoku2.txt"));
+        sudoku.process();
         sudoku.output();
     }
 
     public static void main(String[] args) {
-        getInstance().test();
+        getInstance().process();
     }
 }
