@@ -46,16 +46,53 @@ public class Sudoku {
         numberChooser = new NumberChooser(this);
     }
 
-    public void process() {
-        numberChooser.processRow(numberChooser.getFieldList().get(0));
-        numberChooser.processColumn(0);
-        numberChooser.processSquare(1);
+    public void testProcess() {
+        for (int i = 0; i < 9; i++) {
+            numberChooser.processRow(i);
+        }
+        for (int i = 0; i < 9; i++) {
+            numberChooser.processColumn(i);
+        }
+        for (int i = 0; i < 9; i++) {
+            numberChooser.processSquare(i);
+        }
         numberChooser.checkResult();
+    }
+
+    public void process() {
+        final List<Integer> remainingRows = new ArrayList<>();
+        final List<Integer> remainingColumns = new ArrayList<>();
+        final List<Integer> remainingSquares = new ArrayList<>();
+        for (int i = 0; i < numberChooser.getFieldList().size(); i++) {
+            remainingRows.add(i);
+            remainingColumns.add(i);
+            remainingSquares.add(i);
+        }
+        int index = 0;
+        while (!remainingRows.isEmpty() || !remainingColumns.isEmpty() || !remainingSquares.isEmpty()) {
+            output();
+            System.out.println();
+            System.out.println();
+            if (remainingRows.contains(index) && numberChooser.processRow(index)) {
+                remainingRows.remove((Integer) index);
+            }
+            if (remainingColumns.contains(index) && numberChooser.processColumn(index)) {
+                remainingColumns.remove((Integer) index);
+            }
+            if (remainingSquares.contains(index) && numberChooser.processSquare(index)) {
+                remainingSquares.remove((Integer) index);
+            }
+            numberChooser.checkResult();
+            index++;
+            if (index == numberChooser.getFieldList().size() + 1) {
+                index = 0;
+            }
+        }
     }
 
     public void output() {
         numberChooser.getFieldList().forEach(fields -> {
-            fields.forEach(field -> System.out.print(field.getResultNumber() + "\t\t"));
+            fields.forEach(field -> System.out.print(field.getResultNumber() + "(" + field.getPossibleNumbers() + ")" + "\t\t"));
             System.out.println();
         });
     }

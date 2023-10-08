@@ -18,8 +18,8 @@ public class Manager {
 
     public void process() {
         Sudoku sudoku = new Sudoku();
-        sudoku.loadSudoku(getClass().getClassLoader().getResourceAsStream("testfiles/sudoku2.txt"));
-        sudoku.process();
+        sudoku.loadSudoku(getClass().getClassLoader().getResourceAsStream("testfiles/sudoku1.txt"));
+        sudoku.testProcess();
         sudoku.output();
     }
 
