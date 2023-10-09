@@ -95,9 +95,47 @@ public class NumberChooser {
         return temporaryDataList.size() == getFieldList().size();
     }
 
-    private void setResultNumberToField(Field field, String number) {
-        field.setResultNumber(number);
-        field.getPossibleNumbers().clear();
+    /**
+     * Same method like previous two.
+     * Number in parameter represents order of squares from left to right and from first line to last one.
+     * for example for sudoku 9x9 its:
+     * 0 1 2
+     * 3 4 5
+     * 6 7 8
+     *
+     * @param numberOfSquare specific square
+     * @return boolean if row is complete
+     */
+    public boolean processSquare(int numberOfSquare) {
+        temporaryDataList.clear();
+        int ratioValue = (int) Math.sqrt(getFieldList().size());
+
+        int startNumberOfList = (numberOfSquare / ratioValue) * ratioValue;
+        int startFromColumn = (numberOfSquare - ((numberOfSquare / ratioValue) * ratioValue)) * ratioValue;
+
+        for (int i = startNumberOfList; i < startNumberOfList + ratioValue; i++) {
+            for (int j = startFromColumn; j < startFromColumn + ratioValue; j++) {
+                getFinalNumbersIfItIsPossible(getFieldList().get(i).get(j));
+            }
+        }
+
+        for (int i = startNumberOfList; i < startNumberOfList + ratioValue; i++) {
+            for (int j = startFromColumn; j < startFromColumn + ratioValue; j++) {
+                processNumbers(getFieldList().get(i).get(j));
+            }
+        }
+
+        getFrequencyMap().forEach((s, integer) -> {
+            if (integer == 1) {
+                for (int i = startNumberOfList; i < startNumberOfList + ratioValue; i++) {
+                    for (int j = startFromColumn; j < startFromColumn + ratioValue; j++) {
+                        setResultNumberToField(getFieldList().get(i).get(j), s);
+                    }
+                }
+            }
+        });
+        resetFrequencyMap();
+        return temporaryDataList.size() == getFieldList().size();
     }
 
     private void getFinalNumbersIfItIsPossible(Field field) {
@@ -112,68 +150,21 @@ public class NumberChooser {
     /**
      * Remove all used numbers from each possible number list and sign up all remaining numbers into frequency map
      *
-     * @param field
+     * @param field specific field to update
      */
     private void processNumbers(Field field) {
-        field.getPossibleNumbers().removeAll(temporaryDataList);
-        field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
-                getFrequencyMap().get(possibleNumber) + 1));
+        if (field.getPossibleNumbers().size() > 1) {
+            field.getPossibleNumbers().removeAll(temporaryDataList);
+            field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
+                    getFrequencyMap().get(possibleNumber) + 1));
+        }
     }
 
-    /**
-     * number represents order of squares from left to right and from first line to last one.
-     * for example for sudoku 9x9 its:
-     * 0 1 2
-     * 3 4 5
-     * 6 7 8
-     *
-     * @param numberOfSquare specific square
-     * @return if this process is complete
-     */
-    public boolean processSquare(int numberOfSquare) {
-        final List<String> list = new ArrayList<>();
-        int ratioValue = (int) Math.sqrt(getFieldList().size());
-
-        int startNumberOfList = (numberOfSquare / ratioValue) * ratioValue;
-        int startFromColumn = (numberOfSquare - ((numberOfSquare / ratioValue) * ratioValue)) * ratioValue;
-        for (int i = startNumberOfList; i < startNumberOfList + 3; i++) {
-            for (int j = startFromColumn; j < startFromColumn + 3; j++) {
-                Field field = getFieldList().get(i).get(j);
-                if (field.getPossibleNumbers().size() == 1) {
-                    field.setResultNumber(field.getPossibleNumbers().get(0));
-                }
-                if (field.getResultNumber() != null) {
-                    list.add(field.getResultNumber());
-                }
-            }
+    private void setResultNumberToField(Field field, String number) {
+        if (field.getPossibleNumbers().contains(number)) {
+            field.setResultNumber(number);
+            field.getPossibleNumbers().clear();
         }
-
-        for (int i = startNumberOfList; i < startNumberOfList + 3; i++) {
-            for (int j = startFromColumn; j < startFromColumn + 3; j++) {
-                Field field = getFieldList().get(i).get(j);
-                if (field.getPossibleNumbers().size() > 1) {
-                    field.getPossibleNumbers().removeAll(list);
-                    field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
-                            getFrequencyMap().get(possibleNumber) + 1));
-                }
-            }
-        }
-
-        getFrequencyMap().forEach((s, integer) -> {
-            if (integer == 1) {
-                for (int i = startNumberOfList; i < startNumberOfList + 3; i++) {
-                    for (int j = startFromColumn; j < startFromColumn + 3; j++) {
-                        Field field = getFieldList().get(i).get(j);
-                        if (field.getPossibleNumbers().contains(s)) {
-                            field.getPossibleNumbers().clear();
-                            field.setResultNumber(s);
-                        }
-                    }
-                }
-            }
-        });
-        resetFrequencyMap();
-        return list.size() == getFieldList().size();
     }
 
     private void resetFrequencyMap() {
