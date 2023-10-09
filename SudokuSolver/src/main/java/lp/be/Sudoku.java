@@ -74,12 +74,16 @@ public class Sudoku {
         }
     }
 
-    public void output() {
+    public String[] output() {
+        final String[] array = new String[9];
+        final int[] counter = {0};
         numberChooser.getFieldList().forEach(fields -> {
             final StringBuilder stringBuilder = new StringBuilder();
             fields.forEach(field -> stringBuilder.append(field.getResultNumber()));
             log.info(stringBuilder.toString());
+            array[counter[0]++] = stringBuilder.toString();
         });
+        return array;
     }
 
     public boolean isSudokuLoaded() {
