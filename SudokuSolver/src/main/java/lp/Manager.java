@@ -3,6 +3,7 @@ package lp;
 import lp.be.Sudoku;
 import lp.be.enums.TextEnum;
 import lp.be.serviceimpl.LoggerServiceImpl;
+import lp.fe.MainApp;
 import org.apache.log4j.Logger;
 
 public class Manager {
@@ -13,6 +14,7 @@ public class Manager {
     public static Manager getInstance() {
         if (manager == null) {
             manager = new Manager();
+            javafx.application.Application.launch(MainApp.class);
         }
         return manager;
     }
@@ -32,6 +34,6 @@ public class Manager {
     }
 
     public static void main(String[] args) {
-        getInstance().process();
+        getInstance();
     }
 }
