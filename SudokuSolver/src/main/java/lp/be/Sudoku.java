@@ -1,6 +1,7 @@
 package lp.be;
 
 import lp.Manager;
+import lp.be.enums.TextEnum;
 import lp.be.service.LoggerService;
 import lp.be.serviceimpl.LoggerServiceImpl;
 import org.apache.log4j.Logger;
@@ -46,19 +47,6 @@ public class Sudoku {
         numberChooser = new NumberChooser(this);
     }
 
-    public void testProcess() {
-        for (int i = 0; i < 9; i++) {
-            numberChooser.processRow(i);
-        }
-        for (int i = 0; i < 9; i++) {
-            numberChooser.processColumn(i);
-        }
-        for (int i = 0; i < 9; i++) {
-            numberChooser.processSquare(i);
-        }
-        numberChooser.checkResult();
-    }
-
     public void process() {
         final List<Integer> remainingRows = new ArrayList<>();
         final List<Integer> remainingColumns = new ArrayList<>();
@@ -70,9 +58,6 @@ public class Sudoku {
         }
         int index = 0;
         while (!remainingRows.isEmpty() || !remainingColumns.isEmpty() || !remainingSquares.isEmpty()) {
-            output();
-            System.out.println();
-            System.out.println();
             if (remainingRows.contains(index) && numberChooser.processRow(index)) {
                 remainingRows.remove((Integer) index);
             }
@@ -82,7 +67,6 @@ public class Sudoku {
             if (remainingSquares.contains(index) && numberChooser.processSquare(index)) {
                 remainingSquares.remove((Integer) index);
             }
-            numberChooser.checkResult();
             index++;
             if (index == numberChooser.getFieldList().size() + 1) {
                 index = 0;
@@ -92,8 +76,9 @@ public class Sudoku {
 
     public void output() {
         numberChooser.getFieldList().forEach(fields -> {
-            fields.forEach(field -> System.out.print(field.getResultNumber() + "(" + field.getPossibleNumbers() + ")" + "\t\t"));
-            System.out.println();
+            final StringBuilder stringBuilder = new StringBuilder();
+            fields.forEach(field -> stringBuilder.append(field.getResultNumber()));
+            log.info(stringBuilder.toString());
         });
     }
 
@@ -106,9 +91,9 @@ public class Sudoku {
     }
 
     private int[] getIntArray(String line) {
-        int[] numbers = new int[line.split(" ").length];
+        int[] numbers = new int[line.split(TextEnum.SPACE.getText()).length];
         for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = Integer.parseInt(line.split(" ")[i]);
+            numbers[i] = Integer.parseInt(line.split(TextEnum.SPACE.getText())[i]);
         }
         return numbers;
     }
