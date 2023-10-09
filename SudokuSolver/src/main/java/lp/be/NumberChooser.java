@@ -13,6 +13,7 @@ public class NumberChooser {
 
     private final List<List<Field>> fieldList = new ArrayList<>();
     private final Map<String, Integer> frequencyMap = new HashMap<>();
+    private final List<String> temporaryDataList = new ArrayList<>();
 
     public NumberChooser(Sudoku sudoku) {
         if (!sudoku.isSudokuLoaded()) {
@@ -31,46 +32,57 @@ public class NumberChooser {
     }
 
     /**
-     * 1. get all final numbers from line
-     * 2. remove all final numbers from possible numbers of not completed fields
+     * <li> 1. get all final numbers from line</li>
+     * <li> 2. remove all final numbers from possible numbers of not completed fields</li>
+     * <li> 3. check all possibleNumbers for each number and get distinct value</li>
      *
      * @param rowNumber single row from sudoku
      * @return boolean if row is complete
      */
     public boolean processRow(int rowNumber) {
-        final List<String> list = new ArrayList<>();
+        temporaryDataList.clear();
         getFieldList().get(rowNumber)
                 .stream()
                 .filter(field -> field.getResultNumber() != null || field.getPossibleNumbers().size() == 1)
-                .forEach(field -> {
-                    if (field.getPossibleNumbers().size() == 1) {
-                        field.setResultNumber(field.getPossibleNumbers().get(0));
-                        field.getPossibleNumbers().clear();
-                    }
-                    list.add(field.getResultNumber());
-                });
+                .forEach(this::getFinalNumbersIfItIsPossible);
+
         getFieldList().get(rowNumber)
                 .stream()
                 .filter(field -> field.getPossibleNumbers().size() > 1)
-                .forEach(field -> {
-                    field.getPossibleNumbers().removeAll(list);
-                    field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
-                            getFrequencyMap().get(possibleNumber) + 1));
-                });
+                .forEach(this::removeAllUsedNumbersFromEachPossibleNumberListAndSignUpAllRemainingNumbers);
+
         getFrequencyMap().forEach((s, integer) -> {
             if (integer == 1) {
                 Optional<Field> optional = getFieldList().get(rowNumber)
                         .stream()
                         .filter(field -> field.getPossibleNumbers().contains(s))
                         .findFirst();
-                if (optional.isPresent()) {
-                    optional.get().getPossibleNumbers().clear();
-                    optional.get().setResultNumber(s);
-                }
+                optional.ifPresent(field -> setResultNumberToField(field, s));
             }
         });
+
         resetFrequencyMap();
-        return list.size() == getFieldList().size();
+        return temporaryDataList.size() == getFieldList().size();
+    }
+
+    private void setResultNumberToField(Field field, String number) {
+        field.setResultNumber(number);
+        field.getPossibleNumbers().clear();
+    }
+
+    private void getFinalNumbersIfItIsPossible(Field field) {
+        if (field.getPossibleNumbers().size() == 1) {
+            setResultNumberToField(field, field.getPossibleNumbers().get(0));
+        }
+        if (field.getResultNumber() != null) {
+            temporaryDataList.add(field.getResultNumber());
+        }
+    }
+
+    private void removeAllUsedNumbersFromEachPossibleNumberListAndSignUpAllRemainingNumbers(Field field) {
+        field.getPossibleNumbers().removeAll(temporaryDataList);
+        field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
+                getFrequencyMap().get(possibleNumber) + 1));
     }
 
     public boolean processColumn(int column) {
