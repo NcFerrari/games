@@ -34,7 +34,7 @@ public class NumberChooser {
     /**
      * <li> 1. get all final numbers from line</li>
      * <li> 2. remove all final numbers from possible numbers of not completed fields</li>
-     * <li> 3. check all possibleNumbers for each number and get distinct value</li>
+     * <li> 3. check all possible numbers for each number and get distinct value</li>
      *
      * @param rowNumber single row from sudoku
      * @return boolean if row is complete
@@ -49,7 +49,7 @@ public class NumberChooser {
         getFieldList().get(rowNumber)
                 .stream()
                 .filter(field -> field.getPossibleNumbers().size() > 1)
-                .forEach(this::removeAllUsedNumbersFromEachPossibleNumberListAndSignUpAllRemainingNumbers);
+                .forEach(this::processNumbers);
 
         getFrequencyMap().forEach((s, integer) -> {
             if (integer == 1) {
@@ -61,6 +61,36 @@ public class NumberChooser {
             }
         });
 
+        resetFrequencyMap();
+        return temporaryDataList.size() == getFieldList().size();
+    }
+
+    /**
+     * <li> 1. get all final numbers from columns (so get all lists and get specific index of this list)</li>
+     * <li> 2. remove all final numbers from possible numbers of not completed fields</li>
+     * <li> 3. check all possible numbers for each number and get distinct value</li>
+     *
+     * @param column represented by one index in list of fields
+     * @return boolean if row is complete
+     */
+    public boolean processColumn(int column) {
+        temporaryDataList.clear();
+        getFieldList().forEach(fields -> getFinalNumbersIfItIsPossible(fields.get(column)));
+
+        getFieldList()
+                .stream()
+                .filter(fields -> fields.get(column).getPossibleNumbers().size() > 1)
+                .forEach(fields -> processNumbers(fields.get(column)));
+
+        getFrequencyMap().forEach((s, integer) -> {
+            if (integer == 1) {
+                Optional<List<Field>> optional = getFieldList()
+                        .stream()
+                        .filter(fields -> fields.get(column).getPossibleNumbers().contains(s))
+                        .findFirst();
+                optional.ifPresent(field -> setResultNumberToField(field.get(column), s));
+            }
+        });
         resetFrequencyMap();
         return temporaryDataList.size() == getFieldList().size();
     }
@@ -79,46 +109,15 @@ public class NumberChooser {
         }
     }
 
-    private void removeAllUsedNumbersFromEachPossibleNumberListAndSignUpAllRemainingNumbers(Field field) {
+    /**
+     * Remove all used numbers from each possible number list and sign up all remaining numbers into frequency map
+     *
+     * @param field
+     */
+    private void processNumbers(Field field) {
         field.getPossibleNumbers().removeAll(temporaryDataList);
         field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
                 getFrequencyMap().get(possibleNumber) + 1));
-    }
-
-    public boolean processColumn(int column) {
-        final List<String> list = new ArrayList<>();
-        getFieldList().forEach(fields -> {
-            Field field = fields.get(column);
-            if (field.getPossibleNumbers().size() == 1) {
-                field.setResultNumber(field.getPossibleNumbers().get(0));
-                field.getPossibleNumbers().clear();
-            }
-            if (field.getResultNumber() != null) {
-                list.add(field.getResultNumber());
-            }
-        });
-        getFieldList().forEach(fields -> {
-            Field field = fields.get(column);
-            if (field.getPossibleNumbers().size() > 1) {
-                field.getPossibleNumbers().removeAll(list);
-                field.getPossibleNumbers().forEach(possibleNumber -> getFrequencyMap().replace(possibleNumber,
-                        getFrequencyMap().get(possibleNumber) + 1));
-            }
-        });
-        getFrequencyMap().forEach((s, integer) -> {
-            if (integer == 1) {
-                Optional<List<Field>> optional = getFieldList()
-                        .stream()
-                        .filter(fields -> fields.get(column).getPossibleNumbers().contains(s))
-                        .findFirst();
-                if (optional.isPresent()) {
-                    optional.get().get(column).getPossibleNumbers().clear();
-                    optional.get().get(column).setResultNumber(s);
-                }
-            }
-        });
-        resetFrequencyMap();
-        return list.size() == getFieldList().size();
     }
 
     /**
