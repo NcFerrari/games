@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -19,6 +20,7 @@ public class MainApp extends Application {
     private final Manager manager = Manager.getInstance();
     private final GridPane pane = new GridPane();
     private final ObservableList<TextField> textFields = FXCollections.observableArrayList();
+    private final KeyCode[] inputKeys = new KeyCode[2];
 
     @Override
     public void start(Stage stage) {
@@ -28,11 +30,26 @@ public class MainApp extends Application {
         stage.setOnCloseRequest(event -> System.exit(0));
         stage.show();
 
-        scene.getStylesheets().add(
-                Objects.requireNonNull(getClass().getClassLoader()
-                        .getResource(NamespaceEnum.CSS_STYLE.getText())).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().
+                getResource(NamespaceEnum.CSS_STYLE.getText())).toExternalForm());
 
         getFields(stage);
+
+        loadSudoku();
+    }
+
+    private void loadSudoku() {
+        int index = 0;
+        for (int[] row : manager.getSudoku().getData()) {
+            for (int value : row) {
+                if (value != 0) {
+                    textFields.get(index).setText(String.valueOf(value));
+                    textFields.get(index).setEditable(false);
+                    textFields.get(index).getStyleClass().add(NamespaceEnum.RED_COLOR_STYLE.getText());
+                }
+                index++;
+            }
+        }
     }
 
     private void getFields(Stage stage) {
@@ -44,7 +61,15 @@ public class MainApp extends Application {
     }
 
     private void addTextField(Stage stage, int i, int j) {
+        int part = (int) Math.sqrt(manager.getSudokuRowsCount());
         TextField textField = new TextField();
+        if (i > 0 && i % part == 0 && j > 0 && j % part == 0) {
+            textField.getStyleClass().add(NamespaceEnum.RIGHT_UP_STYLE.getText());
+        } else if (i > 0 && i % part == 0) {
+            textField.getStyleClass().add(NamespaceEnum.RIGHT_STYLE.getText());
+        } else if (j > 0 && j % part == 0) {
+            textField.getStyleClass().add(NamespaceEnum.UP_STYLE.getText());
+        }
         textField.setPrefSize(stage.getWidth() / manager.getSudokuColumnsCount(),
                 stage.getHeight() / manager.getSudokuRowsCount());
         textField.setAlignment(Pos.CENTER);
@@ -54,8 +79,11 @@ public class MainApp extends Application {
     }
 
     private void setTextFieldListeners(TextField textField) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> textField.textProperty().set(
-                String.valueOf(newValue.charAt(newValue.length() - 1))));
+        textPropertyListener(textField);
+        keyPressedListener(textField);
+    }
+
+    private void keyPressedListener(TextField textField) {
         textField.setOnKeyPressed(evt -> {
             switch (evt.getCode()) {
                 case UP:
@@ -78,9 +106,38 @@ public class MainApp extends Application {
                         setNewValue(textField, 1, evt);
                     }
                     break;
+                case ALT:
+                    inputKeys[0] = evt.getCode();
+                    break;
+                case ADD:
+                    inputKeys[1] = evt.getCode();
+                    break;
                 default:
+                    inputKeys[0] = null;
+                    inputKeys[1] = null;
+            }
+            showResult();
+        });
+    }
+
+    private void textPropertyListener(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 0) {
+                textField.textProperty().set(String.valueOf(newValue.charAt(newValue.length() - 1)));
             }
         });
+    }
+
+    private void showResult() {
+        if (inputKeys[0] != null && inputKeys[1] != null) {
+            manager.getSudoku().process();
+            String[] data = manager.getSudoku().output();
+            for (int i = 0; i < data.length; i++) {
+                textFields.get(i).setText(data[i]);
+            }
+            inputKeys[0] = null;
+            inputKeys[1] = null;
+        }
     }
 
     private void setNewValue(TextField textField, int value, KeyEvent evt) {

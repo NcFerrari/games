@@ -2,3 +2,22 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+
+.right {
+    -fx-border-color: transparent transparent transparent black;
+    -fx-border-width: 0 0 0 2px;
+}
+
+.up {
+    -fx-border-color: black transparent transparent transparent;
+    -fx-border-width: 2 0 0 0 px;
+}
+
+.right-and-up {
+    -fx-border-color: black transparent transparent black;
+    -fx-border-width: 2 0 0 2 px;
+}
+
+.red-color {
+    -fx-text-fill: red;
+}

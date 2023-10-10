@@ -6,7 +6,12 @@ import lombok.Getter;
 public enum NamespaceEnum {
 
     TITLE("Sudoku"),
-    CSS_STYLE("css/main.css");
+    CSS_STYLE("css/main.css"),
+    RIGHT_STYLE("right"),
+    EMPTY_TEXT(""),
+    RIGHT_UP_STYLE("right-and-up"),
+    UP_STYLE("up"),
+    RED_COLOR_STYLE("red-color");
 
     private final String text;
 

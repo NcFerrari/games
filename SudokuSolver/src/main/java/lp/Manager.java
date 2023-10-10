@@ -1,9 +1,11 @@
 package lp;
 
+import lombok.Getter;
 import lp.be.Sudoku;
 import lp.be.enums.TextEnum;
 import lp.fe.MainApp;
 
+@Getter
 public class Manager {
 
     private static Manager manager;
