@@ -10,14 +10,18 @@
 
 .up {
     -fx-border-color: black transparent transparent transparent;
-    -fx-border-width: 2 0 0 0 px;
+    -fx-border-width: 2 0 0 0px;
 }
 
 .right-and-up {
     -fx-border-color: black transparent transparent black;
-    -fx-border-width: 2 0 0 2 px;
+    -fx-border-width: 2 0 0 2px;
 }
 
-.red-color {
+#red-color {
     -fx-text-fill: red;
+}
+
+#black-color {
+    -fx-text-fill: black;
 }

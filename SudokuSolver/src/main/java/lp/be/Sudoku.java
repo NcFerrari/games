@@ -7,6 +7,9 @@ import lp.be.serviceimpl.LoggerServiceImpl;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,6 +22,16 @@ public class Sudoku {
     private final Logger log = loggerService.getLog();
     private NumberChooser numberChooser;
     private int[][] sudokuData;
+
+    public void loadSudoku(File file) {
+        if (file != null && file.exists()) {
+            try {
+                loadSudoku(new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                log.error(e);
+            }
+        }
+    }
 
     public void loadSudoku(InputStream is) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {

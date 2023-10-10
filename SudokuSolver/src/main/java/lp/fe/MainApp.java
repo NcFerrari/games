@@ -9,10 +9,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lp.Manager;
 import lp.fe.enums.NamespaceEnum;
 
+import java.io.File;
 import java.util.Objects;
 
 public class MainApp extends Application {
@@ -28,6 +30,7 @@ public class MainApp extends Application {
         stage.setScene(scene);
         stage.setTitle(NamespaceEnum.TITLE.getText());
         stage.setOnCloseRequest(event -> System.exit(0));
+        stage.setResizable(false);
         stage.show();
 
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader().
@@ -39,17 +42,26 @@ public class MainApp extends Application {
     }
 
     private void loadSudoku() {
+        resetFields();
         int index = 0;
         for (int[] row : manager.getSudoku().getData()) {
             for (int value : row) {
                 if (value != 0) {
                     textFields.get(index).setText(String.valueOf(value));
                     textFields.get(index).setEditable(false);
-                    textFields.get(index).getStyleClass().add(NamespaceEnum.RED_COLOR_STYLE.getText());
+                    textFields.get(index).setId(NamespaceEnum.RED_COLOR_STYLE.getText());
                 }
                 index++;
             }
         }
+    }
+
+    private void resetFields() {
+        textFields.forEach(textField -> {
+            textField.clear();
+            textField.setEditable(true);
+            textField.setId(NamespaceEnum.BLACK_COLOR_STYLE.getText());
+        });
     }
 
     private void getFields(Stage stage) {
@@ -107,17 +119,32 @@ public class MainApp extends Application {
                     }
                     break;
                 case ALT:
-                    inputKeys[0] = evt.getCode();
+                    inputKeys[0] = KeyCode.ALT;
                     break;
                 case ADD:
-                    inputKeys[1] = evt.getCode();
+                    inputKeys[1] = KeyCode.ADD;
+                    break;
+                case N:
+                    inputKeys[1] = KeyCode.N;
                     break;
                 default:
                     inputKeys[0] = null;
                     inputKeys[1] = null;
             }
+            loadFile();
             showResult();
         });
+    }
+
+    private void loadFile() {
+        if (KeyCode.ALT.equals(inputKeys[0]) && KeyCode.N.equals(inputKeys[1])) {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(null);
+            manager.getSudoku().loadSudoku(file);
+            loadSudoku();
+            inputKeys[0] = null;
+            inputKeys[1] = null;
+        }
     }
 
     private void textPropertyListener(TextField textField) {
@@ -129,7 +156,7 @@ public class MainApp extends Application {
     }
 
     private void showResult() {
-        if (inputKeys[0] != null && inputKeys[1] != null) {
+        if (KeyCode.ALT.equals(inputKeys[0]) && KeyCode.ADD.equals(inputKeys[1])) {
             manager.getSudoku().process();
             String[] data = manager.getSudoku().output();
             for (int i = 0; i < data.length; i++) {
