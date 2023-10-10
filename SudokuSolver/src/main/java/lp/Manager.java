@@ -7,7 +7,7 @@ import lp.fe.MainApp;
 public class Manager {
 
     private static Manager manager;
-    private Sudoku sudoku;
+    private final Sudoku sudoku;
 
     public static Manager getInstance() {
         if (manager == null) {

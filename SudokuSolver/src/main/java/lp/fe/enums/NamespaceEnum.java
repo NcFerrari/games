@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum NamespaceEnum {
 
-    TITLE("Sudoku");
+    TITLE("Sudoku"),
+    CSS_STYLE("css/main.css");
 
     private final String text;
 

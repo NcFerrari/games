@@ -29,7 +29,8 @@ public class MainApp extends Application {
         stage.show();
 
         scene.getStylesheets().add(
-                Objects.requireNonNull(getClass().getClassLoader().getResource("css/main.css")).toExternalForm());
+                Objects.requireNonNull(getClass().getClassLoader()
+                        .getResource(NamespaceEnum.CSS_STYLE.getText())).toExternalForm());
 
         getFields(stage);
     }
