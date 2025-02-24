@@ -1,4 +1,4 @@
-package lp.fx;
+package lp.piskvorky;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,7 +19,8 @@ public class Circle implements Shape {
         arc.setFill(null);
         pane.getChildren().add(arc);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2), evt -> arc.setLength(arc.getLength() - 1)));
+        arc.setStartAngle(90);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2), evt -> arc.setLength(arc.getLength() + 1)));
         timeline.setCycleCount(360);
         timeline.play();
     }
