@@ -2,9 +2,13 @@ package lp.piskvorky;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+
+import javax.swing.JOptionPane;
+import java.util.function.BiPredicate;
 
 public class App extends Application {
 
@@ -36,7 +40,7 @@ public class App extends Application {
             int index = (int) (y + (x / FIELD_SIZE));
             if (shapes[index] == null) {
                 shapes[index] = activePlayer.fillField(pane, x, y, FIELD_SIZE, FIELD_SIZE);
-                checkWin(index);
+                checkDirections(index);
                 changePlayer();
             }
         });
@@ -60,6 +64,40 @@ public class App extends Application {
         }
     }
 
-    private void checkWin(int index) {
+    private void checkDirections(int index) {
+        int startIndex = checkAxis(index, this::xAxeCheck);
+        checkWin(startIndex, 1);
+    }
+
+    private void checkWin(int startIndex, int increment) {
+        String title = shapes[startIndex];
+        for (int i = 0; i < COUNT_FOR_WIN; i++) {
+            int checkingIndex = startIndex + i * increment;
+            if (checkingIndex >= shapes.length || !title.equals(shapes[checkingIndex])) {
+                return;
+            }
+        }
+        win(title);
+    }
+
+    private int checkAxis(int index, BiPredicate<Integer, Integer> predicate) {
+        int i = 0;
+        while (predicate.test(index, i) && i < COUNT_FOR_WIN && shapes[index].equals(shapes[index - i])) {
+            i++;
+        }
+        i--;
+        return index - i;
+    }
+
+    private boolean xAxeCheck(int fieldIndex, int index) {
+        return fieldIndex - index >= (fieldIndex / FIELD_SIZE) * FIELD_SIZE;
+    }
+
+    private void win(String title) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("VICTORY");
+        alert.setHeaderText("VÍTĚZSTVÍ!!!");
+        alert.setContentText("Vyhrává " + title);
+        alert.show();
     }
 }

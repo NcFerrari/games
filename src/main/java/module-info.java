@@ -3,6 +3,7 @@ module untitled {
     requires javafx.base;
     requires javafx.graphics;
     requires java.desktop;
+    requires java.sql;
 
     exports lp.piskvorky;
 }
