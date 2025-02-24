@@ -1,4 +1,4 @@
-package lp.fx;
+package lp.piskvorky;
 
 import javafx.scene.layout.Pane;
 

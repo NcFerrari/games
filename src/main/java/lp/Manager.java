@@ -1,6 +1,6 @@
 package lp;
 
-import lp.fx.App;
+import lp.piskvorky.App;
 
 public class Manager {
 

@@ -1,4 +1,4 @@
-package lp.fx;
+package lp.piskvorky;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
