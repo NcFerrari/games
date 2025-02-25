@@ -7,7 +7,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiPredicate;
 
 public class App extends Application {
@@ -16,7 +17,9 @@ public class App extends Application {
     private static final int HEIGHT = 900;
     private static final int FIELD_SIZE = 30;
     private static final int COUNT_FOR_WIN = 5;
-    private final String[] shapes = new String[(WIDTH / FIELD_SIZE) * (HEIGHT / FIELD_SIZE)];
+    private final Shape[] shapes = new Shape[(WIDTH / FIELD_SIZE) * (HEIGHT / FIELD_SIZE)];
+    private final List<Shape> winningShapes = new ArrayList<>();
+    private final List<Shape> possibleWinShapes = new ArrayList<>();
     private Pane pane;
     private Players activePlayer;
     private int playerIndex;
@@ -40,7 +43,7 @@ public class App extends Application {
             int index = (int) (y + (x / FIELD_SIZE));
             if (shapes[index] == null) {
                 shapes[index] = activePlayer.fillField(pane, x, y, FIELD_SIZE, FIELD_SIZE);
-                checkDirections(index);
+                checkWin(index);
                 changePlayer();
             }
         });
@@ -64,20 +67,31 @@ public class App extends Application {
         }
     }
 
-    private void checkDirections(int index) {
+    private void checkWin(int index) {
+        String title = shapes[index].getName();
+        winningShapes.clear();
+
         int startIndex = checkAxis(index, this::xAxeCheck);
-        checkWin(startIndex, 1);
+        hasWinner(startIndex, 1, title);
+
+        startIndex = checkAxis(index, this::yAxeCheck);
+        hasWinner(startIndex, 1, title);
+
+        if (!winningShapes.isEmpty()) {
+            win(title);
+        }
     }
 
-    private void checkWin(int startIndex, int increment) {
-        String title = shapes[startIndex];
-        for (int i = 0; i < COUNT_FOR_WIN; i++) {
-            int checkingIndex = startIndex + i * increment;
-            if (checkingIndex >= shapes.length || !title.equals(shapes[checkingIndex])) {
-                return;
-            }
+    private void hasWinner(int startIndex, int increment, String title) {
+        int i = startIndex;
+        possibleWinShapes.clear();
+        while (i < ((startIndex / FIELD_SIZE) * FIELD_SIZE) + FIELD_SIZE && shapes[i] != null && title.equals(shapes[i].getName())) {
+            possibleWinShapes.add(shapes[i]);
+            i += increment;
         }
-        win(title);
+        if (possibleWinShapes.size() >= COUNT_FOR_WIN) {
+            winningShapes.addAll(possibleWinShapes);
+        }
     }
 
     private int checkAxis(int index, BiPredicate<Integer, Integer> predicate) {
@@ -90,6 +104,10 @@ public class App extends Application {
     }
 
     private boolean xAxeCheck(int fieldIndex, int index) {
+        return fieldIndex - index >= (fieldIndex / FIELD_SIZE) * FIELD_SIZE;
+    }
+
+    private boolean yAxeCheck(int fieldIndex, int index) {
         return fieldIndex - index >= (fieldIndex / FIELD_SIZE) * FIELD_SIZE;
     }
 

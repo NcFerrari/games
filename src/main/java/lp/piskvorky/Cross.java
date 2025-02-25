@@ -38,4 +38,9 @@ public class Cross implements Shape {
                 ));
         transition.play();
     }
+
+    @Override
+    public String getName() {
+        return "Cross";
+    }
 }

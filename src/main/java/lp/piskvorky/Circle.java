@@ -24,4 +24,9 @@ public class Circle implements Shape {
         timeline.setCycleCount(360);
         timeline.play();
     }
+
+    @Override
+    public String getName() {
+        return "Circle";
+    }
 }
