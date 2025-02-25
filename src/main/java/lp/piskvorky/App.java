@@ -68,47 +68,32 @@ public class App extends Application {
     }
 
     private void checkWin(int index) {
-        String title = shapes[index].getName();
-        winningShapes.clear();
-
-        int startIndex = checkAxis(index, this::xAxeCheck);
-        hasWinner(startIndex, 1, title);
-
-        startIndex = checkAxis(index, this::yAxeCheck);
-        hasWinner(startIndex, 1, title);
-
-        if (!winningShapes.isEmpty()) {
-            win(title);
-        }
+//        checkAxis(index, 1);
+//        checkAxis(index, FIELD_SIZE);
+//        checkAxis(index, FIELD_SIZE + 1);
+//        checkAxis(index, FIELD_SIZE - 1);
     }
 
-    private void hasWinner(int startIndex, int increment, String title) {
-        int i = startIndex;
-        possibleWinShapes.clear();
-        while (i < ((startIndex / FIELD_SIZE) * FIELD_SIZE) + FIELD_SIZE && shapes[i] != null && title.equals(shapes[i].getName())) {
-            possibleWinShapes.add(shapes[i]);
-            i += increment;
+    private void checkAxis(int index, int movingValue) {
+        int newPosition = index;
+        for (int i = 1; i < COUNT_FOR_WIN; i++) {
+            if (isValidateShape(index, movingValue, index - i * movingValue)) {
+                newPosition = index - i * movingValue;
+            } else {
+                break;
+            }
         }
-        if (possibleWinShapes.size() >= COUNT_FOR_WIN) {
-            winningShapes.addAll(possibleWinShapes);
-        }
+        System.out.println(newPosition);
     }
 
-    private int checkAxis(int index, BiPredicate<Integer, Integer> predicate) {
-        int i = 0;
-        while (predicate.test(index, i) && i < COUNT_FOR_WIN && shapes[index].equals(shapes[index - i])) {
-            i++;
+    private boolean isValidateShape(int index, int movingValue, int newPosition) {
+        if (newPosition < 0 || (movingValue == 1 && newPosition < (index / FIELD_SIZE) * FIELD_SIZE)) {
+            return false;
         }
-        i--;
-        return index - i;
-    }
-
-    private boolean xAxeCheck(int fieldIndex, int index) {
-        return fieldIndex - index >= (fieldIndex / FIELD_SIZE) * FIELD_SIZE;
-    }
-
-    private boolean yAxeCheck(int fieldIndex, int index) {
-        return fieldIndex - index >= (fieldIndex / FIELD_SIZE) * FIELD_SIZE;
+        if (shapes[newPosition] == null) {
+            return false;
+        }
+        return shapes[index].getName().equals(shapes[newPosition].getName());
     }
 
     private void win(String title) {
