@@ -9,7 +9,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
-public class Cross implements Shape {
+public class Cross extends Shape {
+
+    public Cross(String name) {
+        super(name);
+    }
 
     @Override
     public void draw(Pane pane, double x, double y, double width, double height) {
@@ -37,10 +41,5 @@ public class Cross implements Shape {
                         )
                 ));
         transition.play();
-    }
-
-    @Override
-    public String getName() {
-        return "Cross";
     }
 }

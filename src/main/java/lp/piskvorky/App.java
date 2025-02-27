@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiPredicate;
 
 public class App extends Application {
 
@@ -18,10 +17,11 @@ public class App extends Application {
     private static final int FIELD_SIZE = 30;
     private static final int COUNT_FOR_WIN = 5;
     private final Shape[] shapes = new Shape[(WIDTH / FIELD_SIZE) * (HEIGHT / FIELD_SIZE)];
+    private final List<Shape> addedShapes = new ArrayList<>();
     private final List<Shape> winningShapes = new ArrayList<>();
     private final List<Shape> possibleWinShapes = new ArrayList<>();
     private Pane pane;
-    private Players activePlayer;
+    private Shape activePlayer;
     private int playerIndex;
 
     @Override
@@ -29,6 +29,7 @@ public class App extends Application {
         pane = new Pane();
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
 
         drawLines();
@@ -43,6 +44,7 @@ public class App extends Application {
             int index = (int) (y + (x / FIELD_SIZE));
             if (shapes[index] == null) {
                 shapes[index] = activePlayer.fillField(pane, x, y, FIELD_SIZE, FIELD_SIZE);
+                addedShapes.add(shapes[index]);
                 checkWin(index);
                 changePlayer();
             }
@@ -61,17 +63,28 @@ public class App extends Application {
     }
 
     private void changePlayer() {
-        activePlayer = Players.values()[playerIndex++];
-        if (playerIndex == Players.values().length) {
+        if (playerIndex++ == 0) {
+            activePlayer = new Cross("Cross");
+        } else {
+            activePlayer = new Circle("Circle");
+        }
+
+        if (playerIndex == 2) {
             playerIndex = 0;
         }
     }
 
     private void checkWin(int index) {
-//        checkAxis(index, 1);
-//        checkAxis(index, FIELD_SIZE);
-//        checkAxis(index, FIELD_SIZE + 1);
-//        checkAxis(index, FIELD_SIZE - 1);
+        winningShapes.clear();
+
+        checkAxis(index, 1);
+        checkAxis(index, FIELD_SIZE);
+        checkAxis(index, FIELD_SIZE + 1);
+        checkAxis(index, FIELD_SIZE - 1);
+
+        if (!winningShapes.isEmpty()) {
+            win(shapes[index].getName());
+        }
     }
 
     private void checkAxis(int index, int movingValue) {
@@ -83,7 +96,20 @@ public class App extends Application {
                 break;
             }
         }
-        System.out.println(newPosition);
+        countWinning(newPosition, movingValue);
+    }
+
+    private void countWinning(int index, int movingValue) {
+        possibleWinShapes.clear();
+        int newPosition = index;
+        while (newPosition < shapes.length && shapes[newPosition] != null && shapes[index].getName().equals(shapes[newPosition].getName())) {
+            possibleWinShapes.add(shapes[newPosition]);
+            newPosition = index + movingValue * possibleWinShapes.size();
+        }
+
+        if (possibleWinShapes.size() >= COUNT_FOR_WIN) {
+            winningShapes.addAll(possibleWinShapes);
+        }
     }
 
     private boolean isValidateShape(int index, int movingValue, int newPosition) {
@@ -98,9 +124,12 @@ public class App extends Application {
 
     private void win(String title) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("VICTORY");
+        alert.setTitle("Výhra");
         alert.setHeaderText("VÍTĚZSTVÍ!!!");
         alert.setContentText("Vyhrává " + title);
         alert.show();
+
+        winningShapes.forEach(Shape::victoryBackground);
+        addedShapes.forEach(Shape::setUsedName);
     }
 }

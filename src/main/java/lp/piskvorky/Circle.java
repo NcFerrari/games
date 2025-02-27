@@ -8,7 +8,11 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.util.Duration;
 
-public class Circle implements Shape {
+public class Circle extends Shape {
+
+    public Circle(String name) {
+        super(name);
+    }
 
     @Override
     public void draw(Pane pane, double x, double y, double width, double height) {
@@ -23,10 +27,5 @@ public class Circle implements Shape {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2), evt -> arc.setLength(arc.getLength() + 1)));
         timeline.setCycleCount(360);
         timeline.play();
-    }
-
-    @Override
-    public String getName() {
-        return "Circle";
     }
 }
