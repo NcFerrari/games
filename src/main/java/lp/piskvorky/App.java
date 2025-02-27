@@ -3,31 +3,36 @@ package lp.piskvorky;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class App extends Application {
 
     private static final int WIDTH = 900;
     private static final int HEIGHT = 900;
-    private static final int FIELD_SIZE = 30;
+    private static final int FIELD_SIZE = 43;
     private static final int COUNT_FOR_WIN = 5;
-    private final Shape[] shapes = new Shape[(WIDTH / FIELD_SIZE) * (HEIGHT / FIELD_SIZE)];
+    private static final int RECOUNTED_WIDTH = (int) (Math.floor((double) WIDTH / FIELD_SIZE) * FIELD_SIZE);
+    private static final int RECOUNTED_HEIGHT = (int) (Math.floor((double) HEIGHT / FIELD_SIZE) * FIELD_SIZE);
+    private final Shape[] shapes = new Shape[(RECOUNTED_WIDTH / FIELD_SIZE) * (RECOUNTED_HEIGHT / FIELD_SIZE)];
     private final List<Shape> addedShapes = new ArrayList<>();
     private final List<Shape> winningShapes = new ArrayList<>();
     private final List<Shape> possibleWinShapes = new ArrayList<>();
     private Pane pane;
+    private Scene scene;
     private Shape activePlayer;
     private int playerIndex;
 
     @Override
     public void start(Stage stage) {
         pane = new Pane();
-        Scene scene = new Scene(pane, WIDTH, HEIGHT);
+        scene = new Scene(pane, RECOUNTED_WIDTH, RECOUNTED_HEIGHT);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -41,7 +46,7 @@ public class App extends Application {
         pane.setOnMousePressed(evt -> {
             double x = Math.floor(evt.getX() / FIELD_SIZE) * FIELD_SIZE;
             double y = Math.floor(evt.getY() / FIELD_SIZE) * FIELD_SIZE;
-            int index = (int) (y + (x / FIELD_SIZE));
+            int index = (int) ((y / FIELD_SIZE) * ((double) Math.min(RECOUNTED_WIDTH, RECOUNTED_HEIGHT) / FIELD_SIZE) + (x / FIELD_SIZE));
             if (shapes[index] == null) {
                 shapes[index] = activePlayer.fillField(pane, x, y, FIELD_SIZE, FIELD_SIZE);
                 addedShapes.add(shapes[index]);
@@ -49,15 +54,25 @@ public class App extends Application {
                 changePlayer();
             }
         });
+
+        scene.setOnKeyPressed(evt -> {
+            if (evt.getCode().equals(KeyCode.SPACE)) {
+                Arrays.fill(shapes, null);
+                winningShapes.clear();
+                addedShapes.clear();
+                pane.getChildren().clear();
+                drawLines();
+            }
+        });
     }
 
     private void drawLines() {
-        for (int i = 0; i <= WIDTH; i += FIELD_SIZE) {
-            Line line = new Line(i, 0, i, WIDTH);
+        for (int i = 0; i <= RECOUNTED_WIDTH; i += FIELD_SIZE) {
+            Line line = new Line(i, 0, i, RECOUNTED_HEIGHT);
             pane.getChildren().add(line);
         }
-        for (int i = 0; i <= HEIGHT; i += FIELD_SIZE) {
-            Line line = new Line(0, i, HEIGHT, i);
+        for (int i = 0; i <= RECOUNTED_HEIGHT; i += FIELD_SIZE) {
+            Line line = new Line(0, i, RECOUNTED_WIDTH, i);
             pane.getChildren().add(line);
         }
     }
@@ -78,9 +93,9 @@ public class App extends Application {
         winningShapes.clear();
 
         checkAxis(index, 1);
-        checkAxis(index, FIELD_SIZE);
-        checkAxis(index, FIELD_SIZE + 1);
-        checkAxis(index, FIELD_SIZE - 1);
+        checkAxis(index, Math.min(RECOUNTED_WIDTH, RECOUNTED_HEIGHT) / FIELD_SIZE);
+        checkAxis(index, Math.min(RECOUNTED_WIDTH, RECOUNTED_HEIGHT) / FIELD_SIZE + 1);
+        checkAxis(index, Math.min(RECOUNTED_WIDTH, RECOUNTED_HEIGHT) / FIELD_SIZE - 1);
 
         if (!winningShapes.isEmpty()) {
             win(shapes[index].getName());
