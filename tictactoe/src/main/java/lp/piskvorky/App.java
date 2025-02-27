@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import lp.piskvorky.shapes.Shape;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,10 +25,9 @@ public class App extends Application {
     private final List<Shape> addedShapes = new ArrayList<>();
     private final List<Shape> winningShapes = new ArrayList<>();
     private final List<Shape> possibleWinShapes = new ArrayList<>();
+    private final Player player = new Player();
     private Pane pane;
     private Scene scene;
-    private Shape activePlayer;
-    private int playerIndex;
 
     @Override
     public void start(Stage stage) {
@@ -39,7 +39,7 @@ public class App extends Application {
 
         drawLines();
         addEvents();
-        changePlayer();
+        player.setPlayer(0);
     }
 
     private void addEvents() {
@@ -48,10 +48,10 @@ public class App extends Application {
             double y = Math.floor(evt.getY() / FIELD_SIZE) * FIELD_SIZE;
             int index = (int) ((y / FIELD_SIZE) * ((double) Math.min(RECOUNTED_WIDTH, RECOUNTED_HEIGHT) / FIELD_SIZE) + (x / FIELD_SIZE));
             if (shapes[index] == null) {
-                shapes[index] = activePlayer.fillField(pane, x, y, FIELD_SIZE, FIELD_SIZE);
+                shapes[index] = player.getActivePlayer(pane, x, y, FIELD_SIZE, FIELD_SIZE);
                 addedShapes.add(shapes[index]);
                 checkWin(index);
-                changePlayer();
+                player.changePlayer();
             }
         });
 
@@ -74,18 +74,6 @@ public class App extends Application {
         for (int i = 0; i <= RECOUNTED_HEIGHT; i += FIELD_SIZE) {
             Line line = new Line(0, i, RECOUNTED_WIDTH, i);
             pane.getChildren().add(line);
-        }
-    }
-
-    private void changePlayer() {
-        if (playerIndex++ == 0) {
-            activePlayer = new Cross("Cross");
-        } else {
-            activePlayer = new Circle("Circle");
-        }
-
-        if (playerIndex == 2) {
-            playerIndex = 0;
         }
     }
 

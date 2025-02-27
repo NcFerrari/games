@@ -1,4 +1,4 @@
-package lp.piskvorky;
+package lp.piskvorky.shapes;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

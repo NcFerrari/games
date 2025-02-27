@@ -6,4 +6,5 @@ module untitled {
     requires java.sql;
 
     exports lp.piskvorky;
+    exports lp.piskvorky.shapes;
 }

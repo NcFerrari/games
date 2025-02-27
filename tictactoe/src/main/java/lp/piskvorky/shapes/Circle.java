@@ -1,4 +1,4 @@
-package lp.piskvorky;
+package lp.piskvorky.shapes;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
