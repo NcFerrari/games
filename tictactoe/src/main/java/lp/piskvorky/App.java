@@ -32,7 +32,6 @@ public class App extends Application {
     private final int countForWin;
     private final int recountedWidth;
     private final int recountedHeight;
-    private final int smallerRand;
     private final int fieldSize;
     private final Shape[] shapes;
     private final List<Shape> addedShapes = new ArrayList<>();
@@ -50,7 +49,6 @@ public class App extends Application {
         countForWin = getPropertyInt("count-for-win");
         recountedWidth = (int) (Math.floor(getPropertyDouble("width") / fieldSize) * fieldSize);
         recountedHeight = (int) (Math.floor(getPropertyDouble("height") / fieldSize) * fieldSize);
-        smallerRand = Math.min(recountedWidth, recountedHeight);
         shapes = new Shape[(recountedWidth / fieldSize) * (recountedHeight / fieldSize)];
     }
 
@@ -104,7 +102,7 @@ public class App extends Application {
     }
 
     private int getShapeIndex(double x, double y) {
-        return (int) ((y * smallerRand + fieldSize * x) / (fieldSize * fieldSize));
+        return (int) ((y * recountedWidth + fieldSize * x) / (fieldSize * fieldSize));
     }
 
     private void prepareLines() {
@@ -134,7 +132,7 @@ public class App extends Application {
     }
 
     private void checkHorizontalAxis(int index) {
-        int fieldCounts = smallerRand / fieldSize;
+        int fieldCounts = recountedWidth / fieldSize;
         int movingBy = 1;
         int startFrom = getStartingIndex(index, movingBy, startingIndex ->
                 (index / fieldCounts) * fieldCounts == ((startingIndex - movingBy) / fieldCounts) * fieldCounts);
@@ -144,14 +142,14 @@ public class App extends Application {
     }
 
     private void checkVerticalAxis(int index) {
-        int movingBy = smallerRand / fieldSize;
+        int movingBy = recountedWidth / fieldSize;
         int startFrom = getStartingIndex(index, movingBy, startingIndex -> true);
 
         checkFields(startFrom, movingBy, actualIndex -> true);
     }
 
     private void checkMainDiagonalAxis(int index) {
-        int fieldCounts = smallerRand / fieldSize;
+        int fieldCounts = recountedWidth / fieldSize;
         int movingBy = fieldCounts + 1;
         int startFrom = getStartingIndex(index, movingBy, startingIndex ->
                 ((((startingIndex - movingBy) / fieldCounts) + 1) * fieldCounts) == (startingIndex / fieldCounts) * fieldCounts);
@@ -161,7 +159,7 @@ public class App extends Application {
     }
 
     private void checkSecondaryDiagonalAxis(int index) {
-        int fieldCounts = smallerRand / fieldSize;
+        int fieldCounts = recountedWidth / fieldSize;
         int movingBy = fieldCounts - 1;
         int startFrom = getStartingIndex(index, movingBy, startingIndex ->
                 ((startingIndex - movingBy) / fieldCounts) * fieldCounts != (startingIndex / fieldCounts) * fieldCounts);
