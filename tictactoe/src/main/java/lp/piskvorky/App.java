@@ -2,11 +2,12 @@ package lp.piskvorky;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import lp.piskvorky.shapes.Shape;
 
@@ -22,6 +23,12 @@ import java.util.function.IntPredicate;
 
 public class App extends Application {
 
+    private static final String DEFAULT_WIDTH = "900";
+    private static final String DEFAULT_HEIGHT = "900";
+    private static final String DEFAULT_FIELD_SIZE = "50";
+    private static final String DEFAULT_COUNT_FOR_WIN = "5";
+    private static final String DEFAULT_USED_COLOR = "#A6A6A4FF";
+    private static final String DEFAULT_VICTORY_COLOR = "#EEEE05FF";
     private final int countForWin;
     private final int recountedWidth;
     private final int recountedHeight;
@@ -33,6 +40,7 @@ public class App extends Application {
     private final List<Shape> possibleWinShapes = new ArrayList<>();
     private final Player player = new Player();
     private final Properties properties = new Properties();
+    private final Canvas canvasForGrid = new Canvas();
     private Pane pane;
     private Scene scene;
 
@@ -57,7 +65,8 @@ public class App extends Application {
 
         addEvents();
 
-        drawLines();
+        prepareLines();
+        pane.getChildren().add(canvasForGrid);
         player.setPlayer(0);
     }
 
@@ -65,7 +74,11 @@ public class App extends Application {
         pane.setOnMousePressed(evt -> {
             double x = Math.floor(evt.getX() / fieldSize) * fieldSize;
             double y = Math.floor(evt.getY() / fieldSize) * fieldSize;
-            getIndexAndCheckWin(x, y);
+            int index = getShapeIndex(x, y);
+            if (shapes[index] == null) {
+                addShape(index, x, y);
+                checkWin(index);
+            }
         });
 
         scene.setOnKeyPressed(this::shortCuts);
@@ -73,34 +86,37 @@ public class App extends Application {
 
     private void shortCuts(KeyEvent evt) {
         if (evt.getCode().equals(KeyCode.SPACE)) {
-            Arrays.fill(shapes, null);
-            addedShapes.forEach(Shape::removeFromPane);
-            addedShapes.clear();
+            resetGame();
         }
     }
 
-    private void getIndexAndCheckWin(double x, double y) {
-        int index = getShapeIndex(x, y);
-        if (shapes[index] == null) {
-            shapes[index] = player.getActivePlayer(pane, x, y, fieldSize, fieldSize);
-            addedShapes.add(shapes[index]);
-            checkWin(index);
-            player.changePlayer();
-        }
+    private void resetGame() {
+        Arrays.fill(shapes, null);
+        pane.getChildren().clear();
+        pane.getChildren().add(canvasForGrid);
+        addedShapes.clear();
+    }
+
+    private void addShape(int index, double x, double y) {
+        shapes[index] = player.addShapeToPane(pane, x, y, fieldSize, fieldSize);
+        addedShapes.add(shapes[index]);
+        player.changePlayer();
     }
 
     private int getShapeIndex(double x, double y) {
         return (int) ((y * smallerRand + fieldSize * x) / (fieldSize * fieldSize));
     }
 
-    private void drawLines() {
+    private void prepareLines() {
+        canvasForGrid.setWidth(recountedWidth);
+        canvasForGrid.setHeight(recountedHeight);
+        GraphicsContext graphicsContext = canvasForGrid.getGraphicsContext2D();
+        graphicsContext.setLineWidth(1);
         for (int i = 0; i <= recountedWidth; i += fieldSize) {
-            Line line = new Line(i, 0, i, recountedHeight);
-            pane.getChildren().add(line);
+            graphicsContext.strokeLine(i, 0, i, recountedHeight);
         }
         for (int i = 0; i <= recountedHeight; i += fieldSize) {
-            Line line = new Line(0, i, recountedWidth, i);
-            pane.getChildren().add(line);
+            graphicsContext.strokeLine(0, i, recountedWidth, i);
         }
     }
 
@@ -188,17 +204,23 @@ public class App extends Application {
         alert.setContentText(Texts.WINS.getText() + title);
         alert.show();
 
-        addedShapes.forEach(Shape::setUsedName);
-        winningShapes.forEach(Shape::victoryBackground);
+        addedShapes.forEach(shape -> shape.setUsedName(getPropertyString("used-color")));
+        winningShapes.forEach(shape -> shape.victoryBackground(getPropertyString("victory-color")));
     }
 
     private void loadProperties() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
-                throw new IllegalArgumentException("Missing configuration file for " + getClass().getName());
-            }
-            try (InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                properties.load(reader);
+                properties.setProperty("width", DEFAULT_WIDTH);
+                properties.setProperty("height", DEFAULT_HEIGHT);
+                properties.setProperty("field-size", DEFAULT_FIELD_SIZE);
+                properties.setProperty("count-for-win", DEFAULT_COUNT_FOR_WIN);
+                properties.setProperty("used-color", DEFAULT_USED_COLOR);
+                properties.setProperty("victory-color", DEFAULT_VICTORY_COLOR);
+            } else {
+                try (InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
+                    properties.load(reader);
+                }
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("IO Exception");

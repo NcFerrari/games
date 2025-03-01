@@ -1,6 +1,7 @@
 package lp.piskvorky;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import lp.piskvorky.shapes.Circle;
 import lp.piskvorky.shapes.Cross;
 import lp.piskvorky.shapes.Shape;
@@ -11,8 +12,8 @@ import java.util.function.Supplier;
 public class Player {
 
     private final List<Supplier<Shape>> classList = List.of(
-            () -> new Cross("Cross"),
-            () -> new Circle("Circle")
+            () -> new Cross("Cross", Color.RED),
+            () -> new Circle("Circle", Color.BLUE)
     );
     private Shape activePlayer;
     private int playerIndex;
@@ -31,7 +32,7 @@ public class Player {
         }
     }
 
-    public Shape getActivePlayer(Pane pane, double x, double y, int width, int height) {
+    public Shape addShapeToPane(Pane pane, double x, double y, int width, int height) {
         return activePlayer.fillField(pane, x, y, width, height);
     }
 }

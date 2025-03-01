@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -12,15 +11,15 @@ import javafx.util.Duration;
 
 public class Cross extends Shape {
 
-    public Cross(String name) {
-        super(name);
+    public Cross(String name, Color shapeColor) {
+        super(name, shapeColor);
     }
 
     @Override
-    public Node[] draw(Pane pane, double x, double y, double width, double height) {
+    public void draw(Pane pane, double x, double y, double width, double height) {
         Line line = new Line(x, y, x, y);
         Line line2 = new Line(x + width, y, x + width, y);
-        line.setStroke(Color.RED);
+        line.setStroke(shapeColor);
         line2.setStroke(line.getStroke());
         line.setStrokeWidth(5);
         line2.setStrokeWidth(line.getStrokeWidth());
@@ -42,7 +41,5 @@ public class Cross extends Shape {
                         )
                 ));
         transition.play();
-
-        return new Node[]{line, line2};
     }
 }

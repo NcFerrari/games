@@ -1,6 +1,5 @@
 package lp.piskvorky.shapes;
 
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -8,45 +7,39 @@ import javafx.scene.shape.Rectangle;
 public abstract class Shape {
 
     protected String name;
-    private Pane pane;
-    private Node[] nodes;
+    protected final Color shapeColor;
     private Rectangle rectangle;
 
-    Shape(String name) {
+    Shape(String name, Color shapeColor) {
         this.name = name;
+        this.shapeColor = shapeColor;
     }
 
     public Shape fillField(Pane pane, double x, double y, int width, int height) {
-        this.pane = pane;
         rectangle = new Rectangle(x, y, width, height);
         rectangle.setOpacity(0);
         pane.getChildren().addFirst(rectangle);
-        nodes = draw(pane, x, y, width, height);
+        draw(pane, x, y, width, height);
         return this;
-    }
-
-    public void removeFromPane() {
-        pane.getChildren().removeAll(nodes);
-        pane.getChildren().remove(rectangle);
     }
 
     public String getName() {
         return name;
     }
 
-    public void victoryBackground() {
-        fillAndAddBackground(Color.YELLOW);
+    public void victoryBackground(String victoryColor) {
+        fillAndAddBackground(victoryColor);
     }
 
-    public void setUsedName() {
+    public void setUsedName(String colorForUsedShape) {
         name = "used";
-        fillAndAddBackground(Color.LIGHTGRAY);
+        fillAndAddBackground(colorForUsedShape);
     }
 
-    private void fillAndAddBackground(Color color) {
-        rectangle.setFill(color);
+    private void fillAndAddBackground(String color) {
+        rectangle.setFill(Color.valueOf(color));
         rectangle.setOpacity(1);
     }
 
-    abstract Node[] draw(Pane pane, double x, double y, double width, double height);
+    abstract void draw(Pane pane, double x, double y, double width, double height);
 }
