@@ -1,4 +1,4 @@
-package lp.piskvorky.shapes;
+package lp.piskvorky.frontend.shapes;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -7,12 +7,12 @@ import javafx.scene.shape.Rectangle;
 public abstract class Shape {
 
     protected String name;
-    protected final Color shapeColor;
+    protected String color;
     private Rectangle rectangle;
 
-    Shape(String name, Color shapeColor) {
+    Shape(String name, String hexadecimalColor) {
         this.name = name;
-        this.shapeColor = shapeColor;
+        color = hexadecimalColor;
     }
 
     public Shape fillField(Pane pane, double x, double y, int width, int height) {
@@ -41,5 +41,5 @@ public abstract class Shape {
         rectangle.setOpacity(1);
     }
 
-    abstract void draw(Pane pane, double x, double y, double width, double height);
+    public abstract void draw(Pane pane, double x, double y, double width, double height);
 }

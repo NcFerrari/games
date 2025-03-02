@@ -1,4 +1,4 @@
-package lp.piskvorky.shapes;
+package lp.piskvorky.frontend.shapes;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -11,15 +11,15 @@ import javafx.util.Duration;
 
 public class Cross extends Shape {
 
-    public Cross(String name, Color shapeColor) {
-        super(name, shapeColor);
+    public Cross(String name, String hexadecimalColor) {
+        super(name, hexadecimalColor);
     }
 
     @Override
     public void draw(Pane pane, double x, double y, double width, double height) {
         Line line = new Line(x, y, x, y);
         Line line2 = new Line(x + width, y, x + width, y);
-        line.setStroke(shapeColor);
+        line.setStroke(Color.valueOf(color));
         line2.setStroke(line.getStroke());
         line.setStrokeWidth(5);
         line2.setStrokeWidth(line.getStrokeWidth());

@@ -1,4 +1,4 @@
-package lp.piskvorky;
+package lp.piskvorky.conf;
 
 public enum Texts {
 
