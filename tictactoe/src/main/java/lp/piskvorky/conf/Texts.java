@@ -1,5 +1,8 @@
 package lp.piskvorky.conf;
 
+import lombok.Getter;
+
+@Getter
 public enum Texts {
 
     TITLE("Piškvorky"),
@@ -11,9 +14,5 @@ public enum Texts {
 
     Texts(String text) {
         this.text = text;
-    }
-
-    public String getText() {
-        return text;
     }
 }

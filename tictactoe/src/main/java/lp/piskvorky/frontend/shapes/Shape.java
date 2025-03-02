@@ -3,7 +3,9 @@ package lp.piskvorky.frontend.shapes;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import lombok.Getter;
 
+@Getter
 public abstract class Shape {
 
     protected String name;
@@ -21,10 +23,6 @@ public abstract class Shape {
         pane.getChildren().addFirst(rectangle);
         draw(pane, x, y, width, height);
         return this;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void victoryBackground(String victoryColor) {

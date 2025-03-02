@@ -1,5 +1,6 @@
 package lp;
 
+import lombok.Getter;
 import lp.piskvorky.frontend.App;
 import lp.piskvorky.GameSettings;
 import lp.piskvorky.Player;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.IntPredicate;
 
+@Getter
 public class Manager {
 
     private static Manager manager;
@@ -54,16 +56,8 @@ public class Manager {
         return settings.getFieldSize();
     }
 
-    public int getCurrentIndex() {
-        return currentIndex;
-    }
-
     public String getCurrentShapeName() {
         return shapes[getCurrentIndex()].getName();
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public boolean isShapeEnable(double x, double y) {
