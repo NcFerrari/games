@@ -28,17 +28,14 @@ public class Actions {
     }
 
     public void addCardIntoHand(List<Card> cards, StackPane cardStack) {
-        if (sourceStatusMap.get(Sources.SETTLER).getValue() < 2) {
-            return;
-        }
-        if (cards.isEmpty()) {
-            if (cardStack != null) {
-                cardStack.getChildren().clear();
-            }
+        if (sourceStatusMap.get(Sources.SETTLER).getValue() < 2 || cards.isEmpty()) {
             return;
         }
         removeSettler(2);
         cardsInHand.getChildren().add(cards.getFirst());
         cards.removeFirst();
+        if (cards.isEmpty() && cardStack != null) {
+            cardStack.getChildren().clear();
+        }
     }
 }

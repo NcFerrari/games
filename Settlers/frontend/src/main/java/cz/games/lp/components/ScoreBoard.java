@@ -12,17 +12,16 @@ public class ScoreBoard extends Group {
     private final double scoreXMove;
     private final double scoreYMove;
     private ImageNode fractionToken;
-    private int round = 1;
-    private int score = 0;
-    private double scoreXPosition = 0;
-    private double scoreYPosition = 0;
-    private int xMove = 1;
+    private int score;
+    private double scoreXPosition;
+    private double scoreYPosition;
+    private int xMove;
     private String fraction;
 
     public ScoreBoard(double width, double height) {
         roundMove = height * 0.19157;
-        scoreXMove = 40.0;
-        scoreYMove = 50.0;
+        scoreXMove = width * 0.07905;
+        scoreYMove = height * 0.19157;
         ImageNode scoreBoardImage = new ImageNode(width, height, 30 * width / 13, 30 * height / 13);
         scoreBoardImage.setImage("score_board");
 
@@ -33,19 +32,26 @@ public class ScoreBoard extends Group {
         getChildren().addAll(scoreBoardImage.getImageView(), roundPointer.getImageView());
     }
 
-    public void nextRound() {
-        if (round > 0 && round < 5) {
-            round++;
-            double newPosition = roundMove * (round - 1);
-            roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
-            roundTransition.setToY(newPosition);
-            roundTransition.setNode(roundPointer.getImageView());
-            roundTransition.play();
+    public void setRound(int round) {
+        if (round < 0 || round > 5) {
+            return;
         }
+        double newPosition = roundMove * (round - 1);
+        roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
+        roundTransition.setToY(newPosition);
+        roundTransition.setNode(roundPointer.getImageView());
+        roundTransition.play();
     }
 
     public void setFractionToken(String fraction, boolean fiftyPlus) {
         this.fraction = fraction;
+        if (fractionToken != null) {
+            getChildren().remove(fractionToken.getImageView());
+        }
+        score = 0;
+        scoreXPosition = 0;
+        scoreYPosition = 0;
+        xMove = 1;
         fractionToken = new ImageNode(30, 30);
         String fifty = fiftyPlus ? "50" : "";
         fractionToken.setImage("fractions/fraction_tokens/" + fraction + "_token" + fifty);
@@ -65,8 +71,7 @@ public class ScoreBoard extends Group {
             xMove = -xMove;
         } else {
             scoreXPosition += xMove;
-            double newPosition = scoreXMove * scoreXPosition;
-            scoreTransition.setToX(newPosition);
+            scoreTransition.setToX(scoreXMove * scoreXPosition);
         }
         scoreTransition.setFromX(fractionToken.getImageView().getTranslateX());
         scoreTransition.setFromY(fractionToken.getImageView().getTranslateY());
@@ -74,11 +79,6 @@ public class ScoreBoard extends Group {
         scoreTransition.play();
         scoreTransition.setOnFinished(e -> {
             if (score == 50) {
-                getChildren().remove(fractionToken.getImageView());
-                score = 0;
-                scoreXPosition = 0;
-                scoreYPosition = 0;
-                xMove = 1;
                 setFractionToken(fraction, true);
             }
             scorePoint(scorePoint - 1);

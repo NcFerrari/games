@@ -15,11 +15,13 @@ public interface IManager {
 
     CardType[] getCardTypes();
 
-    String getCommonCardImage();
-
     List<Card> prepareCards(double cardWidth, double cardHeight);
+
+    List<Card> prepareCards(double cardWidth, double cardHeight, String fraction, int cardCount);
 
     String getFraction();
 
-    String getFractionBoard(Sex sex);
+    String getFractionBoard();
+
+    void setFractionAndSex(String fraction, Sex sex);
 }
