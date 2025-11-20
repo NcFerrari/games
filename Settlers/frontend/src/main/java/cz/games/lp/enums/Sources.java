@@ -1,0 +1,22 @@
+package cz.games.lp.enums;
+
+public enum Sources {
+    SETTLER("settler"),
+    WOOD("wood"),
+    STONE("stone"),
+    FOOD("food"),
+    COIN("coin"),
+    SWORD("sword"),
+    SHIELD("shield"),
+    EGYPT_TOKEN("egypt_token");
+
+    private final String name;
+
+    Sources(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
