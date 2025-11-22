@@ -2,6 +2,7 @@ package cz.games.lp.api;
 
 import cz.games.lp.components.Card;
 import cz.games.lp.enums.CardType;
+import cz.games.lp.enums.Phases;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
 
@@ -17,11 +18,15 @@ public interface IManager {
 
     List<Card> prepareCards(double cardWidth, double cardHeight);
 
-    List<Card> prepareCards(double cardWidth, double cardHeight, String fraction, int cardCount);
+    List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount);
 
-    String getFraction();
+    String getFaction();
 
-    String getFractionBoard();
+    String getFactionBoard();
 
-    void setFractionAndSex(String fraction, Sex sex);
+    void setFactionAndSex(String faction, Sex sex);
+
+    Phases getCurrentPhase();
+
+    void setCurrentPhase(Phases currentPhase);
 }

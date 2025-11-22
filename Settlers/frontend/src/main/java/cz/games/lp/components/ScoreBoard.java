@@ -11,12 +11,12 @@ public class ScoreBoard extends Group {
     private final double roundMove;
     private final double scoreXMove;
     private final double scoreYMove;
-    private ImageNode fractionToken;
+    private ImageNode factionToken;
     private int score;
     private double scoreXPosition;
     private double scoreYPosition;
     private int xMove;
-    private String fraction;
+    private String faction;
 
     public ScoreBoard(double width, double height) {
         roundMove = height * 0.19157;
@@ -43,22 +43,22 @@ public class ScoreBoard extends Group {
         roundTransition.play();
     }
 
-    public void setFractionToken(String fraction, boolean fiftyPlus) {
-        this.fraction = fraction;
-        if (fractionToken != null) {
-            getChildren().remove(fractionToken.getImageView());
+    public void setFactionToken(String faction, boolean fiftyPlus) {
+        this.faction = faction;
+        if (factionToken != null) {
+            getChildren().remove(factionToken.getImageView());
         }
         score = 0;
         scoreXPosition = 0;
         scoreYPosition = 0;
         xMove = 1;
-        fractionToken = new ImageNode(30, 30);
+        factionToken = new ImageNode(30, 30);
         String fifty = fiftyPlus ? "50" : "";
-        fractionToken.setImage("fractions/fraction_tokens/" + fraction + "_token" + fifty);
-        fractionToken.getImageView().setX(17);
-        fractionToken.getImageView().setY(22);
-        getChildren().add(fractionToken.getImageView());
-        scoreTransition.setNode(fractionToken.getImageView());
+        factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
+        factionToken.getImageView().setX(17);
+        factionToken.getImageView().setY(22);
+        getChildren().add(factionToken.getImageView());
+        scoreTransition.setNode(factionToken.getImageView());
     }
 
     public void scorePoint(int scorePoint) {
@@ -73,13 +73,13 @@ public class ScoreBoard extends Group {
             scoreXPosition += xMove;
             scoreTransition.setToX(scoreXMove * scoreXPosition);
         }
-        scoreTransition.setFromX(fractionToken.getImageView().getTranslateX());
-        scoreTransition.setFromY(fractionToken.getImageView().getTranslateY());
+        scoreTransition.setFromX(factionToken.getImageView().getTranslateX());
+        scoreTransition.setFromY(factionToken.getImageView().getTranslateY());
         scoreTransition.setToY(scoreYPosition * scoreYMove);
         scoreTransition.play();
         scoreTransition.setOnFinished(e -> {
             if (score == 50) {
-                setFractionToken(fraction, true);
+                setFactionToken(faction, true);
             }
             scorePoint(scorePoint - 1);
         });

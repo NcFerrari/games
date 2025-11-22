@@ -4,7 +4,8 @@ import cz.games.lp.MainApp;
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
 import cz.games.lp.enums.CardType;
-import cz.games.lp.enums.Fraction;
+import cz.games.lp.enums.Faction;
+import cz.games.lp.enums.Phases;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
 
@@ -18,8 +19,9 @@ public class Manager implements IManager {
 
     private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
-    private Fraction selectedFraction;
+    private Faction selectedFaction;
     private Sex selectedSex;
+    private Phases currentPhase;
 
     private void start() {
         MainApp.run(this);
@@ -36,7 +38,7 @@ public class Manager implements IManager {
 
     @Override
     public Sources[] getSources() {
-        if (Fraction.EGYPT.equals(selectedFraction)) {
+        if (Faction.EGYPT.equals(selectedFaction)) {
             Sources[] egyptianSources = new Sources[sources.length + 1];
             System.arraycopy(sources, 0, egyptianSources, 0, sources.length);
             egyptianSources[egyptianSources.length - 1] = Sources.EGYPT_TOKEN;
@@ -51,25 +53,25 @@ public class Manager implements IManager {
     }
 
     @Override
-    public String getFraction() {
-        return selectedFraction.getFractionTitle();
+    public String getFaction() {
+        return selectedFaction.getFactionTitle();
     }
 
     @Override
-    public String getFractionBoard() {
+    public String getFactionBoard() {
         if (Sex.MALE.equals(selectedSex)) {
-            return selectedFraction.getMBoard();
+            return selectedFaction.getMBoard();
         }
-        return selectedFraction.getFBoard();
+        return selectedFaction.getFBoard();
     }
 
     @Override
-    public void setFractionAndSex(String fraction, Sex sex) {
-        selectedFraction = switch (fraction) {
-            case "Barbaři" -> Fraction.BARBARIAN;
-            case "Japonci" -> Fraction.JAPAN;
-            case "Římané" -> Fraction.ROMAN;
-            case "Egypťané" -> Fraction.EGYPT;
+    public void setFactionAndSex(String faction, Sex sex) {
+        selectedFaction = switch (faction) {
+            case "Barbaři" -> Faction.BARBARIAN;
+            case "Japonci" -> Faction.JAPAN;
+            case "Římané" -> Faction.ROMAN;
+            case "Egypťané" -> Faction.EGYPT;
             default -> null;
         };
         selectedSex = sex;
@@ -81,8 +83,8 @@ public class Manager implements IManager {
     }
 
     @Override
-    public List<Card> prepareCards(double cardWidth, double cardHeight, String fraction, int cardCount) {
-        String imagePrefix = fraction + "/" + fraction.substring(0, 3) + "0";
+    public List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount) {
+        String imagePrefix = faction + "/" + faction.substring(0, 3) + "0";
         List<Card> cards = IntStream
                 .range(1, cardCount + 1)
                 .mapToObj(i -> {
@@ -95,5 +97,15 @@ public class Manager implements IManager {
                 .collect(Collectors.toList());
         Collections.shuffle(cards);
         return cards;
+    }
+
+    @Override
+    public Phases getCurrentPhase() {
+        return currentPhase;
+    }
+
+    @Override
+    public void setCurrentPhase(Phases currentPhase) {
+        this.currentPhase = currentPhase;
     }
 }

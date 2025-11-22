@@ -2,7 +2,7 @@ package cz.games.lp;
 
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
-import cz.games.lp.components.FractionBoard;
+import cz.games.lp.components.FactionBoard;
 import cz.games.lp.components.RoundPhases;
 import cz.games.lp.components.ScoreBoard;
 import cz.games.lp.components.SourceStatusBlock;
@@ -22,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -40,19 +41,23 @@ public class MainApp extends Application {
 
     private final Map<Sources, SourceStatusBlock> sourceStatusMap = new LinkedHashMap<>();
     private final HBox cardsInHand = new HBox();
-    private final Map<CardType, HBox> fractionCardPanes = new LinkedHashMap<>();
+    private final Map<CardType, HBox> factionCardPanes = new LinkedHashMap<>();
     private final Map<CardType, HBox> commonCardPanes = new LinkedHashMap<>();
-    private final Actions actions = new Actions(cardsInHand, sourceStatusMap);
+    private final Pane frontPane = new Pane();
 
     private double width;
     private double height;
     private double cardWidth;
     private double cardHeight;
-    private StackPane fractionCardsStack;
+    private List<Card> commonCards;
+    private List<Card> factionCards;
+    private StackPane factionCardsStack;
     private StackPane commonCardsStack;
-    private FractionBoard fractionBoard;
+    private FactionBoard factionBoard;
     private ScoreBoard scoreBoard;
-    private Dialog<SelectedFraction> choiceFractionDialog;
+    private Dialog<SelectedFaction> choiceFactionDialog;
+    private RoundPhases roundPhases;
+    private Actions actions;
 
     public static void run(IManager manager) {
         MainApp.manager = manager;
@@ -65,26 +70,28 @@ public class MainApp extends Application {
         height = Screen.getPrimary().getBounds().getHeight() - 100;
         cardWidth = width * 0.078;
         cardHeight = height * 0.204;
-
-        BorderPane mainPane = new BorderPane();
-        fillRegion(mainPane);
-        stage.setScene(new Scene(mainPane));
+        ActionMessenger actionMessenger = new ActionMessenger(manager, cardsInHand, sourceStatusMap, cardWidth, cardHeight, frontPane, factionCards, commonCards);
+        actions = new Actions(actionMessenger);
+        BorderPane mainUIPane = new BorderPane();
+        fillRegion(mainUIPane);
+        stage.setScene(new Scene(new StackPane(mainUIPane, frontPane)));
+        frontPane.setMouseTransparent(true);
         stage.setWidth(width);
         stage.setHeight(height);
         stage.setTitle(manager.getTitle());
         stage.setResizable(false);
         stage.show();
 
-        mainPane.setTop(createSourceStatusPanel());
-        mainPane.setCenter(createCenterPane());
-        createCPUPane(mainPane);
+        mainUIPane.setTop(createSourceStatusPanel());
+        mainUIPane.setCenter(createCenterPane());
+        createCPUPane(mainUIPane);
 
-        choiceFractionDialog = createChoiceFractionDialog(width, height);
+        choiceFactionDialog = createChoiceFactionDialog(width, height);
         newGame();
     }
 
-    private Dialog<SelectedFraction> createChoiceFractionDialog(double width, double height) {
-        Dialog<SelectedFraction> dialog = new Dialog<>();
+    private Dialog<SelectedFaction> createChoiceFactionDialog(double width, double height) {
+        Dialog<SelectedFaction> dialog = new Dialog<>();
         dialog.setWidth(width * 0.164835);
         dialog.setHeight(height * 0.306122);
         dialog.setResizable(false);
@@ -92,12 +99,12 @@ public class MainApp extends Application {
         dialog.setHeaderText(dialog.getTitle());
         HBox contentPane = new HBox();
         dialog.getDialogPane().setContent(contentPane);
-        ToggleGroup fraction = createChoicePane(contentPane, "Barbaři", "Japonci", "Římané", "Egypťané");
+        ToggleGroup faction = createChoicePane(contentPane, "Barbaři", "Japonci", "Římané", "Egypťané");
         ToggleGroup sex = createChoicePane(contentPane, "Žena", "Muž");
         ButtonType type = new ButtonType("Začít novou hru", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().add(type);
-        dialog.setResultConverter(button -> new SelectedFraction(
-                        ((RadioButton) fraction.getSelectedToggle()).getText(),
+        dialog.setResultConverter(button -> new SelectedFaction(
+                        ((RadioButton) faction.getSelectedToggle()).getText(),
                         "Žena".equals(((RadioButton) sex.getSelectedToggle()).getText()) ? Sex.FEMALE : Sex.MALE
                 )
         );
@@ -128,18 +135,21 @@ public class MainApp extends Application {
         // 1 (set 1.st round)
         scoreBoard.setRound(1);
         // 2 (prepare common cards)
-        List<Card> commonCards = manager.prepareCards(cardWidth, cardHeight);
-        commonCardsStack.getChildren().addAll(new Card("common", cardWidth, cardHeight));
-        // 3 (fraction choice)
-        choiceFractionDialog.showAndWait().ifPresent(chosenFraction -> manager.setFractionAndSex(chosenFraction.fraction(), chosenFraction.sex()));
-        fractionBoard.setImage(manager.getFractionBoard());
-        List<Card> fractionCards = manager.prepareCards(cardWidth, cardHeight, manager.getFraction(), 5);
-        fractionCardsStack.getChildren().addAll(new Card(manager.getFraction(), cardWidth, cardHeight));
-        scoreBoard.setFractionToken(manager.getFraction(), false);
+        commonCards = manager.prepareCards(cardWidth, cardHeight);
+        Card commonCard = new Card("common", cardWidth, cardHeight);
+        commonCardsStack.getChildren().addAll(commonCard);
+        // 3 (faction choice)
+        choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
+        factionBoard.setImage(manager.getFactionBoard());
+        factionCards = manager.prepareCards(cardWidth, cardHeight, manager.getFaction(), 30);
+        Card factionCard = new Card(manager.getFaction(), cardWidth, cardHeight);
+        factionCardsStack.getChildren().addAll(factionCard);
+        scoreBoard.setFactionToken(manager.getFaction(), false);
+        actions.updateFactionCardForEffect(factionCard, commonCard);
         // 4 (first 4 cards)
         actions.addSettler(8);
-        actions.addCardIntoHand(fractionCards, fractionCardsStack);
-        actions.addCardIntoHand(fractionCards, fractionCardsStack);
+        actions.addCardIntoHand(factionCards, factionCardsStack);
+        actions.addCardIntoHand(factionCards, factionCardsStack);
         actions.addCardIntoHand(commonCards, commonCardsStack);
         actions.addCardIntoHand(commonCards, commonCardsStack);
     }
@@ -147,8 +157,9 @@ public class MainApp extends Application {
     private void clearTable() {
         sourceStatusMap.forEach((source, sourceStatusBlock) -> sourceStatusBlock.setValue(0));
         cardsInHand.getChildren().clear();
-        fractionCardPanes.forEach((cardType, fractionCardPane) -> fractionCardPane.getChildren().clear());
-        commonCardPanes.forEach((cardType, fractionCardPane) -> fractionCardPane.getChildren().clear());
+        factionCardPanes.forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
+        commonCardPanes.forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
+        roundPhases.reset();
     }
 
     private FlowPane createSourceStatusPanel() {
@@ -174,38 +185,35 @@ public class MainApp extends Application {
         VBox.setVgrow(incomingPane, Priority.ALWAYS);
         initIncomingPane(incomingPane);
 
-        HBox fractionPane = new HBox();
-        fractionPane.setPrefHeight(height * 0.612);
-        initFractionPane(fractionPane);
+        HBox factionPane = new HBox();
+        factionPane.setPrefHeight(height * 0.612);
+        initFactionPane(factionPane);
 
-        return new VBox(incomingPane, fractionPane);
+        return new VBox(incomingPane, factionPane);
     }
 
     private void initIncomingPane(HBox incomingPane) {
         scoreBoard = new ScoreBoard(width * 0.278, height * 0.2663);
 
-        RoundPhases roundPhases = new RoundPhases(width * 0.0615);
+        roundPhases = new RoundPhases(width * 0.0615, manager);
+        roundPhases.getButtons().getFirst().setOnAction(evt -> actions.activateLookupPhase());
 
-        fractionCardsStack = new StackPane();
-        fractionCardsStack.setPrefWidth(cardWidth);
+        createFactionCardStack();
 
         VBox dealPane = new VBox();
         dealPane.setPrefWidth(cardWidth);
 
-        commonCardsStack = new StackPane();
-        commonCardsStack.setPrefWidth(cardWidth);
+        createCommonCardStack();
 
         Region space2 = new Region();
         space2.setPrefWidth(width * 0.0204);
 
-        ScrollPane cardsInHandScrollPane = new ScrollPane(cardsInHand);
-        fillRegion(cardsInHandScrollPane);
-        cardsInHandScrollPane.setPrefWidth(width * 0.3285);
+        ScrollPane cardsInHandScrollPane = createCardsInHandPane();
 
         incomingPane.getChildren().addAll(
                 scoreBoard,
                 roundPhases,
-                fractionCardsStack,
+                factionCardsStack,
                 dealPane,
                 commonCardsStack,
                 space2,
@@ -213,11 +221,28 @@ public class MainApp extends Application {
         );
     }
 
-    private void initFractionPane(HBox fractionPane) {
-        VBox fractionSide = setSides(fractionCardPanes, NodeOrientation.RIGHT_TO_LEFT);
+    private ScrollPane createCardsInHandPane() {
+        ScrollPane cardsInHandScrollPane = new ScrollPane(cardsInHand);
+        fillRegion(cardsInHandScrollPane);
+        cardsInHandScrollPane.setPrefWidth(width * 0.3285);
+        return cardsInHandScrollPane;
+    }
+
+    private void createCommonCardStack() {
+        commonCardsStack = new StackPane();
+        commonCardsStack.setPrefWidth(cardWidth);
+    }
+
+    private void createFactionCardStack() {
+        factionCardsStack = new StackPane();
+        factionCardsStack.setPrefWidth(cardWidth);
+    }
+
+    private void initFactionPane(HBox factionPane) {
+        VBox factionSide = setSides(factionCardPanes, NodeOrientation.RIGHT_TO_LEFT);
         VBox commonSide = setSides(commonCardPanes, NodeOrientation.LEFT_TO_RIGHT);
-        fractionBoard = new FractionBoard(cardWidth, 3 * cardHeight);
-        fractionPane.getChildren().addAll(fractionSide, fractionBoard, commonSide);
+        factionBoard = new FactionBoard(cardWidth, 3 * cardHeight);
+        factionPane.getChildren().addAll(factionSide, factionBoard, commonSide);
     }
 
     private VBox setSides(Map<CardType, HBox> cardPanes, NodeOrientation orientation) {
@@ -244,6 +269,6 @@ public class MainApp extends Application {
         mainPane.setRight(scrollPane);
     }
 
-    private record SelectedFraction(String fraction, Sex sex) {
+    private record SelectedFaction(String faction, Sex sex) {
     }
 }
