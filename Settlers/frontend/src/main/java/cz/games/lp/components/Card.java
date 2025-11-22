@@ -1,8 +1,13 @@
 package cz.games.lp.components;
 
+import cz.games.lp.panes.PaneModel;
 import javafx.scene.Group;
 
 public class Card extends Group {
+
+    public Card(String cardImage, PaneModel model) {
+        this(cardImage, model.getCardWidth(), model.getCardHeight());
+    }
 
     public Card(String cardImage, double width, double height) {
         ImageNode imageNode = new ImageNode(width, height);

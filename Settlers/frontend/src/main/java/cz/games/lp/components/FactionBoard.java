@@ -1,13 +1,14 @@
 package cz.games.lp.components;
 
+import cz.games.lp.panes.PaneModel;
 import javafx.scene.Group;
 
 public class FactionBoard extends Group {
 
     private final ImageNode imageNode;
 
-    public FactionBoard(double width, double height) {
-        imageNode = new ImageNode(width, height, 5 * width / 3, 5 * height / 3);
+    public FactionBoard(PaneModel model) {
+        imageNode = new ImageNode(model.getCardWidth(), 3 * model.getCardHeight(), 5 * model.getCardWidth() / 3, 5 * model.getCardHeight());
         getChildren().add(imageNode.getImageView());
     }
 

@@ -1,16 +1,15 @@
 package cz.games.lp.components;
 
+import cz.games.lp.panes.PaneModel;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 
 public class ScoreBoard extends Group {
 
+    private final PaneModel model;
     private final TranslateTransition roundTransition = new TranslateTransition();
     private final TranslateTransition scoreTransition = new TranslateTransition();
     private final ImageNode roundPointer;
-    private final double roundMove;
-    private final double scoreXMove;
-    private final double scoreYMove;
     private ImageNode factionToken;
     private int score;
     private double scoreXPosition;
@@ -18,17 +17,19 @@ public class ScoreBoard extends Group {
     private int xMove;
     private String faction;
 
-    public ScoreBoard(double width, double height) {
-        roundMove = height * 0.19157;
-        scoreXMove = width * 0.07905;
-        scoreYMove = height * 0.19157;
-        ImageNode scoreBoardImage = new ImageNode(width, height, 30 * width / 13, 30 * height / 13);
+    public ScoreBoard(PaneModel model) {
+        this.model = model;
+        ImageNode scoreBoardImage = new ImageNode(
+                model.getWidth() * 0.278,
+                model.getHeight() * 0.2663,
+                30 * (model.getWidth() * 0.278) / 13,
+                30 * (model.getHeight() * 0.2663) / 13);
         scoreBoardImage.setImage("score_board");
 
-        roundPointer = new ImageNode(width * 0.11857, height * 0.15325);
+        roundPointer = new ImageNode(model.getWidth() * 0.03296246, model.getHeight() * 0.040810475);
         roundPointer.setImage("round_pointer");
-        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - width * 0.1502);
-        roundPointer.getImageView().setY(height * 0.0613);
+        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - model.getWidth() * 0.0417556);
+        roundPointer.getImageView().setY(model.getHeight() * 0.01632419);
         getChildren().addAll(scoreBoardImage.getImageView(), roundPointer.getImageView());
     }
 
@@ -36,7 +37,7 @@ public class ScoreBoard extends Group {
         if (round < 0 || round > 5) {
             return;
         }
-        double newPosition = roundMove * (round - 1);
+        double newPosition = model.getScoreYMove() * (round - 1);
         roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
         roundTransition.setToY(newPosition);
         roundTransition.setNode(roundPointer.getImageView());
@@ -52,15 +53,22 @@ public class ScoreBoard extends Group {
         scoreXPosition = 0;
         scoreYPosition = 0;
         xMove = 1;
+        System.out.println(model.getWidth());
+        System.out.println(model.getHeight());
         factionToken = new ImageNode(30, 30);
-        String fifty = fiftyPlus ? "50" : "";
-        factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
         factionToken.getImageView().setX(17);
         factionToken.getImageView().setY(22);
+        String fifty = fiftyPlus ? "50" : "";
+        factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
         getChildren().add(factionToken.getImageView());
         scoreTransition.setNode(factionToken.getImageView());
     }
 
+    /**
+     * recursion!
+     *
+     * @param scorePoint obtained score
+     */
     public void scorePoint(int scorePoint) {
         if (scorePoint == 0) {
             return;
@@ -71,17 +79,17 @@ public class ScoreBoard extends Group {
             xMove = -xMove;
         } else {
             scoreXPosition += xMove;
-            scoreTransition.setToX(scoreXMove * scoreXPosition);
+            scoreTransition.setToX(model.getScoreXMove() * scoreXPosition);
         }
         scoreTransition.setFromX(factionToken.getImageView().getTranslateX());
         scoreTransition.setFromY(factionToken.getImageView().getTranslateY());
-        scoreTransition.setToY(scoreYPosition * scoreYMove);
-        scoreTransition.play();
+        scoreTransition.setToY(scoreYPosition * model.getScoreYMove());
         scoreTransition.setOnFinished(e -> {
             if (score == 50) {
                 setFactionToken(faction, true);
             }
             scorePoint(scorePoint - 1);
         });
+        scoreTransition.play();
     }
 }

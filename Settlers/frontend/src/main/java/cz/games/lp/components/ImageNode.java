@@ -3,12 +3,14 @@ package cz.games.lp.components;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.Getter;
 
 import java.io.InputStream;
 import java.util.Objects;
 
 public class ImageNode {
 
+    @Getter
     private final ImageView imageView = new ImageView();
     private final ImageView tooltipView = new ImageView();
 
@@ -37,7 +39,4 @@ public class ImageNode {
         tooltipView.setImage(image);
     }
 
-    public ImageView getImageView() {
-        return imageView;
-    }
 }
