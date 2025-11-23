@@ -13,8 +13,8 @@ public class BottomPane extends HBox {
     public BottomPane(PaneModel model) {
         setPrefHeight(model.getHeight() * 0.612);
 
-        VBox factionSide = setSides(model, model.getFactionCards(), NodeOrientation.RIGHT_TO_LEFT);
-        VBox commonSide = setSides(model, model.getCommonCards(), NodeOrientation.LEFT_TO_RIGHT);
+        VBox factionSide = setSides(model, model.getBuiltFactionCards(), NodeOrientation.RIGHT_TO_LEFT);
+        VBox commonSide = setSides(model, model.getBuiltCommonCards(), NodeOrientation.LEFT_TO_RIGHT);
         getChildren().addAll(factionSide, model.getFactionBoard(), commonSide);
     }
 

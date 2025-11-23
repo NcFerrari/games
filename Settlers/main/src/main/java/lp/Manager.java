@@ -53,6 +53,26 @@ public class Manager implements IManager {
     }
 
     @Override
+    public String getChooserDialogTitle() {
+        return "Výběr frakce";
+    }
+
+    @Override
+    public String[] getFactionArray() {
+        return new String[]{"Barbaři", "Japonci", "Římané", "Egypťané"};
+    }
+
+    @Override
+    public String[] getSexArray() {
+        return new String[]{"Žena", "Muž"};
+    }
+
+    @Override
+    public String getStartNewGameButtonTtitle() {
+        return "Začít novou hru";
+    }
+
+    @Override
     public String getFaction() {
         return selectedFaction.getFactionTitle();
     }
@@ -79,7 +99,7 @@ public class Manager implements IManager {
 
     @Override
     public List<Card> prepareCards(double cardWidth, double cardHeight) {
-        return prepareCards(cardWidth, cardHeight, "commons", 84);
+        return prepareCards(cardWidth, cardHeight, "commons", 5);
     }
 
     @Override

@@ -53,11 +53,9 @@ public class ScoreBoard extends Group {
         scoreXPosition = 0;
         scoreYPosition = 0;
         xMove = 1;
-        System.out.println(model.getWidth());
-        System.out.println(model.getHeight());
-        factionToken = new ImageNode(30, 30);
-        factionToken.getImageView().setX(17);
-        factionToken.getImageView().setY(22);
+        factionToken = new ImageNode(model.getWidth() * 0.016483, model.getHeight() * 0.030612);
+        factionToken.getImageView().setX(model.getWidth() * 0.00934);
+        factionToken.getImageView().setY(model.getHeight() * 0.022449);
         String fifty = fiftyPlus ? "50" : "";
         factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
         getChildren().add(factionToken.getImageView());

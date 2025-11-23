@@ -4,39 +4,31 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 
-public class CenterPane extends HBox {
+public class CenterPane extends VBox {
 
     public CenterPane(PaneModel model) {
-        VBox.setVgrow(this, Priority.ALWAYS);
+        HBox incomingPane = new HBox();
+        VBox.setVgrow(incomingPane, Priority.ALWAYS);
+
+        model.getFactionCardsStack().setPrefWidth(model.getCardWidth());
+        model.getCommonCardsStack().setPrefWidth(model.getCardWidth());
 
         Region space = new Region();
         space.setPrefWidth(model.getWidth() * 0.0204);
 
-        getChildren().addAll(
+        incomingPane.getChildren().addAll(
                 model.getScoreBoard(),
                 model.getRoundPhases(),
-                createFactionCardStack(model),
+                model.getFactionCardsStack(),
                 model.getDeals(),
-                createCommonCardStack(model),
+                model.getCommonCardsStack(),
                 space,
                 createCardsInHandPane(model)
         );
-    }
-
-    private StackPane createFactionCardStack(PaneModel model) {
-        StackPane factionCardsStack = new StackPane();
-        factionCardsStack.setPrefWidth(model.getCardWidth());
-        return factionCardsStack;
-    }
-
-    private StackPane createCommonCardStack(PaneModel model) {
-        StackPane commonCardsStack = new StackPane();
-        commonCardsStack.setPrefWidth(model.getCardWidth());
-        return commonCardsStack;
+        getChildren().add(incomingPane);
     }
 
     private ScrollPane createCardsInHandPane(PaneModel model) {

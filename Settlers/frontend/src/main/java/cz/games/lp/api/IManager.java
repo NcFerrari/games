@@ -29,4 +29,12 @@ public interface IManager {
     Phases getCurrentPhase();
 
     void setCurrentPhase(Phases currentPhase);
+
+    String getChooserDialogTitle();
+
+    String[] getFactionArray();
+
+    String[] getSexArray();
+
+    String getStartNewGameButtonTtitle();
 }
