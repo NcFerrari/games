@@ -34,19 +34,29 @@ public record Actions(PaneModel model) {
         return new Card("common", model);
     }
 
-    private TranslateTransition moveCard(Node nodeFrom, Pane paneTo, Card card, List<Card> listOfCards) {
+    private TranslateTransition moveCard(Pane nodeFrom, Pane paneTo, Node card) {
+        return moveCard(nodeFrom, paneTo, card, null);
+    }
+
+    private TranslateTransition moveCard(Node nodeFrom, Pane paneTo, Node card, List<Card> listOfCards) {
         Bounds boundsFrom = nodeFrom.localToScene(nodeFrom.getBoundsInLocal());
         card.setLayoutX(boundsFrom.getMinX());
         card.setLayoutY(boundsFrom.getMinY());
         model.getFrontPane().getChildren().add(card);
         Bounds boundsTo = paneTo.localToScene(paneTo.getBoundsInLocal());
-        TranslateTransition transition = new TranslateTransition(Duration.millis(800), card);
+        TranslateTransition transition = new TranslateTransition(Duration.millis(200), card);
         transition.setToX(boundsTo.getMinX() - boundsFrom.getMinX());
         transition.setToY(boundsTo.getMinY() - boundsFrom.getMinY());
         transition.setOnFinished(e -> {
-            model.getFrontPane().getChildren().remove(card);
-            paneTo.getChildren().add(listOfCards.getFirst());
-            listOfCards.remove(listOfCards.getFirst());
+            if (listOfCards == null) {
+                paneTo.getChildren().add(card);
+                card.setTranslateX(0);
+                card.setTranslateY(0);
+            } else {
+                model.getFrontPane().getChildren().remove(card);
+                paneTo.getChildren().addFirst(listOfCards.getFirst());
+                listOfCards.remove(listOfCards.getFirst());
+            }
         });
         return transition;
     }

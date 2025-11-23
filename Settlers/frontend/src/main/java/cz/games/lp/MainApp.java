@@ -87,10 +87,9 @@ public class MainApp extends Application {
         model.setCommonCard(new Card("common", model));
         model.getCommonCardsStack().getChildren().add(model.getCommonCard());
         // 3 (faction choice)
-//        choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
-        manager.setFactionAndSex("Barbaři", cz.games.lp.enums.Sex.MALE);
+        choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
         model.getFactionBoard().setImage(manager.getFactionBoard());
-        model.setFactionCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight(), manager.getFaction(), 5));
+        model.setFactionCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight(), manager.getFaction(), 30));
         model.setFactionCard(new Card(manager.getFaction(), model));
         model.getFactionCardsStack().getChildren().add(model.getFactionCard());
         model.getScoreBoard().setFactionToken(manager.getFaction(), false);
