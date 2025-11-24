@@ -11,7 +11,7 @@ import java.util.Map;
 public class BottomPane extends HBox {
 
     public BottomPane(PaneModel model) {
-        setPrefHeight(model.getHeight() * 0.612);
+        setPrefHeight(model.getManager().getHeight() * 0.612);
 
         VBox factionSide = setSides(model, model.getBuiltFactionCards(), NodeOrientation.RIGHT_TO_LEFT);
         VBox commonSide = setSides(model, model.getBuiltCommonCards(), NodeOrientation.LEFT_TO_RIGHT);
@@ -20,12 +20,12 @@ public class BottomPane extends HBox {
 
     private VBox setSides(PaneModel model, Map<CardType, HBox> cardPanes, NodeOrientation orientation) {
         VBox sideVBox = new VBox();
-        sideVBox.setPrefWidth(model.getWidth() * 0.41365);
+        sideVBox.setPrefWidth(model.getManager().getWidth() * 0.41365);
 
         for (CardType cardType : model.getManager().getCardTypes()) {
             HBox boxForCards = new HBox();
             boxForCards.setNodeOrientation(orientation);
-            boxForCards.setPrefHeight(model.getCardHeight());
+            boxForCards.setPrefHeight(model.getManager().getCardHeight());
             cardPanes.put(cardType, boxForCards);
 
             ScrollPane scrollPane = new ScrollPane(boxForCards);

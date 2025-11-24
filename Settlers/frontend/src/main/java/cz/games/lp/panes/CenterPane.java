@@ -13,14 +13,14 @@ public class CenterPane extends VBox {
         HBox incomingPane = new HBox();
         VBox.setVgrow(incomingPane, Priority.ALWAYS);
 
-        model.getFactionCardsStack().setPrefWidth(model.getCardWidth());
+        model.getFactionCardsStack().setPrefWidth(model.getManager().getCardWidth());
         model.getFactionCardsStack().setOnMousePressed(evt -> model.getActions().drawFactionCard());
 
-        model.getCommonCardsStack().setPrefWidth(model.getCardWidth());
+        model.getCommonCardsStack().setPrefWidth(model.getManager().getCardWidth());
         model.getCommonCardsStack().setOnMousePressed(evt -> model.getActions().drawCommonCard());
 
         Region space = new Region();
-        space.setPrefWidth(model.getWidth() * 0.0204);
+        space.setPrefWidth(model.getManager().getWidth() * 0.0204);
 
         incomingPane.getChildren().addAll(
                 model.getScoreBoard(),
@@ -37,7 +37,7 @@ public class CenterPane extends VBox {
     private ScrollPane createCardsInHandPane(PaneModel model) {
         ScrollPane cardsInHandScrollPane = new ScrollPane(model.getCardsInHand());
         cardsInHandScrollPane.setStyle(model.getStyle());
-        cardsInHandScrollPane.setPrefWidth(model.getWidth() * 0.3285);
+        cardsInHandScrollPane.setPrefWidth(model.getManager().getWidth() * 0.3285);
         return cardsInHandScrollPane;
     }
 }

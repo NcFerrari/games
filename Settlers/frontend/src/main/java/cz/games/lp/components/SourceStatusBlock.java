@@ -16,7 +16,7 @@ public class SourceStatusBlock extends Group {
 
     public SourceStatusBlock(Sources source, PaneModel model) {
         this.model = model;
-        ImageNode imageNode = new ImageNode(model.getWidth() / 18.2, model.getHeight() / 12.25);
+        ImageNode imageNode = new ImageNode(model.getManager().getWidth() / 18.2, model.getManager().getHeight() / 12.25);
         imageNode.setImage("source/" + source.getName());
         getChildren().add(imageNode.getImageView());
 
@@ -25,10 +25,10 @@ public class SourceStatusBlock extends Group {
 
     private void createLabel(double imageWidth) {
         valueLabel = new Label("" + value);
-        valueLabel.setFont(new Font("StencilStd", 3 * model.getHeight() / 49));
+        valueLabel.setFont(new Font("StencilStd", 3 * model.getManager().getHeight() / 49));
         valueLabel.setStyle("-fx-text-fill: BLACK");
-        valueLabel.setPrefWidth(model.getWidth() / 18.2);
-        valueLabel.setPrefHeight(model.getHeight() / 12.25);
+        valueLabel.setPrefWidth(model.getManager().getWidth() / 18.2);
+        valueLabel.setPrefHeight(model.getManager().getHeight() / 12.25);
         valueLabel.setLayoutX(imageWidth);
         getChildren().add(valueLabel);
     }

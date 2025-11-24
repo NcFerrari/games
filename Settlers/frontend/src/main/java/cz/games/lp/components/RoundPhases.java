@@ -22,10 +22,10 @@ public class RoundPhases extends VBox {
     private Phases currentPhase;
 
     public RoundPhases(PaneModel model) {
-        setPrefWidth(model.getWidth() * 0.0615);
+        setPrefWidth(model.getManager().getWidth() * 0.0615);
         setAlignment(Pos.CENTER);
         IntStream.range(1, 5).forEach(i -> {
-            ImageNode imageNode = new ImageNode(model.getWidth() * 0.0615 - 10, 30);
+            ImageNode imageNode = new ImageNode(model.getManager().getWidth() * 0.0615 - 10, 30);
             imageNode.setImage("phase_buttons/" + i + "phase");
             Button button = new Button();
             button.setGraphic(imageNode.getImageView());

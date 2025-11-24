@@ -8,7 +8,10 @@ import cz.games.lp.enums.Faction;
 import cz.games.lp.enums.Phases;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
+import lombok.Getter;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,9 +22,24 @@ public class Manager implements IManager {
 
     private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
+    private final Toolkit tool = Toolkit.getDefaultToolkit();
+    private final Dimension src = tool.getScreenSize();
     private Faction selectedFaction;
     private Sex selectedSex;
+    @Getter
     private Phases currentPhase;
+    @Getter
+    private final double width = src.getWidth() - 100;
+    @Getter
+    private final double height = src.getHeight() - 100;
+    @Getter
+    private final double cardWidth = width * 0.078;
+    @Getter
+    private final double cardHeight = height * 0.204;
+    @Getter
+    private final double scoreXMove = width * 0.0219759;
+    @Getter
+    private final double scoreYMove = height * 0.051015091;
 
     private void start() {
         MainApp.run(this);
@@ -105,23 +123,15 @@ public class Manager implements IManager {
     @Override
     public List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount) {
         String imagePrefix = faction + "/" + faction.substring(0, 3) + "0";
-        List<Card> cards = IntStream
-                .range(1, cardCount + 1)
-                .mapToObj(i -> {
-                    String value = "" + i;
-                    if (i < 10) {
-                        value = "0" + i;
-                    }
-                    return new Card(imagePrefix + value, cardWidth, cardHeight);
-                })
-                .collect(Collectors.toList());
+        List<Card> cards = IntStream.range(1, cardCount + 1).mapToObj(i -> {
+            String value = "" + i;
+            if (i < 10) {
+                value = "0" + i;
+            }
+            return new Card(imagePrefix + value, cardWidth, cardHeight);
+        }).collect(Collectors.toList());
         Collections.shuffle(cards);
         return cards;
-    }
-
-    @Override
-    public Phases getCurrentPhase() {
-        return currentPhase;
     }
 
     @Override

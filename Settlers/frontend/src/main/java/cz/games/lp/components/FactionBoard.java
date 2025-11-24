@@ -8,7 +8,11 @@ public class FactionBoard extends Group {
     private final ImageNode imageNode;
 
     public FactionBoard(PaneModel model) {
-        imageNode = new ImageNode(model.getCardWidth(), 3 * model.getCardHeight(), 5 * model.getCardWidth() / 3, 5 * model.getCardHeight());
+        imageNode = new ImageNode(
+                model.getManager().getCardWidth(),
+                3 * model.getManager().getCardHeight(),
+                5 * model.getManager().getCardWidth() / 3,
+                5 * model.getManager().getCardHeight());
         getChildren().add(imageNode.getImageView());
     }
 

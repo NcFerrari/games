@@ -26,12 +26,6 @@ public class PaneModel {
 
     private IManager manager;
     private Pane frontPane;
-    private double width;
-    private double height;
-    private double cardWidth;
-    private double cardHeight;
-    private double scoreXMove;
-    private double scoreYMove;
     private Duration cardSpeed;
     private String style;
     private String headerStyle;

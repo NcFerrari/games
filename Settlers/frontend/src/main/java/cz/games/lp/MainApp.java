@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -40,8 +39,8 @@ public class MainApp extends Application {
         StackPane mainPane = new StackPane(new UIPane(model), createFrontPane());
 
         stage.setScene(new Scene(mainPane));
-        stage.setWidth(model.getWidth());
-        stage.setHeight(model.getHeight());
+        stage.setWidth(model.getManager().getWidth());
+        stage.setHeight(model.getManager().getHeight());
         stage.setTitle(manager.getTitle());
         stage.setResizable(false);
         stage.show();
@@ -51,12 +50,6 @@ public class MainApp extends Application {
 
     private void initModel() {
         model.setManager(manager);
-        model.setWidth(Screen.getPrimary().getBounds().getWidth() - 100);
-        model.setHeight(Screen.getPrimary().getBounds().getHeight() - 100);
-        model.setCardWidth(model.getWidth() * 0.078);
-        model.setCardHeight(model.getHeight() * 0.204);
-        model.setScoreXMove(model.getWidth() * 0.0219759);
-        model.setScoreYMove(model.getHeight() * 0.051015091);
         model.setCardSpeed(Duration.millis(200));
         model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
         model.setHeaderStyle("-fx-background-color: #6ae7ba");
@@ -85,13 +78,13 @@ public class MainApp extends Application {
         // 1 (set 1.st round
         model.getScoreBoard().setRound(1);
         // 2 (prepare common cards)
-        model.setCommonCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight()));
+        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight()));
         model.setCommonCard(new Card("common", model));
         model.getCommonCardsStack().getChildren().add(model.getCommonCard());
         // 3 (faction choice)
         choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
         model.getFactionBoard().setImage(manager.getFactionBoard());
-        model.setFactionCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight(), manager.getFaction(), 5));
+        model.setFactionCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), manager.getFaction(), 5));
         model.setFactionCard(new Card(manager.getFaction(), model));
         model.getFactionCardsStack().getChildren().add(model.getFactionCard());
         model.getScoreBoard().setFactionToken(manager.getFaction(), false);

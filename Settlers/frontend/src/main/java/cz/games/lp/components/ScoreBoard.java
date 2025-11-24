@@ -20,16 +20,16 @@ public class ScoreBoard extends Group {
     public ScoreBoard(PaneModel model) {
         this.model = model;
         ImageNode scoreBoardImage = new ImageNode(
-                model.getWidth() * 0.278,
-                model.getHeight() * 0.2663,
-                30 * (model.getWidth() * 0.278) / 13,
-                30 * (model.getHeight() * 0.2663) / 13);
+                model.getManager().getWidth() * 0.278,
+                model.getManager().getHeight() * 0.2663,
+                30 * (model.getManager().getWidth() * 0.278) / 13,
+                30 * (model.getManager().getHeight() * 0.2663) / 13);
         scoreBoardImage.setImage("score_board");
 
-        roundPointer = new ImageNode(model.getWidth() * 0.03296246, model.getHeight() * 0.040810475);
+        roundPointer = new ImageNode(model.getManager().getWidth() * 0.03296246, model.getManager().getHeight() * 0.040810475);
         roundPointer.setImage("round_pointer");
-        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - model.getWidth() * 0.0417556);
-        roundPointer.getImageView().setY(model.getHeight() * 0.01632419);
+        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - model.getManager().getWidth() * 0.0417556);
+        roundPointer.getImageView().setY(model.getManager().getHeight() * 0.01632419);
         getChildren().addAll(scoreBoardImage.getImageView(), roundPointer.getImageView());
     }
 
@@ -37,7 +37,7 @@ public class ScoreBoard extends Group {
         if (round < 0 || round > 5) {
             return;
         }
-        double newPosition = model.getScoreYMove() * (round - 1);
+        double newPosition = model.getManager().getScoreYMove() * (round - 1);
         roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
         roundTransition.setToY(newPosition);
         roundTransition.setNode(roundPointer.getImageView());
@@ -53,9 +53,9 @@ public class ScoreBoard extends Group {
         scoreXPosition = 0;
         scoreYPosition = 0;
         xMove = 1;
-        factionToken = new ImageNode(model.getWidth() * 0.016483, model.getHeight() * 0.030612);
-        factionToken.getImageView().setX(model.getWidth() * 0.00934);
-        factionToken.getImageView().setY(model.getHeight() * 0.022449);
+        factionToken = new ImageNode(model.getManager().getWidth() * 0.016483, model.getManager().getHeight() * 0.030612);
+        factionToken.getImageView().setX(model.getManager().getWidth() * 0.00934);
+        factionToken.getImageView().setY(model.getManager().getHeight() * 0.022449);
         String fifty = fiftyPlus ? "50" : "";
         factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
         getChildren().add(factionToken.getImageView());
@@ -77,11 +77,11 @@ public class ScoreBoard extends Group {
             xMove = -xMove;
         } else {
             scoreXPosition += xMove;
-            scoreTransition.setToX(model.getScoreXMove() * scoreXPosition);
+            scoreTransition.setToX(model.getManager().getScoreXMove() * scoreXPosition);
         }
         scoreTransition.setFromX(factionToken.getImageView().getTranslateX());
         scoreTransition.setFromY(factionToken.getImageView().getTranslateY());
-        scoreTransition.setToY(scoreYPosition * model.getScoreYMove());
+        scoreTransition.setToY(scoreYPosition * model.getManager().getScoreYMove());
         scoreTransition.setOnFinished(e -> {
             if (score == 50) {
                 setFactionToken(faction, true);

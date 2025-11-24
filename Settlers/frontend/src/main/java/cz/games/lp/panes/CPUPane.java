@@ -5,6 +5,6 @@ import javafx.scene.control.ScrollPane;
 public class CPUPane extends ScrollPane {
 
     public CPUPane(PaneModel model) {
-        setPrefWidth(model.getCardWidth());
+        setPrefWidth(model.getManager().getCardWidth());
     }
 }

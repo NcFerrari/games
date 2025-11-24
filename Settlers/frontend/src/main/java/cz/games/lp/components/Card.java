@@ -6,7 +6,7 @@ import javafx.scene.Group;
 public class Card extends Group {
 
     public Card(String cardImage, PaneModel model) {
-        this(cardImage, model.getCardWidth(), model.getCardHeight());
+        this(cardImage, model.getManager().getCardWidth(), model.getManager().getCardHeight());
     }
 
     public Card(String cardImage, double width, double height) {

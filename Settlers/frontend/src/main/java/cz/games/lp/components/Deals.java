@@ -6,6 +6,6 @@ import javafx.scene.layout.VBox;
 public class Deals extends VBox {
 
     public Deals(PaneModel model) {
-        setPrefWidth(model.getCardWidth());
+        setPrefWidth(model.getManager().getCardWidth());
     }
 }

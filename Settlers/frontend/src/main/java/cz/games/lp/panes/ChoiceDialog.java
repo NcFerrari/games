@@ -15,8 +15,8 @@ import java.util.Objects;
 public class ChoiceDialog extends Dialog<SelectedFaction> {
 
     public ChoiceDialog(PaneModel model) {
-        setWidth(model.getWidth() * 0.164835);
-        setHeight(model.getHeight() * 0.306122);
+        setWidth(model.getManager().getWidth() * 0.164835);
+        setHeight(model.getManager().getHeight() * 0.306122);
         setResizable(false);
         setTitle(model.getManager().getChooserDialogTitle());
         setHeaderText(getTitle());

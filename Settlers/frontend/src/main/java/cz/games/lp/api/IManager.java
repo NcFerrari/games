@@ -37,4 +37,16 @@ public interface IManager {
     String[] getSexArray();
 
     String getStartNewGameButtonTtitle();
+
+    double getWidth();
+
+    double getHeight();
+
+    double getCardWidth();
+
+    double getCardHeight();
+
+    double getScoreYMove();
+
+    double getScoreXMove();
 }
