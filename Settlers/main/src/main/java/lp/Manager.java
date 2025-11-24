@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 public class Manager implements IManager {
 
     private static final int FACTION_CARD_COUNT = 30;
-    private static final int COMMON_CARD_COUNT = 5;
+    private static final int COMMON_CARD_COUNT = 84;
     private static final int CARD_SPEED = 400;
 
     private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};

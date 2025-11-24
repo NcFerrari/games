@@ -23,7 +23,7 @@ public class RoundPhases extends VBox {
     public RoundPhases(PaneModel model) {
         setPrefWidth(model.getManager().getWidth() * 0.0615);
         setAlignment(Pos.CENTER);
-        IntStream.range(1, 5).forEach(i -> {
+        IntStream.range(1, 6).forEach(i -> {
             ImageNode imageNode = new ImageNode(model.getManager().getWidth() * 0.0615 - 10, 30);
             imageNode.setImage("phase_buttons/" + i + "phase");
             Button button = new Button();
@@ -37,5 +37,10 @@ public class RoundPhases extends VBox {
         buttons.forEach((k, v) -> v.setDisable(true));
         buttons.get(Phases.LOOKOUT).setDisable(false);
         setCurrentPhase(Phases.LOOKOUT);
+    }
+
+    public void switchButton(Phases phase) {
+        getButtons().forEach((cardType, button) -> button.setDisable(true));
+        getButtons().get(phase).setDisable(false);
     }
 }

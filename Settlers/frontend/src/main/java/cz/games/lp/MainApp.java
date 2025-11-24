@@ -8,6 +8,7 @@ import cz.games.lp.components.FactionBoard;
 import cz.games.lp.components.RoundPhases;
 import cz.games.lp.components.ScoreBoard;
 import cz.games.lp.enums.CardType;
+import cz.games.lp.enums.Phases;
 import cz.games.lp.panes.ChoiceDialog;
 import cz.games.lp.panes.PaneModel;
 import cz.games.lp.panes.UIPane;
@@ -43,6 +44,8 @@ public class MainApp extends Application {
         stage.setTitle(manager.getTitle());
         stage.setResizable(false);
         stage.show();
+
+        setPhases();
 
         newGame();
     }
@@ -94,5 +97,38 @@ public class MainApp extends Application {
         model.getBuiltFactionCards().forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
         model.getBuiltCommonCards().forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
         model.getRoundPhases().reset();
+    }
+
+    private void setPhases() {
+        model.getRoundPhases().getButtons().forEach((phase, button) -> {
+            switch (phase) {
+                case Phases.LOOKOUT -> button.setOnAction(evt -> lookoutPhase());
+                case Phases.PRODUCTION -> button.setOnAction(evt -> productionPhase());
+                case Phases.ACTION -> button.setOnAction(evt -> actionPhase());
+                case Phases.PASS_ACTION -> button.setOnAction(evt -> passActions());
+                case Phases.CLEANUP -> button.setOnAction(evt -> cleanUpPhase());
+                default -> throw new IllegalStateException("unknown phase");
+            }
+        });
+    }
+
+    private void lookoutPhase() {
+        model.getActionManager().proceedLookout(() -> model.getRoundPhases().switchButton(Phases.PRODUCTION));
+    }
+
+    private void productionPhase() {
+        //TODO - prepared method
+    }
+
+    private void actionPhase() {
+        //TODO - prepared method
+    }
+
+    private void passActions() {
+        //TODO - prepared method
+    }
+
+    private void cleanUpPhase() {
+        //TODO - prepared method
     }
 }

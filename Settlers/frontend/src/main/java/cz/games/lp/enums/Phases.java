@@ -4,5 +4,6 @@ public enum Phases {
     LOOKOUT,
     PRODUCTION,
     ACTION,
+    PASS_ACTION,
     CLEANUP
 }

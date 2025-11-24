@@ -35,13 +35,18 @@ public class CardMoveActions {
         return drawCard(model.getCommonCard(), model.getCardsInHand(), getCommonCard(), model.getCommonCards(), model.getCommonCardsStack(), CardType.COMMON, play);
     }
 
-    public void drawMoreCards(Animation... animations) {
+    public void drawMoreCards(Runnable command, Animation... animations) {
         if (sequentialTransitionRunning) {
             return;
         }
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(animations);
-        sequentialTransition.setOnFinished(event -> sequentialTransitionRunning = false);
+        sequentialTransition.setOnFinished(event -> {
+            sequentialTransitionRunning = false;
+            if (command != null) {
+                command.run();
+            }
+        });
         sequentialTransitionRunning = true;
         sequentialTransition.play();
     }
