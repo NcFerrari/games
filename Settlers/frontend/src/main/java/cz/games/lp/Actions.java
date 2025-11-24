@@ -43,10 +43,6 @@ public class Actions {
         });
     }
 
-    public TranslateTransition moveCard(Pane nodeFrom, Pane paneTo, Node card) {
-        return moveCard(nodeFrom, paneTo, card, null, false);
-    }
-
     public void drawFactionCard() {
         drawFactionCard(true);
     }
