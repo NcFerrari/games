@@ -5,7 +5,6 @@ import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
 import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Faction;
-import cz.games.lp.enums.Phases;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
 import lombok.Getter;
@@ -19,15 +18,14 @@ import java.util.stream.IntStream;
 
 public class Manager implements IManager {
 
+    private static final int FACTION_CARD_COUNT = 30;
+    private static final int COMMON_CARD_COUNT = 5;
+    private static final int CARD_SPEED = 400;
 
     private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
     private final Toolkit tool = Toolkit.getDefaultToolkit();
     private final Dimension src = tool.getScreenSize();
-    private Faction selectedFaction;
-    private Sex selectedSex;
-    @Getter
-    private Phases currentPhase;
     @Getter
     private final double width = src.getWidth() - 100;
     @Getter
@@ -40,6 +38,9 @@ public class Manager implements IManager {
     private final double scoreXMove = width * 0.0219759;
     @Getter
     private final double scoreYMove = height * 0.051015091;
+
+    private Faction selectedFaction;
+    private Sex selectedSex;
 
     private void start() {
         MainApp.run(this);
@@ -116,11 +117,6 @@ public class Manager implements IManager {
     }
 
     @Override
-    public List<Card> prepareCards(double cardWidth, double cardHeight) {
-        return prepareCards(cardWidth, cardHeight, "commons", 5);
-    }
-
-    @Override
     public List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount) {
         String imagePrefix = faction + "/" + faction.substring(0, 3) + "0";
         List<Card> cards = IntStream.range(1, cardCount + 1).mapToObj(i -> {
@@ -135,7 +131,17 @@ public class Manager implements IManager {
     }
 
     @Override
-    public void setCurrentPhase(Phases currentPhase) {
-        this.currentPhase = currentPhase;
+    public Integer getCommonCardCount() {
+        return COMMON_CARD_COUNT;
+    }
+
+    @Override
+    public Integer getFactionCardCount() {
+        return FACTION_CARD_COUNT;
+    }
+
+    @Override
+    public double getCardSpeed() {
+        return CARD_SPEED;
     }
 }

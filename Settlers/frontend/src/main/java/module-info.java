@@ -11,4 +11,5 @@ module frontend {
     exports cz.games.lp.enums;
     exports cz.games.lp.components;
     exports cz.games.lp.panes;
+    exports cz.games.lp.actions;
 }

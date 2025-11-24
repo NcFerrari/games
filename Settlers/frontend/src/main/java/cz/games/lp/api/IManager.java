@@ -2,7 +2,6 @@ package cz.games.lp.api;
 
 import cz.games.lp.components.Card;
 import cz.games.lp.enums.CardType;
-import cz.games.lp.enums.Phases;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
 
@@ -16,8 +15,6 @@ public interface IManager {
 
     CardType[] getCardTypes();
 
-    List<Card> prepareCards(double cardWidth, double cardHeight);
-
     List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount);
 
     String getFaction();
@@ -25,10 +22,6 @@ public interface IManager {
     String getFactionBoard();
 
     void setFactionAndSex(String faction, Sex sex);
-
-    Phases getCurrentPhase();
-
-    void setCurrentPhase(Phases currentPhase);
 
     String getChooserDialogTitle();
 
@@ -49,4 +42,10 @@ public interface IManager {
     double getScoreYMove();
 
     double getScoreXMove();
+
+    Integer getCommonCardCount();
+
+    Integer getFactionCardCount();
+
+    double getCardSpeed();
 }

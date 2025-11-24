@@ -1,23 +1,22 @@
 package cz.games.lp;
 
+import cz.games.lp.actions.ActionManager;
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
 import cz.games.lp.components.Deals;
 import cz.games.lp.components.FactionBoard;
 import cz.games.lp.components.RoundPhases;
 import cz.games.lp.components.ScoreBoard;
+import cz.games.lp.enums.CardType;
 import cz.games.lp.panes.ChoiceDialog;
 import cz.games.lp.panes.PaneModel;
 import cz.games.lp.panes.UIPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.LinkedHashMap;
 
 public class MainApp extends Application {
 
@@ -50,19 +49,13 @@ public class MainApp extends Application {
 
     private void initModel() {
         model.setManager(manager);
-        model.setCardSpeed(Duration.millis(200));
+        model.setCardSpeed(Duration.millis(manager.getCardSpeed()));
         model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
         model.setHeaderStyle("-fx-background-color: #6ae7ba");
-        model.setSources(new LinkedHashMap<>());
-        model.setBuiltFactionCards(new LinkedHashMap<>());
-        model.setBuiltCommonCards(new LinkedHashMap<>());
         model.setFactionBoard(new FactionBoard(model));
         model.setScoreBoard(new ScoreBoard(model));
         model.setRoundPhases(new RoundPhases(model));
         model.setDeals(new Deals(model));
-        model.setCardsInHand(new HBox());
-        model.setFactionCardsStack(new StackPane());
-        model.setCommonCardsStack(new StackPane());
     }
 
     private Pane createFrontPane() {
@@ -78,22 +71,24 @@ public class MainApp extends Application {
         // 1 (set 1.st round
         model.getScoreBoard().setRound(1);
         // 2 (prepare common cards)
-        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight()));
+        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), "commons", model.getCardSizeMap().get(CardType.COMMON)));
         model.setCommonCard(new Card("common", model));
         model.getCommonCardsStack().getChildren().add(model.getCommonCard());
         // 3 (faction choice)
         choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
         model.getFactionBoard().setImage(manager.getFactionBoard());
-        model.setFactionCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), manager.getFaction(), 5));
+        model.setFactionCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), manager.getFaction(), model.getCardSizeMap().get(CardType.FACTION)));
         model.setFactionCard(new Card(manager.getFaction(), model));
         model.getFactionCardsStack().getChildren().add(model.getFactionCard());
         model.getScoreBoard().setFactionToken(manager.getFaction(), false);
-        model.setActions(new Actions(model));
+        model.setActionManager(new ActionManager(model));
         // 4 (first 4 cards)
-        model.getActions().prepareFirstFourCards();
+        model.getActionManager().prepareFirstFourCards();
     }
 
     private void clearTable() {
+        model.getCardSizeMap().put(CardType.COMMON, model.getManager().getCommonCardCount());
+        model.getCardSizeMap().put(CardType.FACTION, model.getManager().getFactionCardCount());
         model.getSources().forEach((source, sourceStatusBlock) -> sourceStatusBlock.setValue(0));
         model.getCardsInHand().getChildren().clear();
         model.getBuiltFactionCards().forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());

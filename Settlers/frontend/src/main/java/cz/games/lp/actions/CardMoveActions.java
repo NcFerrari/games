@@ -1,12 +1,12 @@
-package cz.games.lp;
+package cz.games.lp.actions;
 
 import cz.games.lp.components.Card;
+import cz.games.lp.enums.CardType;
 import cz.games.lp.panes.PaneModel;
 import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -16,55 +16,43 @@ import javafx.util.Duration;
 
 import java.util.List;
 
-public class Actions {
+public class CardMoveActions {
 
     private final PaneModel model;
 
     private boolean isTranslateTransactionRunning;
+    private boolean sequentialTransitionRunning;
 
-    public Actions(PaneModel model) {
+    public CardMoveActions(PaneModel model) {
         this.model = model;
     }
 
-    public void prepareFirstFourCards() {
-        Platform.runLater(() -> {
-            if (model.isSequentialTransitionRunning()) {
-                return;
-            }
-            SequentialTransition sequentialTransition = new SequentialTransition(
-                    drawFactionCard(false),
-                    drawFactionCard(false),
-                    drawCommonCard(false),
-                    drawCommonCard(false)
-            );
-            sequentialTransition.setOnFinished(event -> model.setSequentialTransitionRunning(false));
-            model.setSequentialTransitionRunning(true);
-            sequentialTransition.play();
-        });
-    }
-
-    public void drawFactionCard() {
-        drawFactionCard(true);
-    }
-
-    public void drawCommonCard() {
-        drawCommonCard(true);
-    }
-
     public Animation drawFactionCard(boolean play) {
-        return drawCard(model.getFactionCard(), model.getCardsInHand(), getFactionCard(), model.getFactionCards(), model.getFactionCardsStack(), play);
+        return drawCard(model.getFactionCard(), model.getCardsInHand(), getFactionCard(), model.getFactionCards(), model.getFactionCardsStack(), CardType.FACTION, play);
     }
 
     public Animation drawCommonCard(boolean play) {
-        return drawCard(model.getCommonCard(), model.getCardsInHand(), getCommonCard(), model.getCommonCards(), model.getCommonCardsStack(), play);
+        return drawCard(model.getCommonCard(), model.getCardsInHand(), getCommonCard(), model.getCommonCards(), model.getCommonCardsStack(), CardType.COMMON, play);
     }
 
-    public Animation drawCard(Card nodeFrom, HBox toPane, Card card, List<Card> list, StackPane cardStack, boolean play) {
-        if (disableToMove(list)) {
+    public void drawMoreCards(Animation... animations) {
+        if (sequentialTransitionRunning) {
+            return;
+        }
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        sequentialTransition.getChildren().addAll(animations);
+        sequentialTransition.setOnFinished(event -> sequentialTransitionRunning = false);
+        sequentialTransitionRunning = true;
+        sequentialTransition.play();
+    }
+
+    private Animation drawCard(Card nodeFrom, HBox toPane, Card card, List<Card> list, StackPane cardStack, CardType typ, boolean play) {
+        if (disableToMove(model.getCardSizeMap().get(typ))) {
             return new PauseTransition(Duration.ZERO);
         }
+        model.getCardSizeMap().replace(typ, model.getCardSizeMap().get(typ) - 1);
         Animation animation = moveCard(nodeFrom, toPane, card, list);
-        if (list.size() == 1) {
+        if (model.getCardSizeMap().get(typ) == 0) {
             cardStack.getChildren().clear();
         }
         if (play) {
@@ -106,10 +94,7 @@ public class Actions {
         return new Card("common", model);
     }
 
-    private boolean disableToMove(List<Card> list) {
-        boolean runningSingleTransition = isTranslateTransactionRunning;
-        boolean emptyList = list.isEmpty();
-        boolean runningSequenceTransition = model.isSequentialTransitionRunning();
-        return runningSingleTransition || emptyList || runningSequenceTransition;
+    private boolean disableToMove(int cardListSize) {
+        return isTranslateTransactionRunning || cardListSize == 0 || sequentialTransitionRunning;
     }
 }

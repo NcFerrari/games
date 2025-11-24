@@ -2,7 +2,6 @@ package cz.games.lp.components;
 
 import cz.games.lp.enums.Phases;
 import cz.games.lp.panes.PaneModel;
-import javafx.animation.SequentialTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -31,22 +30,6 @@ public class RoundPhases extends VBox {
             button.setGraphic(imageNode.getImageView());
             buttons.put(Phases.values()[i - 1], button);
             getChildren().add(button);
-        });
-        addListeners(buttons, model);
-    }
-
-    private void addListeners(Map<Phases, Button> buttons, PaneModel model) {
-        buttons.get(Phases.LOOKOUT).setOnAction(evt -> {
-            if (!model.isSequentialTransitionRunning()) {
-                SequentialTransition sequentialTransition = new SequentialTransition(
-                        model.getActions().drawFactionCard(false),
-                        model.getActions().drawCommonCard(false),
-                        model.getActions().drawCommonCard(false)
-                );
-                sequentialTransition.setOnFinished(event -> model.setSequentialTransitionRunning(false));
-                model.setSequentialTransitionRunning(true);
-                sequentialTransition.play();
-            }
         });
     }
 
