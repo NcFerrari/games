@@ -2,20 +2,21 @@ package cz.games.lp.components;
 
 import cz.games.lp.enums.Phases;
 import cz.games.lp.panes.PaneModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.animation.SequentialTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class RoundPhases extends VBox {
 
     @Getter
-    private final ObservableList<Button> buttons = FXCollections.observableArrayList();
+    private final Map<Phases, Button> buttons = new LinkedHashMap<>();
     @Getter
     @Setter
     private Phases currentPhase;
@@ -28,15 +29,30 @@ public class RoundPhases extends VBox {
             imageNode.setImage("phase_buttons/" + i + "phase");
             Button button = new Button();
             button.setGraphic(imageNode.getImageView());
-            buttons.add(button);
+            buttons.put(Phases.values()[i - 1], button);
             getChildren().add(button);
         });
-        reset();
+        addListeners(buttons, model);
+    }
+
+    private void addListeners(Map<Phases, Button> buttons, PaneModel model) {
+        buttons.get(Phases.LOOKOUT).setOnAction(evt -> {
+            if (!model.isSequentialTransitionRunning()) {
+                SequentialTransition sequentialTransition = new SequentialTransition(
+                        model.getActions().drawFactionCard(false),
+                        model.getActions().drawCommonCard(false),
+                        model.getActions().drawCommonCard(false)
+                );
+                sequentialTransition.setOnFinished(event -> model.setSequentialTransitionRunning(false));
+                model.setSequentialTransitionRunning(true);
+                sequentialTransition.play();
+            }
+        });
     }
 
     public void reset() {
-        getChildren().forEach(button -> button.setDisable(true));
-        getChildren().getFirst().setDisable(false);
+        buttons.forEach((k, v) -> v.setDisable(true));
+        buttons.get(Phases.LOOKOUT).setDisable(false);
         setCurrentPhase(Phases.LOOKOUT);
     }
 }

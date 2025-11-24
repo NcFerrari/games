@@ -14,7 +14,10 @@ public class CenterPane extends VBox {
         VBox.setVgrow(incomingPane, Priority.ALWAYS);
 
         model.getFactionCardsStack().setPrefWidth(model.getCardWidth());
+        model.getFactionCardsStack().setOnMousePressed(evt -> model.getActions().drawFactionCard());
+
         model.getCommonCardsStack().setPrefWidth(model.getCardWidth());
+        model.getCommonCardsStack().setOnMousePressed(evt -> model.getActions().drawCommonCard());
 
         Region space = new Region();
         space.setPrefWidth(model.getWidth() * 0.0204);

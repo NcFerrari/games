@@ -13,6 +13,7 @@ import cz.games.lp.enums.Sources;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,7 @@ public class PaneModel {
     private double cardHeight;
     private double scoreXMove;
     private double scoreYMove;
+    private Duration cardSpeed;
     private String style;
     private String headerStyle;
     private Map<Sources, SourceStatusBlock> sources;
@@ -48,4 +50,5 @@ public class PaneModel {
     private StackPane factionCardsStack;
     private StackPane commonCardsStack;
     private Actions actions;
+    private boolean sequentialTransitionRunning;
 }

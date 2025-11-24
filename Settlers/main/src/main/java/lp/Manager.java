@@ -99,7 +99,7 @@ public class Manager implements IManager {
 
     @Override
     public List<Card> prepareCards(double cardWidth, double cardHeight) {
-        return prepareCards(cardWidth, cardHeight, "commons", 84);
+        return prepareCards(cardWidth, cardHeight, "commons", 5);
     }
 
     @Override

@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.LinkedHashMap;
 
@@ -56,6 +57,7 @@ public class MainApp extends Application {
         model.setCardHeight(model.getHeight() * 0.204);
         model.setScoreXMove(model.getWidth() * 0.0219759);
         model.setScoreYMove(model.getHeight() * 0.051015091);
+        model.setCardSpeed(Duration.millis(200));
         model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
         model.setHeaderStyle("-fx-background-color: #6ae7ba");
         model.setSources(new LinkedHashMap<>());
@@ -89,7 +91,7 @@ public class MainApp extends Application {
         // 3 (faction choice)
         choiceFactionDialog.showAndWait().ifPresent(chosenFaction -> manager.setFactionAndSex(chosenFaction.faction(), chosenFaction.sex()));
         model.getFactionBoard().setImage(manager.getFactionBoard());
-        model.setFactionCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight(), manager.getFaction(), 30));
+        model.setFactionCards(manager.prepareCards(model.getCardWidth(), model.getCardHeight(), manager.getFaction(), 5));
         model.setFactionCard(new Card(manager.getFaction(), model));
         model.getFactionCardsStack().getChildren().add(model.getFactionCard());
         model.getScoreBoard().setFactionToken(manager.getFaction(), false);
