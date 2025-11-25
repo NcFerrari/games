@@ -20,7 +20,7 @@ public class JsonCreator {
         ObjectMapper mapper = new ObjectMapper();
 
         CardDTO loadedCard = new CardDTO();
-        loadedCard.setId("egy026");
+        loadedCard.setCardId("egy026");
         loadedCard.setCardName("Kamenolom");
         loadedCard.setCardType("PRODUCTION");
         loadedCard.getSourcesForBuild().add("stone");
@@ -30,7 +30,7 @@ public class JsonCreator {
         loadedCard.setCardEffect("stone&&stone");
 
         CardDTO loadedCard2 = new CardDTO();
-        loadedCard2.setId("egy011");
+        loadedCard2.setCardId("egy011");
         loadedCard2.setCardName("Karavana");
         loadedCard2.setCardType("PRODUCTION");
         loadedCard2.getSourcesForBuild().add("food");
@@ -38,7 +38,7 @@ public class JsonCreator {
         loadedCard2.setDealSource("card");
         loadedCard2.setCardEffect("food&&settler");
 
-        File file = new File("person.json");
+        File file = new File("cards.json");
         mapper.writeValue(file, List.of(loadedCard, loadedCard2));
     }
 }

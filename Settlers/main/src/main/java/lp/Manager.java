@@ -11,6 +11,8 @@ import cz.games.lp.enums.Sources;
 import cz.games.lp.service.LoggerService;
 import cz.games.lp.service_impl.LoggerServiceImpl;
 import lombok.Getter;
+import lp.map_api.CardMapper;
+import org.mapstruct.factory.Mappers;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -152,10 +154,12 @@ public class Manager implements IManager {
     }
 
     @Override
-    public Card fillCardWithData(String cardId) {
-        if (backendManager.getCardDtoMap().get(cardId) != null) {
-            logger.getLogger().info("{}:{}", cardId, backendManager.getCardDtoMap().get(cardId).getCardName());
-        }
+    public Card fillCardWithData(Card card) {
+        logger.getLogger().info(card.getCardName());
+        logger.getLogger().info(backendManager.getCardDtoMap().get(card.getCardId()).getCardName());
+        CardMapper mapper = Mappers.getMapper(CardMapper.class);
+        mapper.updateCardFromLoaded(backendManager.getCardDtoMap().get(card.getCardId()), card);
+        logger.getLogger().info(card.getCardName());
         return null;
     }
 }

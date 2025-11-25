@@ -2,13 +2,13 @@
   {
     "cardEffect": "stone&&stone",
     "cardEffectForPosition": null,
+    "cardId": "egy026",
     "cardName": "Kamenolom",
     "cardType": "PRODUCTION",
     "colors": [
       "gray"
     ],
     "dealSource": "stone",
-    "id": "egy026",
     "sourcesForBuild": [
       "stone",
       "location"
@@ -18,13 +18,13 @@
   {
     "cardEffect": "food&&settler",
     "cardEffectForPosition": null,
+    "cardId": "egy011",
     "cardName": "Karavana",
     "cardType": "PRODUCTION",
     "colors": [
       "gray"
     ],
     "dealSource": "card",
-    "id": "egy011",
     "sourcesForBuild": [
       "food"
     ],

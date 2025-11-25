@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>frontend</artifactId>
-    <version>${parent.version}</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -38,13 +37,6 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${fx.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>one.jpro</groupId>
-            <artifactId>jpro-webapi</artifactId>
-            <version>2025.2.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

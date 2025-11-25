@@ -20,7 +20,7 @@ public class BackendManager {
     public void loadCardData() {
         new Thread(() -> {
             List<CardDTO> jsonData = new JsonCreator().loadCardData();
-            cardDtoMap = jsonData.stream().collect(Collectors.toMap(CardDTO::getId, card -> card));
+            cardDtoMap = jsonData.stream().collect(Collectors.toMap(CardDTO::getCardId, card -> card));
             logger.getLogger().info("Data loading finished");
         }).start();
     }

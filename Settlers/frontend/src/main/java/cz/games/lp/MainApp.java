@@ -131,7 +131,7 @@ public class MainApp extends Application {
 //            return;
 //        }
         model.getBuiltCards().get(CardType.PRODUCTION).forEach(card -> {
-            model.getManager().fillCardWithData(card.getCardId());
+            model.getManager().fillCardWithData(card);
         });
     }
 
@@ -152,7 +152,7 @@ public class MainApp extends Application {
         Card h = new Card("commons/", "com068", model);
         Card i = new Card("commons/", "com064", model);
         model.getBuiltCommonCards().get(CardType.PRODUCTION).getChildren().addAll(e, f, g, h, i);
-        model.getBuiltCards().get(CardType.PRODUCTION).addAll(List.of(a, b, c));
+        model.getBuiltCards().get(CardType.PRODUCTION).addAll(List.of(b, c));
     }
 
     private void actionPhase() {

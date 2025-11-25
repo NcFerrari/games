@@ -8,7 +8,8 @@ public enum Sources {
     COIN("coin"),
     SWORD("sword"),
     SHIELD("shield"),
-    EGYPT_TOKEN("egypt_token");
+    EGYPT_TOKEN("egypt_token"),
+    LOCATION("location");
 
     private final String name;
 
