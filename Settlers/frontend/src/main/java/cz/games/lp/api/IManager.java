@@ -49,5 +49,5 @@ public interface IManager {
 
     double getCardSpeed();
 
-    void fillCardWithData(Card card);
+    Card fillCardWithData(String cardId);
 }

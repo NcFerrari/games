@@ -8,6 +8,8 @@ import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Faction;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
+import cz.games.lp.service.LoggerService;
+import cz.games.lp.service_impl.LoggerServiceImpl;
 import lombok.Getter;
 
 import java.awt.Dimension;
@@ -23,6 +25,7 @@ public class Manager implements IManager {
     private static final int COMMON_CARD_COUNT = 84;
     private static final int CARD_SPEED = 400;
 
+    private final LoggerService logger = LoggerServiceImpl.getInstance(BackendManager.class);
     private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
     private final Toolkit tool = Toolkit.getDefaultToolkit();
@@ -121,13 +124,13 @@ public class Manager implements IManager {
 
     @Override
     public List<Card> prepareCards(double cardWidth, double cardHeight, String faction, int cardCount) {
-        String imagePrefix = faction + "/" + faction.substring(0, 3) + "0";
+        String cardName = faction.substring(0, 3) + "0";
         List<Card> cards = IntStream.range(1, cardCount + 1).mapToObj(i -> {
             String value = "" + i;
             if (i < 10) {
                 value = "0" + i;
             }
-            return new Card(imagePrefix + value, cardWidth, cardHeight);
+            return new Card(faction, cardName + value, cardWidth, cardHeight);
         }).collect(Collectors.toList());
         Collections.shuffle(cards);
         return cards;
@@ -149,7 +152,10 @@ public class Manager implements IManager {
     }
 
     @Override
-    public void fillCardWithData(Card card) {
-
+    public Card fillCardWithData(String cardId) {
+        if (backendManager.getCardDtoMap().get(cardId) != null) {
+            logger.getLogger().info("{}:{}", cardId, backendManager.getCardDtoMap().get(cardId).getCardName());
+        }
+        return null;
     }
 }

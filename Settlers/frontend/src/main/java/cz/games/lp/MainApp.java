@@ -131,29 +131,28 @@ public class MainApp extends Application {
 //            return;
 //        }
         model.getBuiltCards().get(CardType.PRODUCTION).forEach(card -> {
-            model.getManager().fillCardWithData(card);
+            model.getManager().fillCardWithData(card.getCardId());
         });
     }
 
     private void mockData() {
         model.getRoundPhases().setCurrentPhase(Phases.PRODUCTION);
         model.getFactionBoard().setImage("f_egypt");
-        Card a = new Card("egypt/egy004", model);
-        Card b = new Card("egypt/egy011", model);
-        Card c = new Card("egypt/egy026", model);
+        Card a = new Card("egypt/", "egy004", model);
+        Card b = new Card("egypt/", "egy011", model);
+        Card c = new Card("egypt/", "egy026", model);
         model.getBuiltFactionCards().get(CardType.PRODUCTION).getChildren().addAll(a, b, c);
 
-        Card d = new Card("egypt/egy015", model);
+        Card d = new Card("egypt/", "egy015", model);
         model.getDeals().getChildren().add(d);
 
-        Card e = new Card("commons/com026", model);
-        Card f = new Card("commons/com015", model);
-        Card g = new Card("commons/com025", model);
-        Card h = new Card("commons/com068", model);
-        Card i = new Card("commons/com064", model);
+        Card e = new Card("commons/", "com026", model);
+        Card f = new Card("commons/", "com015", model);
+        Card g = new Card("commons/", "com025", model);
+        Card h = new Card("commons/", "com068", model);
+        Card i = new Card("commons/", "com064", model);
         model.getBuiltCommonCards().get(CardType.PRODUCTION).getChildren().addAll(e, f, g, h, i);
-        model.getBuiltCards().get(CardType.PRODUCTION).addAll(List.of(a, b));
-
+        model.getBuiltCards().get(CardType.PRODUCTION).addAll(List.of(a, b, c));
     }
 
     private void actionPhase() {

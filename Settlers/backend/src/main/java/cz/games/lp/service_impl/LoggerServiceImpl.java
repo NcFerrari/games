@@ -23,7 +23,7 @@ public class LoggerServiceImpl implements LoggerService {
     }
 
     @Override
-    public void info(String text) {
-        logger.info(text);
+    public Logger getLogger() {
+        return logger;
     }
 }

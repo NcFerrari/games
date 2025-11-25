@@ -9,11 +9,11 @@ import java.io.File;
 import java.util.List;
 
 public class JsonCreator {
-    public void loadCardData() {
+
+    public List<CardDTO> loadCardData() {
         ObjectMapper mapper = new ObjectMapper();
-        List<CardDTO> cards = mapper.readValue(getClass().getClassLoader().getResourceAsStream("cards.json"), new TypeReference<>() {
+        return mapper.readValue(getClass().getClassLoader().getResourceAsStream("cards.json"), new TypeReference<>() {
         });
-        System.out.println(cards.size());
     }
 
     public void createJsonFile() {
