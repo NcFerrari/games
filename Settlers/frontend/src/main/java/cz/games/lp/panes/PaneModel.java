@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class PaneModel {
     private final StackPane factionCardsStack = new StackPane();
     private final StackPane commonCardsStack = new StackPane();
     private final HBox cardsInHand = new HBox();
+    private final Map<CardType, List<Card>> builtCards = new EnumMap<>(CardType.class);
     private IManager manager;
     private Pane frontPane;
     private Duration cardSpeed;

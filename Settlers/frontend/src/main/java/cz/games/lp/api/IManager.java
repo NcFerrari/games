@@ -48,4 +48,6 @@ public interface IManager {
     Integer getFactionCardCount();
 
     double getCardSpeed();
+
+    void fillCardWithData(Card card);
 }

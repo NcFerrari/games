@@ -1,5 +1,6 @@
 package lp;
 
+import cz.games.lp.BackendManager;
 import cz.games.lp.MainApp;
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
@@ -26,6 +27,7 @@ public class Manager implements IManager {
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
     private final Toolkit tool = Toolkit.getDefaultToolkit();
     private final Dimension src = tool.getScreenSize();
+    private final BackendManager backendManager = new BackendManager();
     @Getter
     private final double width = src.getWidth() - 100;
     @Getter
@@ -43,6 +45,7 @@ public class Manager implements IManager {
     private Sex selectedSex;
 
     private void start() {
+        backendManager.loadCardData();
         MainApp.run(this);
     }
 
@@ -143,5 +146,10 @@ public class Manager implements IManager {
     @Override
     public double getCardSpeed() {
         return CARD_SPEED;
+    }
+
+    @Override
+    public void fillCardWithData(Card card) {
+
     }
 }

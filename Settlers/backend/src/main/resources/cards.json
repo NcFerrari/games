@@ -1,0 +1,33 @@
+[
+  {
+    "cardEffect": "stone&&stone",
+    "cardEffectForPosition": null,
+    "cardName": "Kamenolom",
+    "cardType": "PRODUCTION",
+    "colors": [
+      "gray"
+    ],
+    "dealSource": "stone",
+    "id": "egy026",
+    "sourcesForBuild": [
+      "stone",
+      "location"
+    ],
+    "sourcesFromDestroy": []
+  },
+  {
+    "cardEffect": "food&&settler",
+    "cardEffectForPosition": null,
+    "cardName": "Karavana",
+    "cardType": "PRODUCTION",
+    "colors": [
+      "gray"
+    ],
+    "dealSource": "card",
+    "id": "egy011",
+    "sourcesForBuild": [
+      "food"
+    ],
+    "sourcesFromDestroy": []
+  }
+]

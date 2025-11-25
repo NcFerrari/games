@@ -40,6 +40,7 @@ public class RoundPhases extends VBox {
     }
 
     public void switchButton(Phases phase) {
+        setCurrentPhase(phase);
         getButtons().forEach((cardType, button) -> button.setDisable(true));
         getButtons().get(phase).setDisable(false);
     }
