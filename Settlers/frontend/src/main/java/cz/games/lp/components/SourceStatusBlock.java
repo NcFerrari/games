@@ -4,6 +4,8 @@ import cz.games.lp.enums.Sources;
 import cz.games.lp.panes.PaneModel;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.effect.*;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import lombok.Getter;
 
@@ -33,16 +35,31 @@ public class SourceStatusBlock extends Group {
         getChildren().add(valueLabel);
     }
 
-    public void add(int count) {
-        setValue(getValue() + count);
+    public void addOne() {
+        setValue(getValue() + 1);
     }
 
-    public void remove(int count) {
-        setValue(getValue() - count);
+    public void removeOne() {
+        setValue(getValue() - 1);
     }
 
     public void setValue(int value) {
         this.value = value;
         valueLabel.setText("" + value);
+    }
+
+    public void select() {
+        setEffect(new ImageInput(new Image(getClass().getResourceAsStream("img/first_player.png"))));
+//        DropShadow
+//        Glow
+//        ImageInput
+//        InnerShadow
+//        Light
+//        Lighting
+//        MotionBlur
+//        PerspectiveTransform
+//        Reflection
+//        SepiaTone
+//        Shadow
     }
 }

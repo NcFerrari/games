@@ -9,7 +9,8 @@ public enum Sources {
     SWORD("sword"),
     SHIELD("shield"),
     EGYPT_TOKEN("egypt_token"),
-    LOCATION("location");
+    LOCATION("location"),
+    SCORE_POINT("score_point");
 
     private final String name;
 

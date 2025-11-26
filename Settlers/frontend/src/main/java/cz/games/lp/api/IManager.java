@@ -1,11 +1,13 @@
 package cz.games.lp.api;
 
 import cz.games.lp.components.Card;
+import cz.games.lp.components.SourceStatusBlock;
 import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Sex;
 import cz.games.lp.enums.Sources;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IManager {
 
@@ -49,5 +51,5 @@ public interface IManager {
 
     double getCardSpeed();
 
-    Card fillCardWithData(Card card);
+    Card fillCardWithData(Card card, Map<Sources, SourceStatusBlock> sources);
 }

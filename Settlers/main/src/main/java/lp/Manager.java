@@ -4,6 +4,7 @@ import cz.games.lp.BackendManager;
 import cz.games.lp.MainApp;
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
+import cz.games.lp.components.SourceStatusBlock;
 import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Faction;
 import cz.games.lp.enums.Sex;
@@ -11,6 +12,8 @@ import cz.games.lp.enums.Sources;
 import cz.games.lp.service.LoggerService;
 import cz.games.lp.service_impl.LoggerServiceImpl;
 import lombok.Getter;
+import lp.effect.Effect;
+import lp.effect.EffectImpl;
 import lp.map_api.CardMapper;
 import org.mapstruct.factory.Mappers;
 
@@ -18,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,11 +49,16 @@ public class Manager implements IManager {
     private final double scoreXMove = width * 0.0219759;
     @Getter
     private final double scoreYMove = height * 0.051015091;
+    @Getter
+    private final Effect effect = new EffectImpl();
+    @Getter
+    private final CardMapper mapper = Mappers.getMapper(CardMapper.class);
 
     private Faction selectedFaction;
     private Sex selectedSex;
 
     private void start() {
+        logger.getLogger().info("Starting Application...");
         backendManager.loadCardData();
         MainApp.run(this);
     }
@@ -154,12 +163,9 @@ public class Manager implements IManager {
     }
 
     @Override
-    public Card fillCardWithData(Card card) {
-        logger.getLogger().info(card.getCardName());
-        logger.getLogger().info(backendManager.getCardDtoMap().get(card.getCardId()).getCardName());
-        CardMapper mapper = Mappers.getMapper(CardMapper.class);
+    public Card fillCardWithData(Card card, Map<Sources, SourceStatusBlock> sources) {
         mapper.updateCardFromLoaded(backendManager.getCardDtoMap().get(card.getCardId()), card);
-        logger.getLogger().info(card.getCardName());
+        effect.produce(card, sources);
         return null;
     }
 }

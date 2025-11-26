@@ -1,6 +1,6 @@
 [
   {
-    "cardEffect": "stone&&stone",
+    "cardEffect": "STONE&&STONE",
     "cardEffectForPosition": null,
     "cardId": "egy026",
     "cardName": "Kamenolom",
@@ -8,15 +8,15 @@
     "colors": [
       "gray"
     ],
-    "dealSource": "stone",
+    "dealSource": "STONE",
     "sourcesForBuild": [
-      "stone",
-      "location"
+      "STONE",
+      "LOCATION"
     ],
     "sourcesFromDestroy": []
   },
   {
-    "cardEffect": "food&&settler",
+    "cardEffect": "FOOD&&SETTLER",
     "cardEffectForPosition": null,
     "cardId": "egy011",
     "cardName": "Karavana",
@@ -24,9 +24,26 @@
     "colors": [
       "gray"
     ],
-    "dealSource": "card",
+    "dealSource": "CARD",
     "sourcesForBuild": [
-      "food"
+      "FOOD"
+    ],
+    "sourcesFromDestroy": []
+  },
+  {
+    "cardEffect": "SWORD||FOOD",
+    "cardEffectForPosition": null,
+    "cardId": "egy004",
+    "cardName": "Faraónova garda",
+    "cardType": "PRODUCTION",
+    "colors": [
+      "black"
+    ],
+    "dealSource": "SWORD",
+    "sourcesForBuild": [
+      "FOOD",
+      "FOOD",
+      "LOCATION"
     ],
     "sourcesFromDestroy": []
   }
