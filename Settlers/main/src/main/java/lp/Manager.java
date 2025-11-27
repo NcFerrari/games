@@ -163,7 +163,7 @@ public class Manager implements IManager {
     }
 
     @Override
-    public Card fillCardWithData(Card card, Map<Sources, SourceStatusBlock> sources) {
+    public Card fillCardWithDataAndExecute(Card card, Map<Sources, SourceStatusBlock> sources) {
         mapper.updateCardFromLoaded(backendManager.getCardDtoMap().get(card.getCardId()), card);
         effect.produce(card, sources);
         return null;

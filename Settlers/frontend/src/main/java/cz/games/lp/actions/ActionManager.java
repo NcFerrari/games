@@ -1,16 +1,13 @@
 package cz.games.lp.actions;
 
-import cz.games.lp.enums.Phases;
 import cz.games.lp.panes.PaneModel;
 import javafx.application.Platform;
 
 public class ActionManager {
 
     private final CardMoveActions cardMoveActions;
-    private final PaneModel model;
 
     public ActionManager(PaneModel model) {
-        this.model = model;
         cardMoveActions = new CardMoveActions(model);
     }
 

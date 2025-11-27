@@ -50,8 +50,8 @@ public class MainApp extends Application {
 
         setPhases();
 
-        mockData();
-//        newGame();
+//        mockData();
+        newGame();
     }
 
     private void initModel() {
@@ -66,6 +66,7 @@ public class MainApp extends Application {
         model.getBuiltCards().put(CardType.PRODUCTION, new ArrayList<>());
         model.getBuiltCards().put(CardType.PROPERTIES, new ArrayList<>());
         model.getBuiltCards().put(CardType.ACTION, new ArrayList<>());
+        model.setActionManager(new ActionManager(model));
     }
 
     private Pane createFrontPane() {
@@ -91,7 +92,6 @@ public class MainApp extends Application {
         model.setFactionCard(new Card(manager.getFaction(), model));
         model.getFactionCardsStack().getChildren().add(model.getFactionCard());
         model.getScoreBoard().setFactionToken(manager.getFaction(), false);
-        model.setActionManager(new ActionManager(model));
         // 4 (first 4 cards)
         model.getActionManager().prepareFirstFourCards();
     }
@@ -127,11 +127,11 @@ public class MainApp extends Application {
     }
 
     private void productionPhase() {
-//        if (model.getActionManager() == null || !model.getRoundPhases().getCurrentPhase().equals(Phases.PRODUCTION)) {
-//            return;
-//        }
+        if (model.getActionManager() == null || !model.getRoundPhases().getCurrentPhase().equals(Phases.PRODUCTION)) {
+            return;
+        }
         model.getBuiltCards().get(CardType.PRODUCTION).forEach(card -> {
-            model.getManager().fillCardWithData(card, model.getSources());
+            model.getManager().fillCardWithDataAndExecute(card, model.getSources());
         });
     }
 

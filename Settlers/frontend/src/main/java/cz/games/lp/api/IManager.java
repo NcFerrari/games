@@ -51,5 +51,5 @@ public interface IManager {
 
     double getCardSpeed();
 
-    Card fillCardWithData(Card card, Map<Sources, SourceStatusBlock> sources);
+    Card fillCardWithDataAndExecute(Card card, Map<Sources, SourceStatusBlock> sources);
 }
