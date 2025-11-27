@@ -1,6 +1,10 @@
 [
   {
-    "cardEffect": "STONE&&STONE",
+    "cardEffect": [
+      "STONE",
+      "STONE"
+    ],
+    "orEffect": [],
     "cardEffectForPosition": null,
     "cardId": "egy026",
     "cardName": "Kamenolom",
@@ -16,7 +20,11 @@
     "sourcesFromDestroy": []
   },
   {
-    "cardEffect": "FOOD&&SETTLER",
+    "cardEffect": [
+      "FOOD",
+      "SETTLER"
+    ],
+    "orEffect": [],
     "cardEffectForPosition": null,
     "cardId": "egy011",
     "cardName": "Karavana",
@@ -31,7 +39,12 @@
     "sourcesFromDestroy": []
   },
   {
-    "cardEffect": "SWORD||FOOD",
+    "cardEffect": [
+      "SWORD"
+    ],
+    "orEffect": [
+      "SCORE_POINT"
+    ],
     "cardEffectForPosition": null,
     "cardId": "egy004",
     "cardName": "Faraónova garda",
@@ -43,6 +56,24 @@
     "sourcesForBuild": [
       "FOOD",
       "FOOD",
+      "LOCATION"
+    ],
+    "sourcesFromDestroy": []
+  },
+  {
+    "cardEffect": [],
+    "orEffect": [],
+    "cardEffectForPosition": null,
+    "cardId": "egy015",
+    "cardName": "Útočiště",
+    "cardType": "ACTION",
+    "colors": [
+      "black"
+    ],
+    "dealSource": "GOLD",
+    "sourcesForBuild": [
+      "STONE",
+      "STONE",
       "LOCATION"
     ],
     "sourcesFromDestroy": []

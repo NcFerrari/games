@@ -5,7 +5,7 @@ public enum Sources {
     WOOD("wood"),
     STONE("stone"),
     FOOD("food"),
-    COIN("coin"),
+    GOLD("gold"),
     SWORD("sword"),
     SHIELD("shield"),
     EGYPT_TOKEN("egypt_token"),

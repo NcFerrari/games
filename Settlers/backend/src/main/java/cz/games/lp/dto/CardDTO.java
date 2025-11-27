@@ -11,10 +11,11 @@ public class CardDTO {
     private List<String> sourcesForBuild = new ArrayList<>();
     private List<String> sourcesFromDestroy = new ArrayList<>();
     private List<String> colors = new ArrayList<>();
+    private List<String> cardEffect = new ArrayList<>();
+    private List<String> orEffect = new ArrayList<>();
     private String cardId;
     private String cardName;
     private String cardType;
     private String dealSource;
-    private String cardEffect;
     private String cardEffectForPosition;
 }

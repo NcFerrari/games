@@ -33,6 +33,6 @@ public interface CardMapper {
                 return color;
             }
         }
-        throw new IllegalArgumentException("Unknown source " + value);
+        throw new IllegalArgumentException("Unknown color " + value);
     }
 }

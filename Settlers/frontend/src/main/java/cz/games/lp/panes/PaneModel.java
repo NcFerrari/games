@@ -33,7 +33,6 @@ public class PaneModel {
     private final StackPane factionCardsStack = new StackPane();
     private final StackPane commonCardsStack = new StackPane();
     private final HBox cardsInHand = new HBox();
-    private final Map<CardType, List<Card>> builtCards = new EnumMap<>(CardType.class);
     private IManager manager;
     private Pane frontPane;
     private Duration cardSpeed;
@@ -46,6 +45,6 @@ public class PaneModel {
     private FactionBoard factionBoard;
     private ScoreBoard scoreBoard;
     private RoundPhases roundPhases;
-    private Deals deals;
     private ActionManager actionManager;
+    private Deals deals;
 }

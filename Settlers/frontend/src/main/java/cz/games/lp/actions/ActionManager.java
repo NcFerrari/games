@@ -6,9 +6,11 @@ import javafx.application.Platform;
 public class ActionManager {
 
     private final CardMoveActions cardMoveActions;
+    private final ProductionActions productionActions;
 
     public ActionManager(PaneModel model) {
         cardMoveActions = new CardMoveActions(model);
+        productionActions = new ProductionActions(model);
     }
 
     public void drawFactionCard() {
@@ -29,12 +31,16 @@ public class ActionManager {
         ));
     }
 
-    public void proceedLookout(Runnable command) {
+    public void proceedLookout(Runnable switchPhase) {
         cardMoveActions.drawMoreCards(
-                command,
+                switchPhase,
                 cardMoveActions.drawFactionCard(false),
                 cardMoveActions.drawCommonCard(false),
                 cardMoveActions.drawCommonCard(false)
         );
+    }
+
+    public void proceedProduction(Runnable switchPhase) {
+        productionActions.proceedProduction(switchPhase);
     }
 }

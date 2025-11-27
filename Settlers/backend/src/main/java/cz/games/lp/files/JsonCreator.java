@@ -23,20 +23,22 @@ public class JsonCreator {
         loadedCard.setCardId("egy026");
         loadedCard.setCardName("Kamenolom");
         loadedCard.setCardType("PRODUCTION");
-        loadedCard.getSourcesForBuild().add("stone");
-        loadedCard.getSourcesForBuild().add("location");
-        loadedCard.getColors().add("gray");
-        loadedCard.setDealSource("stone");
-        loadedCard.setCardEffect("stone&&stone");
+        loadedCard.getSourcesForBuild().add("STONE");
+        loadedCard.getSourcesForBuild().add("LOCATION");
+        loadedCard.getColors().add("GRAY");
+        loadedCard.setDealSource("STONE");
+        loadedCard.getCardEffect().add("STONE");
+        loadedCard.getCardEffect().add("STONE");
 
         CardDTO loadedCard2 = new CardDTO();
         loadedCard2.setCardId("egy011");
         loadedCard2.setCardName("Karavana");
         loadedCard2.setCardType("PRODUCTION");
-        loadedCard2.getSourcesForBuild().add("food");
-        loadedCard2.getColors().add("gray");
-        loadedCard2.setDealSource("card");
-        loadedCard2.setCardEffect("food&&settler");
+        loadedCard2.getSourcesForBuild().add("FOOD");
+        loadedCard2.getColors().add("GRAY");
+        loadedCard2.setDealSource("CARD");
+        loadedCard2.getCardEffect().add("FOOD");
+        loadedCard2.getCardEffect().add("SETTLER");
 
         File file = new File("cards.json");
         mapper.writeValue(file, List.of(loadedCard, loadedCard2));

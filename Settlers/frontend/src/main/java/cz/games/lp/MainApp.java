@@ -19,9 +19,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainApp extends Application {
 
     private static IManager manager;
@@ -50,8 +47,8 @@ public class MainApp extends Application {
 
         setPhases();
 
-//        mockData();
-        newGame();
+        mockData();
+//        newGame();
     }
 
     private void initModel() {
@@ -63,9 +60,6 @@ public class MainApp extends Application {
         model.setScoreBoard(new ScoreBoard(model));
         model.setRoundPhases(new RoundPhases(model));
         model.setDeals(new Deals(model));
-        model.getBuiltCards().put(CardType.PRODUCTION, new ArrayList<>());
-        model.getBuiltCards().put(CardType.PROPERTIES, new ArrayList<>());
-        model.getBuiltCards().put(CardType.ACTION, new ArrayList<>());
         model.setActionManager(new ActionManager(model));
     }
 
@@ -102,7 +96,7 @@ public class MainApp extends Application {
         model.getSources().forEach((source, sourceStatusBlock) -> sourceStatusBlock.setValue(0));
         model.getCardsInHand().getChildren().clear();
         model.getBuiltFactionCards().forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
-        model.getBuiltCommonCards().forEach((cardType, factionCardPane) -> factionCardPane.getChildren().clear());
+        model.getBuiltCommonCards().forEach((cardType, commonCardPane) -> commonCardPane.getChildren().clear());
         model.getRoundPhases().reset();
     }
 
@@ -130,9 +124,7 @@ public class MainApp extends Application {
         if (model.getActionManager() == null || !model.getRoundPhases().getCurrentPhase().equals(Phases.PRODUCTION)) {
             return;
         }
-        model.getBuiltCards().get(CardType.PRODUCTION).forEach(card -> {
-            model.getManager().fillCardWithDataAndExecute(card, model.getSources());
-        });
+        model.getActionManager().proceedProduction(() -> model.getRoundPhases().switchButton(Phases.ACTION));
     }
 
     private void mockData() {
@@ -152,7 +144,16 @@ public class MainApp extends Application {
         Card h = new Card("commons/", "com068", model);
         Card i = new Card("commons/", "com064", model);
         model.getBuiltCommonCards().get(CardType.PRODUCTION).getChildren().addAll(e, f, g, h, i);
-        model.getBuiltCards().get(CardType.PRODUCTION).addAll(List.of(a, b, c));
+
+        model.getManager().fillCardWithData(a);
+        model.getManager().fillCardWithData(b);
+        model.getManager().fillCardWithData(c);
+        model.getManager().fillCardWithData(d);
+        model.getManager().fillCardWithData(e);
+        model.getManager().fillCardWithData(f);
+        model.getManager().fillCardWithData(g);
+        model.getManager().fillCardWithData(h);
+        model.getManager().fillCardWithData(i);
     }
 
     private void actionPhase() {

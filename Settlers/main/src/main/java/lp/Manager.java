@@ -4,7 +4,6 @@ import cz.games.lp.BackendManager;
 import cz.games.lp.MainApp;
 import cz.games.lp.api.IManager;
 import cz.games.lp.components.Card;
-import cz.games.lp.components.SourceStatusBlock;
 import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Faction;
 import cz.games.lp.enums.Sex;
@@ -12,8 +11,6 @@ import cz.games.lp.enums.Sources;
 import cz.games.lp.service.LoggerService;
 import cz.games.lp.service_impl.LoggerServiceImpl;
 import lombok.Getter;
-import lp.effect.Effect;
-import lp.effect.EffectImpl;
 import lp.map_api.CardMapper;
 import org.mapstruct.factory.Mappers;
 
@@ -21,7 +18,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,7 +28,7 @@ public class Manager implements IManager {
     private static final int CARD_SPEED = 400;
 
     private final LoggerService logger = LoggerServiceImpl.getInstance(BackendManager.class);
-    private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.COIN, Sources.SWORD, Sources.SHIELD};
+    private final Sources[] sources = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.GOLD, Sources.SWORD, Sources.SHIELD};
     private final CardType[] cardTypes = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
     private final Toolkit tool = Toolkit.getDefaultToolkit();
     private final Dimension src = tool.getScreenSize();
@@ -49,8 +45,6 @@ public class Manager implements IManager {
     private final double scoreXMove = width * 0.0219759;
     @Getter
     private final double scoreYMove = height * 0.051015091;
-    @Getter
-    private final Effect effect = new EffectImpl();
     @Getter
     private final CardMapper mapper = Mappers.getMapper(CardMapper.class);
 
@@ -86,6 +80,11 @@ public class Manager implements IManager {
     @Override
     public String getTitle() {
         return "Settlers";
+    }
+
+    @Override
+    public String getProduceChoiceDialog() {
+        return "Vyber si produkci";
     }
 
     @Override
@@ -163,9 +162,7 @@ public class Manager implements IManager {
     }
 
     @Override
-    public Card fillCardWithDataAndExecute(Card card, Map<Sources, SourceStatusBlock> sources) {
+    public void fillCardWithData(Card card) {
         mapper.updateCardFromLoaded(backendManager.getCardDtoMap().get(card.getCardId()), card);
-        effect.produce(card, sources);
-        return null;
     }
 }

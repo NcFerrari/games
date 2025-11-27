@@ -51,5 +51,7 @@ public interface IManager {
 
     double getCardSpeed();
 
-    Card fillCardWithDataAndExecute(Card card, Map<Sources, SourceStatusBlock> sources);
+    void fillCardWithData(Card card);
+
+    String getProduceChoiceDialog();
 }
