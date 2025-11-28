@@ -5,7 +5,6 @@ import tools.jackson.databind.ObjectMapper;
 
 import cz.games.lp.dto.CardDTO;
 
-import java.io.File;
 import java.util.List;
 
 public class JsonCreator {
@@ -14,33 +13,5 @@ public class JsonCreator {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(getClass().getClassLoader().getResourceAsStream("cards.json"), new TypeReference<>() {
         });
-    }
-
-    public void createJsonFile() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        CardDTO loadedCard = new CardDTO();
-        loadedCard.setCardId("egy026");
-        loadedCard.setCardName("Kamenolom");
-        loadedCard.setCardType("PRODUCTION");
-        loadedCard.getSourcesForBuild().add("STONE");
-        loadedCard.getSourcesForBuild().add("LOCATION");
-        loadedCard.getColors().add("GRAY");
-        loadedCard.setDealSource("STONE");
-        loadedCard.getCardEffect().add("STONE");
-        loadedCard.getCardEffect().add("STONE");
-
-        CardDTO loadedCard2 = new CardDTO();
-        loadedCard2.setCardId("egy011");
-        loadedCard2.setCardName("Karavana");
-        loadedCard2.setCardType("PRODUCTION");
-        loadedCard2.getSourcesForBuild().add("FOOD");
-        loadedCard2.getColors().add("GRAY");
-        loadedCard2.setDealSource("CARD");
-        loadedCard2.getCardEffect().add("FOOD");
-        loadedCard2.getCardEffect().add("SETTLER");
-
-        File file = new File("cards.json");
-        mapper.writeValue(file, List.of(loadedCard, loadedCard2));
     }
 }
