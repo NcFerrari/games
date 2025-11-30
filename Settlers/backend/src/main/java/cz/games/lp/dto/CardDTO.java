@@ -13,6 +13,7 @@ public class CardDTO {
     private List<String> colors = new ArrayList<>();
     private List<String> cardEffect = new ArrayList<>();
     private List<String> orEffect = new ArrayList<>();
+    private String condition;
     private String cardId;
     private String cardName;
     private String cardType;
