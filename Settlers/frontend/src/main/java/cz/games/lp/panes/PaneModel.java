@@ -47,4 +47,5 @@ public class PaneModel {
     private RoundPhases roundPhases;
     private ActionManager actionManager;
     private Deals deals;
+    private boolean cardInProcess;
 }

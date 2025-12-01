@@ -3,6 +3,7 @@ package cz.games.lp.components;
 import cz.games.lp.panes.PaneModel;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
+import javafx.util.Duration;
 
 public class ScoreBoard extends Group {
 
@@ -69,6 +70,7 @@ public class ScoreBoard extends Group {
      */
     public void scorePoint(int scorePoint) {
         if (scorePoint == 0) {
+            model.setCardInProcess(false);
             return;
         }
         score++;

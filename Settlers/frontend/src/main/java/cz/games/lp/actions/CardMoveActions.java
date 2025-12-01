@@ -59,6 +59,7 @@ public class CardMoveActions {
         if (model.getCardSizeMap().get(typ) == 0) {
             cardStack.getChildren().clear();
         }
+        animation.setOnFinished(evt -> model.setCardInProcess(false));
         return animation;
     }
 

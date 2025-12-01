@@ -146,6 +146,7 @@ public class MainApp extends Application {
             Card card = new Card("egypt/", cardName, model);
             model.getBuiltFactionCards().get(CardType.PRODUCTION).getChildren().add(card);
             model.getManager().fillCardWithData(card);
+            card.setSamurai(true);
         }
     }
 

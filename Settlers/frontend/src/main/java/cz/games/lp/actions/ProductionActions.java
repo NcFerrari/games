@@ -7,10 +7,12 @@ import cz.games.lp.enums.ProductionBlocks;
 import cz.games.lp.enums.Sources;
 import cz.games.lp.panes.PaneModel;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -20,10 +22,10 @@ public class ProductionActions extends AnimationTimer {
     private static final long DELAY = 1_000_000_000L;
     private final PaneModel model;
     private final AtomicInteger atomicIndex = new AtomicInteger();
+    private final ChoiceDialog choiceDialog;
 
     private List<Node> list;
     private boolean isAnimationTimerRunning;
-    private boolean produceDialogOpen;
     private long stoppedTime = 0L;
     private Card selectedCard;
     private Runnable productionMethod;
@@ -32,6 +34,7 @@ public class ProductionActions extends AnimationTimer {
 
     public ProductionActions(PaneModel model) {
         this.model = model;
+        choiceDialog = new ChoiceDialog(model);
     }
 
     public void proceedProduction(Runnable switchPhase) {
@@ -74,15 +77,27 @@ public class ProductionActions extends AnimationTimer {
 
     private void produceFactionOrCommonCards(Card selectedCard) {
         this.selectedCard = selectedCard;
+        model.setCardInProcess(true);
         selectedCard.select();
         if (selectedCard.getCondition() != null) {
             useConditionFromProductionCard();
-        } else if (selectedCard.getOrEffect() != null) {
-
+        } else if (!selectedCard.getOrEffect().isEmpty()) {
+            Platform.runLater(() -> {
+                Optional<List<String>> response = choiceDialog.addSources(selectedCard.getCardEffect(), selectedCard.getOrEffect());
+                response.ifPresent(responseList -> {
+                    if ("SCORE_POINT".equals(responseList.getFirst())) {
+                        model.getScoreBoard().scorePoint(responseList.size());
+                    } else {
+                        responseList.forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+                        model.setCardInProcess(false);
+                    }
+                });
+            });
         } else if ("COMMON_CARD".equals(selectedCard.getCardEffect().getFirst())) {
             model.getActionManager().drawCommonCard(selectedCard.getCardEffect().size());
         } else {
             selectedCard.getCardEffect().forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+            model.setCardInProcess(false);
         }
     }
 
@@ -136,7 +151,7 @@ public class ProductionActions extends AnimationTimer {
 
     @Override
     public void handle(long currentTime) {
-        if (currentTime < stoppedTime + DELAY || produceDialogOpen) {
+        if (currentTime < stoppedTime + DELAY || model.isCardInProcess()) {
             return;
         }
         if (selectedCard != null) {
