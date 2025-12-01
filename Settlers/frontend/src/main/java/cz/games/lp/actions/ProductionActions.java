@@ -2,6 +2,7 @@ package cz.games.lp.actions;
 
 import cz.games.lp.components.Card;
 import cz.games.lp.enums.CardType;
+import cz.games.lp.enums.Colors;
 import cz.games.lp.enums.ProductionBlocks;
 import cz.games.lp.enums.Sources;
 import cz.games.lp.panes.PaneModel;
@@ -11,6 +12,8 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 public class ProductionActions extends AnimationTimer {
 
@@ -45,7 +48,7 @@ public class ProductionActions extends AnimationTimer {
         switch (nextProductionBlocks) {
             case FACTIONS -> {
                 list = model.getBuiltFactionCards().get(CardType.PRODUCTION).getChildren().reversed();
-                executeAnimationTimer(this::produceFactionOrCommonCards);
+                executeAnimationTimer(() -> produceFactionOrCommonCards((Card) list.get(atomicIndex.getAndIncrement())));
                 nextProductionBlocks = ProductionBlocks.DEALS;
             }
             case DEALS -> {
@@ -59,7 +62,7 @@ public class ProductionActions extends AnimationTimer {
             }
             case COMMONS -> {
                 list = model.getBuiltCommonCards().get(CardType.PRODUCTION).getChildren();
-                executeAnimationTimer(this::produceFactionOrCommonCards);
+                executeAnimationTimer(() -> produceFactionOrCommonCards((Card) list.get(atomicIndex.getAndIncrement())));
                 nextProductionBlocks = ProductionBlocks.DEFAULT;
             }
             default -> {
@@ -69,10 +72,50 @@ public class ProductionActions extends AnimationTimer {
         }
     }
 
-    private void produceFactionOrCommonCards() {
-        selectedCard = (Card) list.get(atomicIndex.getAndIncrement());
+    private void produceFactionOrCommonCards(Card selectedCard) {
+        this.selectedCard = selectedCard;
         selectedCard.select();
-        selectedCard.getCardEffect().forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+        if (selectedCard.getCondition() != null) {
+            useConditionFromProductionCard();
+        } else if (selectedCard.getOrEffect() != null) {
+
+        } else if ("COMMON_CARD".equals(selectedCard.getCardEffect().getFirst())) {
+            model.getActionManager().drawCommonCard(selectedCard.getCardEffect().size());
+        } else {
+            selectedCard.getCardEffect().forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+        }
+    }
+
+    private void useConditionFromProductionCard() {
+        int founds;
+        switch (selectedCard.getCondition()) {
+            case "SAMURAI" -> {
+                founds = checkAllCards(Card::isSamurai);
+                model.getScoreBoard().scorePoint(founds);
+            }
+            case "FACTION_CARD" -> {
+                model.getActionManager().drawFactionCard(selectedCard.getCardEffect().size());
+            }
+            default -> {
+                founds = checkAllCards(card -> card.getColors().contains(Colors.valueOf(selectedCard.getCondition())));
+                IntStream.range(0, founds).forEach(index -> model.getSources().get(Sources.valueOf(selectedCard.getCardEffect().getFirst())).addOne());
+            }
+        }
+    }
+
+    private int checkAllCards(Predicate<Card> predicate) {
+        AtomicInteger foundCondition = new AtomicInteger(0);
+        model.getBuiltFactionCards().forEach((cardType, cards) ->
+                cards.getChildren().stream().filter(node -> predicate.test((Card) node)).forEach(node ->
+                        foundCondition.getAndIncrement()));
+        model.getBuiltCommonCards().forEach((cardType, cards) ->
+                cards.getChildren().stream().filter(node -> predicate.test((Card) node)).forEach(node ->
+                        foundCondition.getAndIncrement()));
+
+        if (foundCondition.get() > selectedCard.getCardEffect().size()) {
+            foundCondition.set(selectedCard.getCardEffect().size());
+        }
+        return foundCondition.get();
     }
 
     private void produceDeals() {

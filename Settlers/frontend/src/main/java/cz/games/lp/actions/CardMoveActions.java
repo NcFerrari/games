@@ -20,19 +20,18 @@ public class CardMoveActions {
 
     private final PaneModel model;
 
-    private boolean isTranslateTransactionRunning;
     private boolean sequentialTransitionRunning;
 
     public CardMoveActions(PaneModel model) {
         this.model = model;
     }
 
-    public Animation drawFactionCard(boolean play) {
-        return drawCard(model.getFactionCard(), model.getCardsInHand(), getFactionCard(), model.getFactionCards(), model.getFactionCardsStack(), CardType.FACTION, play);
+    public Animation drawFactionCard() {
+        return drawCard(model.getFactionCard(), model.getCardsInHand(), getFactionCard(), model.getFactionCards(), model.getFactionCardsStack(), CardType.FACTION);
     }
 
-    public Animation drawCommonCard(boolean play) {
-        return drawCard(model.getCommonCard(), model.getCardsInHand(), getCommonCard(), model.getCommonCards(), model.getCommonCardsStack(), CardType.COMMON, play);
+    public Animation drawCommonCard() {
+        return drawCard(model.getCommonCard(), model.getCardsInHand(), getCommonCard(), model.getCommonCards(), model.getCommonCardsStack(), CardType.COMMON);
     }
 
     public void drawMoreCards(Runnable command, Animation... animations) {
@@ -51,7 +50,7 @@ public class CardMoveActions {
         sequentialTransition.play();
     }
 
-    private Animation drawCard(Card nodeFrom, HBox toPane, Card card, List<Card> list, StackPane cardStack, CardType typ, boolean play) {
+    private Animation drawCard(Card nodeFrom, HBox toPane, Card card, List<Card> list, StackPane cardStack, CardType typ) {
         if (disableToMove(model.getCardSizeMap().get(typ))) {
             return new PauseTransition(Duration.ZERO);
         }
@@ -59,10 +58,6 @@ public class CardMoveActions {
         Animation animation = moveCard(nodeFrom, toPane, card, list);
         if (model.getCardSizeMap().get(typ) == 0) {
             cardStack.getChildren().clear();
-        }
-        if (play) {
-            isTranslateTransactionRunning = true;
-            animation.play();
         }
         return animation;
     }
@@ -86,7 +81,6 @@ public class CardMoveActions {
                 paneTo.getChildren().addFirst(listOfCards.getFirst());
                 listOfCards.remove(listOfCards.getFirst());
             }
-            isTranslateTransactionRunning = false;
         });
         return translateTransition;
     }
@@ -100,6 +94,6 @@ public class CardMoveActions {
     }
 
     private boolean disableToMove(int cardListSize) {
-        return isTranslateTransactionRunning || cardListSize == 0 || sequentialTransitionRunning;
+        return cardListSize == 0 || sequentialTransitionRunning;
     }
 }

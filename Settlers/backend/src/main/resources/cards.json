@@ -411,7 +411,7 @@
     "colors": [
       "BLACK"
     ],
-    "condition": "black color",
+    "condition": "BLACK",
     "dealSource": "WOOD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -697,7 +697,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "pink color",
+    "condition": "PINK",
     "dealSource": "SETTLER",
     "orEffect": [],
     "sourcesForBuild": [
@@ -721,7 +721,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "pink color",
+    "condition": "PINK",
     "dealSource": "SETTLER",
     "orEffect": [],
     "sourcesForBuild": [
@@ -765,7 +765,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "samurai",
+    "condition": "SAMURAI",
     "dealSource": "STONE",
     "orEffect": [],
     "sourcesForBuild": [
@@ -790,7 +790,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "samurai",
+    "condition": "SAMURAI",
     "dealSource": "GOLD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -813,7 +813,7 @@
     "colors": [
       "BLUE"
     ],
-    "condition": "back to factions",
+    "condition": "FACTION_CARD",
     "dealSource": "CARD",
     "orEffect": [
       "FACTION_CARD"
@@ -1403,7 +1403,7 @@
     "colors": [
       "BLUE"
     ],
-    "condition": "back to factions",
+    "condition": "FACTION_CARD",
     "dealSource": "CARD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -1834,7 +1834,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "gray color",
+    "condition": "GRAY",
     "dealSource": "CARD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -2390,7 +2390,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "gray color",
+    "condition": "GRAY",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2434,7 +2434,7 @@
     "colors": [
       "BROWN"
     ],
-    "condition": "brown color",
+    "condition": "BROWN",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2618,7 +2618,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "gray color",
+    "condition": "GRAY",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2758,7 +2758,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "pink color",
+    "condition": "PINK",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2941,7 +2941,7 @@
     "colors": [
       "RED"
     ],
-    "condition": "red color",
+    "condition": "RED",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2989,7 +2989,7 @@
     "colors": [
       "GOLD"
     ],
-    "condition": "gold color",
+    "condition": "GOLD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -3038,7 +3038,7 @@
     "colors": [
       "BROWN"
     ],
-    "condition": "brown color",
+    "condition": "BROWN",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -3971,7 +3971,7 @@
     "colors": [
       "RED"
     ],
-    "condition": "red color",
+    "condition": "RED",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -4055,7 +4055,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "pink color",
+    "condition": "PINK",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -4099,7 +4099,7 @@
     "colors": [
       "GOLD"
     ],
-    "condition": "gold color",
+    "condition": "GOLD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [

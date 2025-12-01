@@ -25,10 +25,12 @@ public class Card extends Group {
     private List<Colors> colors = new ArrayList<>();
     private List<String> cardEffect;
     private List<String> orEffect;
+    private String condition;
     private String cardName;
     private String cardType;
     private String dealSource;
     private String cardEffectForPosition;
+    private boolean samurai;
 
     public Card(String cardName, PaneModel model) {
         this("", cardName, model.getManager().getCardWidth(), model.getManager().getCardHeight());

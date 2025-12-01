@@ -9,6 +9,7 @@ import cz.games.lp.components.RoundPhases;
 import cz.games.lp.components.ScoreBoard;
 import cz.games.lp.enums.CardType;
 import cz.games.lp.enums.Phases;
+import cz.games.lp.enums.Sex;
 import cz.games.lp.panes.ChoiceDialog;
 import cz.games.lp.panes.PaneModel;
 import cz.games.lp.panes.UIPane;
@@ -128,32 +129,24 @@ public class MainApp extends Application {
     }
 
     private void mockData() {
+        model.getCardSizeMap().put(CardType.COMMON, model.getManager().getCommonCardCount());
+        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), "commons", model.getCardSizeMap().get(CardType.COMMON)));
+        model.setCommonCard(new Card("common", model));
+        model.getCommonCardsStack().getChildren().add(model.getCommonCard());
+        model.getCardSizeMap().put(CardType.FACTION, model.getManager().getFactionCardCount());
+        manager.setFactionAndSex("Egypťané", Sex.MALE);
         model.getRoundPhases().setCurrentPhase(Phases.PRODUCTION);
-        model.getFactionBoard().setImage("f_egypt");
-        Card a = new Card("egypt/", "egy004", model);
-        Card b = new Card("egypt/", "egy011", model);
-        Card c = new Card("egypt/", "egy026", model);
-        model.getBuiltFactionCards().get(CardType.PRODUCTION).getChildren().addAll(a, b, c);
-
-        Card d = new Card("egypt/", "egy015", model);
-        model.getDeals().getChildren().add(d);
-
-        Card e = new Card("commons/", "com026", model);
-        Card f = new Card("commons/", "com015", model);
-        Card g = new Card("commons/", "com025", model);
-        Card h = new Card("commons/", "com068", model);
-        Card i = new Card("commons/", "com064", model);
-        model.getBuiltCommonCards().get(CardType.PRODUCTION).getChildren().addAll(e, f, g, h, i);
-
-        model.getManager().fillCardWithData(a);
-        model.getManager().fillCardWithData(b);
-        model.getManager().fillCardWithData(c);
-        model.getManager().fillCardWithData(d);
-        model.getManager().fillCardWithData(e);
-        model.getManager().fillCardWithData(f);
-        model.getManager().fillCardWithData(g);
-        model.getManager().fillCardWithData(h);
-        model.getManager().fillCardWithData(i);
+        model.getFactionBoard().setImage(manager.getFactionBoard());
+        model.getScoreBoard().setFactionToken(manager.getFaction(), false);
+        model.setFactionCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), manager.getFaction(), model.getCardSizeMap().get(CardType.FACTION)));
+        model.setFactionCard(new Card(manager.getFaction(), model));
+        model.getFactionCardsStack().getChildren().add(model.getFactionCard());
+        String[] cards = new String[]{"egy004"};
+        for (String cardName : cards) {
+            Card card = new Card("egypt/", cardName, model);
+            model.getBuiltFactionCards().get(CardType.PRODUCTION).getChildren().add(card);
+            model.getManager().fillCardWithData(card);
+        }
     }
 
     private void actionPhase() {
