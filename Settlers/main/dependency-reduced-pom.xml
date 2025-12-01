@@ -21,7 +21,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>lp.Manager</mainClass>
+                  <mainClass>cz.games.lp.main.Manager</mainClass>
                 </transformer>
               </transformers>
             </configuration>

@@ -6,10 +6,10 @@ module frontend {
     requires java.desktop;
     requires static lombok;
 
-    exports cz.games.lp.api;
-    exports cz.games.lp;
-    exports cz.games.lp.enums;
-    exports cz.games.lp.components;
-    exports cz.games.lp.panes;
-    exports cz.games.lp.actions;
+    exports cz.games.lp.frontend.api;
+//    exports cz.games.lp.main.enums;
+    exports cz.games.lp.frontend.components;
+    exports cz.games.lp.frontend.panes;
+    exports cz.games.lp.frontend.actions;
+    exports cz.games.lp.frontend;
 }
