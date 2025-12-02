@@ -28,7 +28,7 @@ public class BackendManager {
         log(getClass()).info("loadAllCardData");
         long timeStart = System.currentTimeMillis();
         log(getClass()).info("starting reading card data from json");
-        List<CardJSON> jsonData = new JsonCreator().loadCardData();
+        List<CardJSON> jsonData = new JsonCreator(this).loadCardData("data/cards.json");
         rawCardMap = jsonData.stream().collect(Collectors.toMap(CardJSON::getCardId, Function.identity()));
         log(getClass()).info("Data loaded in {} ms", System.currentTimeMillis() - timeStart);
     }
