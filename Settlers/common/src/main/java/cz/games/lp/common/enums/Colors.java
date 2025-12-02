@@ -1,4 +1,4 @@
-package cz.games.lp.main.enums;
+package cz.games.lp.common.enums;
 
 public enum Colors {
     BLACK,

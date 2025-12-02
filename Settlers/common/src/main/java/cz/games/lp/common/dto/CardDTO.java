@@ -1,10 +1,10 @@
-package cz.games.lp.main.dto;
+package cz.games.lp.common.dto;
 
-import cz.games.lp.main.enums.CardEffects;
-import cz.games.lp.main.enums.CardTypes;
-import cz.games.lp.main.enums.Colors;
-import cz.games.lp.main.enums.Conditions;
-import cz.games.lp.main.enums.Sources;
+import cz.games.lp.common.enums.CardEffects;
+import cz.games.lp.common.enums.CardTypes;
+import cz.games.lp.common.enums.Colors;
+import cz.games.lp.common.enums.Conditions;
+import cz.games.lp.common.enums.Sources;
 import lombok.Getter;
 import lombok.Setter;
 

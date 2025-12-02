@@ -1,4 +1,4 @@
-package cz.games.lp.backend.files;
+package cz.games.lp.backend.file_workers;
 
 import cz.games.lp.backend.json_object.CardJSON;
 import tools.jackson.core.type.TypeReference;

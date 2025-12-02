@@ -1,8 +1,7 @@
 package cz.games.lp.main.game;
 
-import cz.games.lp.backend.BackendManager;
-import cz.games.lp.main.enums.Factions;
-import cz.games.lp.main.enums.Phases;
+import cz.games.lp.common.enums.Factions;
+import cz.games.lp.common.enums.Phases;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,16 +14,11 @@ import java.util.stream.IntStream;
 @Getter
 public class GameDataModel {
 
-    private final BackendManager backendManager;
     private List<Integer> commonCards;
     private List<Integer> factionCards;
     private Factions selectedFaction;
     private int round;
     private Phases currentPhase;
-
-    public GameDataModel(BackendManager backendManager) {
-        this.backendManager = backendManager;
-    }
 
     /**
      * 1 (set 1.st round)
@@ -33,14 +27,13 @@ public class GameDataModel {
      * 4 (first 4 cards)
      */
     public void newGame(int commonCardCount, int factionCardCount) {
-        backendManager.log(getClass()).info("creating new game");
         // 1 (set 1.st round)
         setRound(1);
         currentPhase = Phases.PRODUCTION;
         // 2 (prepare common cards)
         commonCards = fillCards(commonCardCount);
         // 3 (faction choice)
-        selectedFaction = Factions.EGYPT_F;
+        selectedFaction = Factions.BARBARIAN_M;
         factionCards = fillCards(factionCardCount);
         // 4 (first 4 cards) (in frontend)
     }

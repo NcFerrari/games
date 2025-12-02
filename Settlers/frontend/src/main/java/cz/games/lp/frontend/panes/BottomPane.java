@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import java.util.Map;
 
 public class BottomPane extends HBox {
-
+//    private final CardTypes[] cardTypesForImperialSides = {CardTypes.PRODUCTION, CardTypes.PROPERTIES, CardTypes.ACTION};
     public BottomPane(PaneModel model) {
 //        setPrefHeight(model.getManager().getHeight() * 0.612);
 

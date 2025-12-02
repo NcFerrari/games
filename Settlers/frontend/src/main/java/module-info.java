@@ -7,7 +7,6 @@ module frontend {
     requires static lombok;
 
     exports cz.games.lp.frontend.api;
-//    exports cz.games.lp.main.enums;
     exports cz.games.lp.frontend.components;
     exports cz.games.lp.frontend.panes;
     exports cz.games.lp.frontend.actions;
