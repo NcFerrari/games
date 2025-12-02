@@ -1,8 +1,6 @@
 package cz.games.lp.frontend.actions;
 
-import cz.games.lp.frontend.panes.PaneModel;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -17,7 +15,7 @@ public class ChoiceDialog extends Dialog<List<String>> {
     private ToggleGroup sourcesToChoice;
     private List<String>[] lists;
 
-    public ChoiceDialog(PaneModel model) {
+    public ChoiceDialog(CommonModel model) {
 //        setTitle(model.getManager().getProduceChoiceDialog());
 //        setHeaderText(getTitle());
 //        setWidth(model.getManager().getWidth() * 0.164835);
@@ -26,7 +24,7 @@ public class ChoiceDialog extends Dialog<List<String>> {
 //        getDialogPane().setContent(createContent(model));
     }
 
-    private HBox createContent(PaneModel model) {
+    private HBox createContent(CommonModel model) {
         hBox = new HBox();
         sourcesToChoice = new ToggleGroup();
 //        ButtonType type = new ButtonType(model.getManager().getStartNewGameButtonTtitle(), ButtonBar.ButtonData.OK_DONE);

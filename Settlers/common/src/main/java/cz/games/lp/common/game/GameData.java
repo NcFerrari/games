@@ -1,4 +1,4 @@
-package cz.games.lp.main.game;
+package cz.games.lp.common.game;
 
 import cz.games.lp.common.enums.Factions;
 import cz.games.lp.common.enums.Phases;
@@ -12,8 +12,10 @@ import java.util.stream.IntStream;
 
 @Setter
 @Getter
-public class GameDataModel {
+public class GameData {
 
+    private static final int FACTION_CARD_COUNT = 30;
+    private static final int COMMON_CARD_COUNT = 84;
     private List<Integer> commonCards;
     private List<Integer> factionCards;
     private Factions selectedFaction;
@@ -26,15 +28,14 @@ public class GameDataModel {
      * 3 (faction choice)
      * 4 (first 4 cards)
      */
-    public void newGame(int commonCardCount, int factionCardCount) {
+    public void newGame() {
         // 1 (set 1.st round)
         setRound(1);
         currentPhase = Phases.PRODUCTION;
         // 2 (prepare common cards)
-        commonCards = fillCards(commonCardCount);
+        commonCards = fillCards(COMMON_CARD_COUNT);
         // 3 (faction choice)
-        selectedFaction = Factions.BARBARIAN_M;
-        factionCards = fillCards(factionCardCount);
+        factionCards = fillCards(FACTION_CARD_COUNT);
         // 4 (first 4 cards) (in frontend)
     }
 

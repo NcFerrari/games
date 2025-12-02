@@ -1,17 +1,15 @@
 package cz.games.lp.frontend.actions;
 
-import cz.games.lp.frontend.panes.PaneModel;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.application.Platform;
-
-import java.util.stream.IntStream;
 
 public class ActionManager {
 
     private final CardMoveActions cardMoveActions;
     private final ProductionActions productionActions;
 
-    public ActionManager(PaneModel model) {
+    public ActionManager(CommonModel model) {
         cardMoveActions = new CardMoveActions(model);
         productionActions = new ProductionActions(model);
     }

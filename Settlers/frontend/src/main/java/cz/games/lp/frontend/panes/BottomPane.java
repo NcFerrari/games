@@ -1,16 +1,12 @@
 package cz.games.lp.frontend.panes;
 
 //import cz.games.lp.backend.frontend.enums.CardType;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.control.ScrollPane;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-import java.util.Map;
 
 public class BottomPane extends HBox {
 //    private final CardTypes[] cardTypesForImperialSides = {CardTypes.PRODUCTION, CardTypes.PROPERTIES, CardTypes.ACTION};
-    public BottomPane(PaneModel model) {
+    public BottomPane(CommonModel model) {
 //        setPrefHeight(model.getManager().getHeight() * 0.612);
 
 //        VBox factionSide = setSides(model, model.getBuiltFactionCards(), NodeOrientation.RIGHT_TO_LEFT);

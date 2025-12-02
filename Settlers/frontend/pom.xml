@@ -38,5 +38,11 @@
             <artifactId>javafx-graphics</artifactId>
             <version>${fx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>cz.games.lp</groupId>
+            <artifactId>common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

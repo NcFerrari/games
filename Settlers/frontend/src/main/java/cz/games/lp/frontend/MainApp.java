@@ -1,46 +1,21 @@
 package cz.games.lp.frontend;
 
-import cz.games.lp.frontend.actions.ActionManager;
+import cz.games.lp.common.enums.Factions;
 import cz.games.lp.frontend.api.IManager;
-import cz.games.lp.frontend.components.Card;
-import cz.games.lp.frontend.components.Deals;
-import cz.games.lp.frontend.components.FactionBoard;
-import cz.games.lp.frontend.components.RoundPhases;
-import cz.games.lp.frontend.components.ScoreBoard;
-//import cz.games.lp.backend.frontend.enums.CardType;
-//import cz.games.lp.backend.frontend.enums.Phases;
-//import cz.games.lp.backend.frontend.enums.Sex;
-//import cz.games.lp.frontend.panes.ChoiceDialog;
-import cz.games.lp.frontend.panes.PaneModel;
+import cz.games.lp.frontend.enums.Texts;
+import cz.games.lp.frontend.models.CommonModel;
 import cz.games.lp.frontend.panes.UIPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import lombok.Getter;
 
 public class MainApp extends Application {
 
     private static IManager manager;
 
-    private final PaneModel model = new PaneModel();
-
-//    @Getter
-//    private final double width = src.getWidth() - 100;
-//    @Getter
-//    private final double height = src.getHeight() - 100;
-//    @Getter
-//    private final double cardWidth = width * 0.078;
-//    @Getter
-//    private final double cardHeight = height * 0.204;
-//    @Getter
-//    private final double scoreXMove = width * 0.0219759;
-//    @Getter
-//    private final double scoreYMove = height * 0.051015091;
-
-//    private ChoiceDialog choiceFactionDialog;
+    private final CommonModel model = new CommonModel();
 
     public static void run(IManager manager) {
         MainApp.manager = manager;
@@ -50,32 +25,28 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
         initModel();
-//        choiceFactionDialog = new ChoiceDialog(model);
-//        StackPane mainPane = new StackPane(new UIPane(model), createFrontPane());
-//
-//        stage.setScene(new Scene(mainPane));
-//        stage.setWidth(model.getManager().getWidth());
-//        stage.setHeight(model.getManager().getHeight());
-//        stage.setTitle(manager.getTitle());
+        StackPane mainPane = new StackPane(new UIPane(model), createFrontPane());
+        stage.setScene(new Scene(mainPane));
+        stage.setWidth(model.getUIConfig().getWidth());
+        stage.setHeight(model.getUIConfig().getHeight());
+        stage.setTitle(Texts.TITLE.get());
         stage.setResizable(false);
         stage.show();
 
-        setPhases();
+//        setPhases();
 
 //        mockData();
         newGame();
     }
 
     private void initModel() {
-        model.setManager(manager);
-//        model.setCardSpeed(Duration.millis(manager.getCardSpeed()));
-        model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
-        model.setHeaderStyle("-fx-background-color: #6ae7ba");
-        model.setFactionBoard(new FactionBoard(model));
-        model.setScoreBoard(new ScoreBoard(model));
-        model.setRoundPhases(new RoundPhases(model));
-        model.setDeals(new Deals(model));
-        model.setActionManager(new ActionManager(model));
+        model.setGameData(manager.getGameData());
+//        model.setCardSpeed(Duration.millis(manager.getAnimationSpeed()));
+//        model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
+//        model.setHeaderStyle("-fx-background-color: #6ae7ba");
+//        model.setFactionBoard(new FactionBoard(model));
+//        model.setScoreBoard(new ScoreBoard(model));
+//        model.setActionManager(new ActionManager(model));
     }
 
     private Pane createFrontPane() {
@@ -86,10 +57,13 @@ public class MainApp extends Application {
     }
 
     private void newGame() {
+        model.getGameData().setSelectedFaction(Factions.BARBARIAN_M);
+        model.getGameData().newGame();
+        model.getSourcePane().generateNewSources();
         // 0 (remove everything)
         clearTable();
         // 1 (set 1.st round
-        model.getScoreBoard().setRound(1);
+//        model.getScoreBoard().setRound(1);
         // 2 (prepare common cards)
 //        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), "commons", model.getCardSizeMap().get(CardType.COMMON)));
 //        model.setCommonCard(new Card("common", model));
@@ -102,7 +76,7 @@ public class MainApp extends Application {
 //        model.getFactionCardsStack().getChildren().add(model.getFactionCard());
 //        model.getScoreBoard().setFactionToken(manager.getFaction(), false);
         // 4 (first 4 cards)
-        model.getActionManager().prepareFirstFourCards();
+//        model.getActionManager().prepareFirstFourCards();
     }
 
     private void clearTable() {
@@ -162,17 +136,5 @@ public class MainApp extends Application {
 //            model.getManager().fillCardWithData(card);
 //            card.setSamurai(true);
 //        }
-    }
-
-    private void actionPhase() {
-        //TODO - prepared method
-    }
-
-    private void passActions() {
-        //TODO - prepared method
-    }
-
-    private void cleanUpPhase() {
-        //TODO - prepared method
     }
 }

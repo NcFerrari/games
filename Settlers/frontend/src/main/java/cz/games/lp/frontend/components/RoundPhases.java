@@ -1,16 +1,8 @@
 package cz.games.lp.frontend.components;
 
 //import cz.games.lp.backend.frontend.enums.Phases;
-import cz.games.lp.frontend.panes.PaneModel;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.layout.VBox;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.IntStream;
 
 public class RoundPhases extends VBox {
 
@@ -20,7 +12,7 @@ public class RoundPhases extends VBox {
 //    @Setter
 //    private Phases currentPhase;
 
-    public RoundPhases(PaneModel model) {
+    public RoundPhases(CommonModel model) {
 //        setPrefWidth(model.getManager().getWidth() * 0.0615);
 //        setAlignment(Pos.CENTER);
 //        IntStream.range(1, 6).forEach(i -> {

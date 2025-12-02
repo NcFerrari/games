@@ -1,7 +1,8 @@
 package cz.games.lp.frontend.panes;
 
-import cz.games.lp.frontend.components.SourceStatusBlock;
-//import cz.games.lp.backend.frontend.enums.Sources;
+import cz.games.lp.common.enums.Sources;
+import cz.games.lp.frontend.components.Supply;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.geometry.Pos;
 import javafx.scene.layout.FlowPane;
 
@@ -9,25 +10,32 @@ import java.util.List;
 
 public class SourcePane extends FlowPane {
 
-    public SourcePane(PaneModel model) {
+    private final CommonModel model;
+
+    public SourcePane(CommonModel model) {
+        this.model = model;
+        model.setSourcePane(this);
         setAlignment(Pos.CENTER);
-        setStyle(model.getHeaderStyle());
-
-        generateNewSources(model);
-//        addSourcesIntoPane(model);
+        setStyle(model.getUIConfig().getHeaderStyle());
     }
 
-    private void generateNewSources(PaneModel model) {
-//        for (Sources source : model.getManager().getSourcesInOwnSupply()) {
-//            model.getSources().put(source, new SourceStatusBlock(source, model));
-//        }
+    public void generateNewSources() {
+        if (model.getGameData().getSelectedFaction() == null) {
+            return;
+        }
+        model.getOwnSupplies().clear();
+        for (Sources source : model.getGameData().getSelectedFaction().getSourcesInOwnSupply()) {
+            model.getOwnSupplies().put(source, new Supply(source, model));
+        }
+        addSourcesIntoPane();
     }
 
-//    private void addSourcesIntoPane(PaneModel model) {
-//        List<SourceStatusBlock> sourceStatusBlocks = model.getSources()
-//                .values()
-//                .stream()
-//                .toList();
-//        getChildren().addAll(sourceStatusBlocks);
-//    }
+    private void addSourcesIntoPane() {
+        getChildren().clear();
+        List<Supply> supplies = model.getOwnSupplies()
+                .values()
+                .stream()
+                .toList();
+        getChildren().addAll(supplies);
+    }
 }

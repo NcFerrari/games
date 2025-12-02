@@ -2,14 +2,11 @@ package cz.games.lp.frontend.components;
 
 //import cz.games.lp.backend.frontend.enums.Colors;
 //import cz.games.lp.backend.frontend.enums.Sources;
-import cz.games.lp.frontend.panes.PaneModel;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,11 +29,11 @@ public class Card extends Group {
     private String cardEffectForPosition;
     private boolean samurai;
 
-    public Card(String cardName, PaneModel model) {
+    public Card(String cardName, CommonModel model) {
 //        this("", cardName, model.getManager().getCardWidth(), model.getManager().getCardHeight());
     }
 
-    public Card(String path, String cardName, PaneModel model) {
+    public Card(String path, String cardName, CommonModel model) {
 //        this(path, cardName, model.getManager().getCardWidth(), model.getManager().getCardHeight());
     }
 

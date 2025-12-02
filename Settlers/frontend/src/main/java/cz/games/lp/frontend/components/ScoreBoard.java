@@ -1,12 +1,12 @@
 package cz.games.lp.frontend.components;
 
-import cz.games.lp.frontend.panes.PaneModel;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 
 public class ScoreBoard extends Group {
 
-    private final PaneModel model;
+    private final CommonModel model;
     private final TranslateTransition roundTransition = new TranslateTransition();
     private final TranslateTransition scoreTransition = new TranslateTransition();
 //    private final ImageNode roundPointer;
@@ -17,7 +17,7 @@ public class ScoreBoard extends Group {
     private int xMove;
     private String faction;
 
-    public ScoreBoard(PaneModel model) {
+    public ScoreBoard(CommonModel model) {
         this.model = model;
 //        ImageNode scoreBoardImage = new ImageNode(
 //                model.getManager().getWidth() * 0.278,
@@ -69,7 +69,7 @@ public class ScoreBoard extends Group {
      */
     public void scorePoint(int scorePoint) {
         if (scorePoint == 0) {
-            model.setCardInProcess(false);
+//            model.setCardInProcess(false);
             return;
         }
         score++;

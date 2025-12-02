@@ -2,27 +2,23 @@ package cz.games.lp.frontend.actions;
 
 import cz.games.lp.frontend.components.Card;
 //import cz.games.lp.backend.frontend.enums.CardType;
-import cz.games.lp.frontend.panes.PaneModel;
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
-import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.util.List;
 
 public class CardMoveActions {
 
-    private final PaneModel model;
+    private final CommonModel model;
 
     private boolean sequentialTransitionRunning;
 
-    public CardMoveActions(PaneModel model) {
+    public CardMoveActions(CommonModel model) {
         this.model = model;
     }
 //
@@ -63,28 +59,28 @@ public class CardMoveActions {
 //        return animation;
 //    }
 
-    private Animation moveCard(Node nodeFrom, Pane paneTo, Node card, List<Card> listOfCards) {
-        Bounds boundsFrom = nodeFrom.localToScene(nodeFrom.getBoundsInLocal());
-        card.setLayoutX(boundsFrom.getMinX());
-        card.setLayoutY(boundsFrom.getMinY());
-        model.getFrontPane().getChildren().add(card);
-        Bounds boundsTo = paneTo.localToScene(paneTo.getBoundsInLocal());
-        TranslateTransition translateTransition = new TranslateTransition(model.getCardSpeed(), card);
-        translateTransition.setToX(boundsTo.getMinX() - boundsFrom.getMinX());
-        translateTransition.setToY(boundsTo.getMinY() - boundsFrom.getMinY());
-        translateTransition.setOnFinished(e -> {
-            if (listOfCards == null) {
-                paneTo.getChildren().add(card);
-                card.setTranslateX(0);
-                card.setTranslateY(0);
-            } else {
-                model.getFrontPane().getChildren().remove(card);
-                paneTo.getChildren().addFirst(listOfCards.getFirst());
-                listOfCards.remove(listOfCards.getFirst());
-            }
-        });
-        return translateTransition;
-    }
+//    private Animation moveCard(Node nodeFrom, Pane paneTo, Node card, List<Card> listOfCards) {
+//        Bounds boundsFrom = nodeFrom.localToScene(nodeFrom.getBoundsInLocal());
+//        card.setLayoutX(boundsFrom.getMinX());
+//        card.setLayoutY(boundsFrom.getMinY());
+////        model.getFrontPane().getChildren().add(card);
+//        Bounds boundsTo = paneTo.localToScene(paneTo.getBoundsInLocal());
+//        TranslateTransition translateTransition = new TranslateTransition(model.getCardSpeed(), card);
+//        translateTransition.setToX(boundsTo.getMinX() - boundsFrom.getMinX());
+//        translateTransition.setToY(boundsTo.getMinY() - boundsFrom.getMinY());
+////        translateTransition.setOnFinished(e -> {
+//            if (listOfCards == null) {
+//                paneTo.getChildren().add(card);
+//                card.setTranslateX(0);
+//                card.setTranslateY(0);
+//            } else {
+////                model.getFrontPane().getChildren().remove(card);
+////                paneTo.getChildren().addFirst(listOfCards.getFirst());
+////                listOfCards.remove(listOfCards.getFirst());
+//            }
+//        });
+//        return translateTransition;
+//    }
 
 //    private Card getFactionCard() {
 ////        return new Card(model.getManager().getFaction(), model);

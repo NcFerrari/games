@@ -1,10 +1,11 @@
 package cz.games.lp.frontend.panes;
 
+import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.control.ScrollPane;
 
 public class CPUPane extends ScrollPane {
 
-    public CPUPane(PaneModel model) {
+    public CPUPane(CommonModel model) {
 //        setPrefWidth(model.getManager().getCardWidth());
     }
 }
