@@ -1,6 +1,6 @@
 package cz.games.lp.main.enums;
 
-public enum CardType {
+public enum CardTypes {
     PRODUCTION,
     PROPERTIES,
     ACTION,

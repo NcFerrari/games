@@ -2,6 +2,7 @@ package cz.games.lp.main.mapping;
 
 import cz.games.lp.backend.json_object.CardJSON;
 import cz.games.lp.main.dto.CardDTO;
+import cz.games.lp.main.enums.CardEffects;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
@@ -12,27 +13,27 @@ public interface CardMapper {
 
     void mapToCardDTO(Map<String, CardJSON> source, @MappingTarget Map<String, CardDTO> target);
 
-//    default Sources mapStringToSources(String value) {
-//        if (value == null) {
-//            return null;
-//        }
-//        for (Sources source : Sources.values()) {
-//            if (source.getName().equalsIgnoreCase(value)) {
-//                return source;
-//            }
-//        }
-//        throw new IllegalArgumentException("Unknown source " + value);
-//    }
-//
-//    default Colors mapStringToColors(String value) {
-//        if (value == null) {
-//            return null;
-//        }
-//        for (Colors color : Colors.values()) {
-//            if (color.name().equalsIgnoreCase(value)) {
-//                return color;
-//            }
-//        }
-//        throw new IllegalArgumentException("Unknown color " + value);
-//    }
+    default CardEffects mapStringToCardEffect(String value) {
+        if (value == null) {
+            return null;
+        }
+        return switch (value) {
+            case "SAMURAI,SAMURAI" -> CardEffects.TWO_SAMURAIS;
+            case "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD" ->
+                    CardEffects.SIX_SCORE_POINTS_WITH_CARD;
+            case "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT" ->
+                    CardEffects.SIX_SCORE_POINT;
+            case "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT" -> CardEffects.FOUR_SCORE_POINTS;
+            case "CARD,CARD" -> CardEffects.TWO_CARDS;
+            case "SETTLER,SETTLER" -> CardEffects.TWO_SETTLERS;
+            default -> {
+                for (CardEffects effect : CardEffects.values()) {
+                    if (effect.name().equalsIgnoreCase(value)) {
+                        yield effect;
+                    }
+                }
+                yield null;
+            }
+        };
+    }
 }

@@ -3,15 +3,15 @@ package cz.games.lp.main;
 import cz.games.lp.backend.BackendManager;
 import cz.games.lp.frontend.api.IManager;
 import cz.games.lp.main.dto.CardDTO;
-import cz.games.lp.main.enums.CardType;
-import cz.games.lp.main.enums.Faction;
-import cz.games.lp.main.enums.Sources;
+import cz.games.lp.main.enums.CardTypes;
 import cz.games.lp.main.game.GameDataModel;
 import cz.games.lp.main.mapping.CardMapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Manager implements IManager {
 
@@ -20,11 +20,9 @@ public class Manager implements IManager {
     private static final int ANIMATION_SPEED = 400;
 
     private final BackendManager backendManager = new BackendManager();
+    private final GameDataModel gameData = new GameDataModel(backendManager);
     private final CardMapper cardMapper = Mappers.getMapper(CardMapper.class);
-    private final Sources[] sourcesInOwnSupply = {Sources.SETTLER, Sources.WOOD, Sources.STONE, Sources.FOOD, Sources.GOLD, Sources.SWORD, Sources.SHIELD};
-    private final CardType[] cardTypesForImperialSides = {CardType.PRODUCTION, CardType.PROPERTIES, CardType.ACTION};
-
-    private final GameDataModel gameData = new GameDataModel();
+    private final CardTypes[] cardTypesForImperialSides = {CardTypes.PRODUCTION, CardTypes.PROPERTIES, CardTypes.ACTION};
 
     public static void main(String[] args) {
         new Manager().start();
@@ -33,7 +31,7 @@ public class Manager implements IManager {
     private void start() {
         backendManager.log(getClass()).info("starting Application...");
         loadAndMapCardData();
-        mockData();
+        gameData.newGame(COMMON_CARD_COUNT, FACTION_CARD_COUNT);
 //        MainApp.run(this);
     }
 
@@ -42,7 +40,7 @@ public class Manager implements IManager {
         Map<String, CardDTO> cardMap = new HashMap<>();
         Thread loadingDataThread = new Thread(backendManager::loadAllCardData);
         Thread mapDataThread = new Thread(() -> {
-            backendManager.log(CardMapper.class).info("getCardMap");
+            backendManager.log(getClass()).info("getCardMap");
             cardMapper.mapToCardDTO(backendManager.getCardMap(), cardMap);
         });
         loadingDataThread.start();
@@ -52,22 +50,6 @@ public class Manager implements IManager {
             Thread.currentThread().interrupt();
         }
         mapDataThread.start();
-    }
-
-    /**
-     * 1 (set 1.st round)
-     * 2 (prepare common cards)
-     * 3 (faction choice)
-     * 4 (first 4 cards)
-     */
-    private void mockData() {
-        // 1 (set 1.st round)
-        gameData.reset();
-        // 2 (prepare common cards)
-
-        // 3 (faction choice)
-        gameData.setSelectedFaction(Faction.BARBARIAN_M);
-        // 4 (first 4 cards)
     }
 
 //    public CardType[] getCardTypesForImperialSides() {
