@@ -57,13 +57,12 @@ public class MainApp extends Application {
     }
 
     private void newGame() {
-        model.getGameData().setSelectedFaction(Factions.BARBARIAN_M);
-        model.getGameData().newGame();
-        model.getSourcePane().generateNewSources();
-        // 0 (remove everything)
         clearTable();
-        // 1 (set 1.st round
-//        model.getScoreBoard().setRound(1);
+        model.getGameData().newGame();
+
+        model.getGameData().setSelectedFaction(Factions.BARBARIAN_M);
+        model.getScoreBoard().createFactionToken();
+        model.getSourcePane().generateNewSources();
         // 2 (prepare common cards)
 //        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), "commons", model.getCardSizeMap().get(CardType.COMMON)));
 //        model.setCommonCard(new Card("common", model));

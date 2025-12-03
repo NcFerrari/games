@@ -6,46 +6,58 @@ import javafx.scene.Group;
 
 public class ScoreBoard extends Group {
 
-    private final CommonModel model;
     private final TranslateTransition roundTransition = new TranslateTransition();
     private final TranslateTransition scoreTransition = new TranslateTransition();
-//    private final ImageNode roundPointer;
+    private final CommonModel model;
+    private ImageNode scoreBoardImage;
+    private ImageNode roundPointer;
     private ImageNode factionToken;
     private int score;
     private double scoreXPosition;
     private double scoreYPosition;
     private int xMove;
-    private String faction;
 
     public ScoreBoard(CommonModel model) {
         this.model = model;
-//        ImageNode scoreBoardImage = new ImageNode(
-//                model.getManager().getWidth() * 0.278,
-//                model.getManager().getHeight() * 0.2663,
-//                30 * (model.getManager().getWidth() * 0.278) / 13,
-//                30 * (model.getManager().getHeight() * 0.2663) / 13);
-//        scoreBoardImage.setImage("score_board");
-//
-//        roundPointer = new ImageNode(model.getManager().getWidth() * 0.03296246, model.getManager().getHeight() * 0.040810475);
-//        roundPointer.setImage("round_pointer");
-//        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - model.getManager().getWidth() * 0.0417556);
-//        roundPointer.getImageView().setY(model.getManager().getHeight() * 0.01632419);
-//        getChildren().addAll(scoreBoardImage.getImageView(), roundPointer.getImageView());
+        initBoard();
+        initRoundPointer();
     }
 
+    private void initBoard() {
+        scoreBoardImage = new ImageNode(
+                model.getUIConfig().getScoreBoardWidth(),
+                model.getUIConfig().getScoreBoardHeight(),
+                30 * model.getUIConfig().getScoreBoardWidth() / 13,
+                30 * model.getUIConfig().getScoreBoardHeight() / 13);
+        scoreBoardImage.setImage("score_board");
+        getChildren().add(scoreBoardImage.getImageView());
+    }
+
+    private void initRoundPointer() {
+        roundPointer = new ImageNode(model.getUIConfig().getScoreBoardPointerWidth(), model.getUIConfig().getScoreBoardPointerHeight());
+        roundPointer.setImage("round_pointer");
+        roundPointer.getImageView().setX(scoreBoardImage.getImageView().getFitWidth() - model.getUIConfig().getScoreBoardPointerWidthSpace());
+        roundPointer.getImageView().setY(model.getUIConfig().getScoreBoardPointerHeightSpace());
+        roundTransition.setNode(roundPointer.getImageView());
+        getChildren().add(roundPointer.getImageView());
+    }
+
+
     public void setRound(int round) {
-        if (round < 0 || round > 5) {
+        if (round < 1 || round > 5) {
             return;
         }
-//        double newPosition = model.getManager().getScoreYMove() * (round - 1);
-//        roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
-//        roundTransition.setToY(newPosition);
-//        roundTransition.setNode(roundPointer.getImageView());
+        double newPosition = model.getUIConfig().getScoreYMove() * (round - 1);
+        roundTransition.setFromY(roundPointer.getImageView().getTranslateY());
+        roundTransition.setToY(newPosition);
         roundTransition.play();
     }
 
-    public void setFactionToken(String faction, boolean fiftyPlus) {
-        this.faction = faction;
+    public void createFactionToken() {
+        createFactionToken(false);
+    }
+
+    private void createFactionToken(boolean fiftyPlus) {
         if (factionToken != null) {
             getChildren().remove(factionToken.getImageView());
         }
@@ -53,23 +65,22 @@ public class ScoreBoard extends Group {
         scoreXPosition = 0;
         scoreYPosition = 0;
         xMove = 1;
-//        factionToken = new ImageNode(model.getManager().getWidth() * 0.016483, model.getManager().getHeight() * 0.030612);
-//        factionToken.getImageView().setX(model.getManager().getWidth() * 0.00934);
-//        factionToken.getImageView().setY(model.getManager().getHeight() * 0.022449);
+        factionToken = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
+        factionToken.getImageView().setX(model.getUIConfig().getFactionTokenXMove());
+        factionToken.getImageView().setY(model.getUIConfig().getFactionTokenYMove());
         String fifty = fiftyPlus ? "50" : "";
-        factionToken.setImage("factions/faction_tokens/" + faction + "_token" + fifty);
-        getChildren().add(factionToken.getImageView());
+        factionToken.setImage("factions/faction_tokens/" + model.getGameData().getSelectedFaction().getTokenImage() + fifty);
         scoreTransition.setNode(factionToken.getImageView());
+        getChildren().add(factionToken.getImageView());
     }
 
     /**
      * recursion!
      *
-     * @param scorePoint obtained score
+     * @param scorePoints obtained score
      */
-    public void scorePoint(int scorePoint) {
-        if (scorePoint == 0) {
-//            model.setCardInProcess(false);
+    public void scorePoint(int scorePoints) {
+        if (scorePoints == 0) {
             return;
         }
         score++;
@@ -78,16 +89,16 @@ public class ScoreBoard extends Group {
             xMove = -xMove;
         } else {
             scoreXPosition += xMove;
-//            scoreTransition.setToX(model.getManager().getScoreXMove() * scoreXPosition);
+            scoreTransition.setToX(model.getUIConfig().getScoreXMove() * scoreXPosition);
         }
         scoreTransition.setFromX(factionToken.getImageView().getTranslateX());
         scoreTransition.setFromY(factionToken.getImageView().getTranslateY());
-//        scoreTransition.setToY(scoreYPosition * model.getManager().getScoreYMove());
+        scoreTransition.setToY(scoreYPosition * model.getUIConfig().getScoreYMove());
         scoreTransition.setOnFinished(e -> {
             if (score == 50) {
-                setFactionToken(faction, true);
+                createFactionToken(true);
             }
-            scorePoint(scorePoint - 1);
+            scorePoint(scorePoints - 1);
         });
         scoreTransition.play();
     }
