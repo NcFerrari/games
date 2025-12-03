@@ -1,16 +1,6 @@
-package cz.games.lp.frontend.panes;
+package cz.games.lp.frontend.components;
 
 //import cz.games.lp.backend.frontend.enums.Sex;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-
-import java.util.Objects;
 
 //public class ChoiceDialog extends Dialog<SelectedFaction> {
 

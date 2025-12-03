@@ -1,39 +1,60 @@
 package cz.games.lp.frontend.components;
 
-//import cz.games.lp.backend.frontend.enums.Phases;
+import cz.games.lp.common.enums.Phases;
 import cz.games.lp.frontend.models.CommonModel;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class RoundPhases extends VBox {
 
-//    @Getter
-//    private final Map<Phases, Button> buttons = new LinkedHashMap<>();
-//    @Getter
-//    @Setter
-//    private Phases currentPhase;
+    private final Map<Phases, Button> buttons = new LinkedHashMap<>();
+    private final CommonModel model;
 
     public RoundPhases(CommonModel model) {
-//        setPrefWidth(model.getManager().getWidth() * 0.0615);
-//        setAlignment(Pos.CENTER);
-//        IntStream.range(1, 6).forEach(i -> {
-//            ImageNode imageNode = new ImageNode(model.getManager().getWidth() * 0.0615 - 10, 30);
-//            imageNode.setImage("phase_buttons/" + i + "phase");
-//            Button button = new Button();
-//            button.setGraphic(imageNode.getImageView());
-//            buttons.put(Phases.values()[i - 1], button);
-//            getChildren().add(button);
-//        });
+        this.model = model;
+        setPrefWidth(model.getUIConfig().getRoundPhasesButtonsWidth());
+        setAlignment(Pos.CENTER);
+        for (Phases phase : model.getGameData().getOrderedPhases()) {
+            ImageNode imageNode = new ImageNode(model.getUIConfig().getPhaseButtonWidth(), model.getUIConfig().getPhaseButtonHeight());
+            imageNode.setImage("phase_buttons/" + phase.name());
+            Button button = new Button();
+            button.setGraphic(imageNode.getImageView());
+            button.setOnAction(evt -> {
+                enabledOneButtonOnly(phase.getFollowingPhase());
+                addButtonListener(phase);
+            });
+            buttons.put(phase, button);
+            getChildren().add(button);
+        }
     }
 
     public void reset() {
-//        buttons.forEach((k, v) -> v.setDisable(true));
-//        buttons.get(Phases.LOOKOUT).setDisable(false);
-//        setCurrentPhase(Phases.LOOKOUT);
+        enabledOneButtonOnly(Phases.LOOKOUT);
     }
 
-//    public void switchButton(Phases phase) {
-//        setCurrentPhase(phase);
-//        getButtons().forEach((cardType, button) -> button.setDisable(true));
-//        getButtons().get(phase).setDisable(false);
-//    }
+    private void enabledOneButtonOnly(Phases enabledPhase) {
+        buttons.forEach((phase, button) -> button.setDisable(true));
+        buttons.get(enabledPhase).setDisable(false);
+        model.getGameData().setCurrentPhase(enabledPhase);
+    }
+
+    private void addButtonListener(Phases phase) {
+        switch (phase) {
+            case LOOKOUT -> {
+            }
+            case PRODUCTION -> {
+            }
+            case ACTION -> {
+            }
+            case PASS_ACTION -> {
+            }
+            case CLEANUP -> {
+            }
+            default -> throw new IllegalArgumentException("Not existing phase");
+        }
+    }
 }

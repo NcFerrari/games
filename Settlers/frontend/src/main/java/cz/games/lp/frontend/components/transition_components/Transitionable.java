@@ -10,14 +10,15 @@ public interface Transitionable {
     Animation getAnimation();
 
     default void execute(CommonModel model) {
-        if (model.getCurrentTransition() == null) {
-            playTransition();
-            model.setCurrentTransition(this);
-            getAnimation().setOnFinished(evt -> {
-                additionalFinish();
-                model.setCurrentTransition(null);
-            });
+        if (model.getCurrentTransition() != null) {
+            return;
         }
+        playTransition();
+        model.setCurrentTransition(this);
+        getAnimation().setOnFinished(evt -> {
+            additionalFinish();
+            model.setCurrentTransition(null);
+        });
     }
 
     default void additionalFinish() {

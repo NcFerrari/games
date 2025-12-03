@@ -8,6 +8,7 @@ public class UIPane extends BorderPane {
     public UIPane(CommonModel model) {
         setStyle(model.getUIConfig().getStyle());
         setTop(new SourcePane(model));
+        setRight(new CPUPane(model));
         setCenter(new CenterPane(model));
         setBottom(new BottomPane(model));
     }

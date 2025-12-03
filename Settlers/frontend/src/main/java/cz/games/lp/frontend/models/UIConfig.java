@@ -28,6 +28,11 @@ public class UIConfig {
     private final double factionTokenHeight = height * 0.030612;
     private final double factionTokenXMove = width * 0.00934;
     private final double factionTokenYMove = height * 0.022449;
+    private final double roundPhasesButtonsWidth = width * 0.0615;
+    private final double phaseButtonWidth = width * 0.0615 - 10;
+    private final double phaseButtonHeight = height * 0.02239;
+    private final double dealSpacing = -cardHeight + height * 0.02612;
+    private final double cardInHandsWidth = width * 0.3285;
 
     public int getAnimationSpeed() {
         return ANIMATION_SPEED;

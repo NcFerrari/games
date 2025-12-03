@@ -5,13 +5,13 @@ import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.Group;
 import lombok.Getter;
 
-public class ScoreBoard extends Group {
+public class ScoreAndRoundBoard extends Group {
 
     private final CommonModel model;
     @Getter
     private ImageNode board;
 
-    public ScoreBoard(CommonModel model) {
+    public ScoreAndRoundBoard(CommonModel model) {
         this.model = model;
         initBoard();
     }

@@ -73,46 +73,46 @@ public class ProductionActions extends AnimationTimer {
     }
 
     private void produceFactionOrCommonCards(Card selectedCard) {
-        this.selectedCard = selectedCard;
-//        model.setCardInProcess(true);
-        selectedCard.select();
-        if (selectedCard.getCondition() != null) {
-            useConditionFromProductionCard();
-        } else if (!selectedCard.getOrEffect().isEmpty()) {
-            Platform.runLater(() -> {
-                Optional<List<String>> response = choiceDialog.addSources(selectedCard.getCardEffect(), selectedCard.getOrEffect());
-                response.ifPresent(responseList -> {
-                    if ("SCORE_POINT".equals(responseList.getFirst())) {
-//                        model.getScoreBoard().scorePoint(responseList.size());
-                    } else {
-//                        responseList.forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
-//                        model.setCardInProcess(false);
-                    }
-                });
-            });
-        } else if ("COMMON_CARD".equals(selectedCard.getCardEffect().getFirst())) {
-//            model.getActionManager().drawCommonCard(selectedCard.getCardEffect().size());
-        } else {
-//            selectedCard.getCardEffect().forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
-//            model.setCardInProcess(false);
-        }
+//        this.selectedCard = selectedCard;
+////        model.setCardInProcess(true);
+//        selectedCard.select();
+//        if (selectedCard.getCondition() != null) {
+//            useConditionFromProductionCard();
+//        } else if (!selectedCard.getOrEffect().isEmpty()) {
+//            Platform.runLater(() -> {
+//                Optional<List<String>> response = choiceDialog.addSources(selectedCard.getCardEffect(), selectedCard.getOrEffect());
+//                response.ifPresent(responseList -> {
+//                    if ("SCORE_POINT".equals(responseList.getFirst())) {
+////                        model.getScoreBoard().scorePoint(responseList.size());
+//                    } else {
+////                        responseList.forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+////                        model.setCardInProcess(false);
+//                    }
+//                });
+//            });
+//        } else if ("COMMON_CARD".equals(selectedCard.getCardEffect().getFirst())) {
+////            model.getActionManager().drawCommonCard(selectedCard.getCardEffect().size());
+//        } else {
+////            selectedCard.getCardEffect().forEach(cardEffect -> model.getSources().get(Sources.valueOf(cardEffect)).addOne());
+////            model.setCardInProcess(false);
+//        }
     }
 
     private void useConditionFromProductionCard() {
         int founds;
-        switch (selectedCard.getCondition()) {
-            case "SAMURAI" -> {
-//                founds = checkAllCards(Card::isSamurai);
-//                model.getScoreBoard().scorePoint(founds);
-            }
-            case "FACTION_CARD" -> {
-//                model.getActionManager().drawFactionCard(selectedCard.getCardEffect().size());
-            }
-            default -> {
-//                founds = checkAllCards(card -> card.getColors().contains(Colors.valueOf(selectedCard.getCondition())));
-//                IntStream.range(0, founds).forEach(index -> model.getSources().get(Sources.valueOf(selectedCard.getCardEffect().getFirst())).addOne());
-            }
-        }
+//        switch (selectedCard.getCondition()) {
+//            case "SAMURAI" -> {
+////                founds = checkAllCards(Card::isSamurai);
+////                model.getScoreBoard().scorePoint(founds);
+//            }
+//            case "FACTION_CARD" -> {
+////                model.getActionManager().drawFactionCard(selectedCard.getCardEffect().size());
+//            }
+//            default -> {
+////                founds = checkAllCards(card -> card.getColors().contains(Colors.valueOf(selectedCard.getCondition())));
+////                IntStream.range(0, founds).forEach(index -> model.getSources().get(Sources.valueOf(selectedCard.getCardEffect().getFirst())).addOne());
+//            }
+//        }
     }
 
 //    private int checkAllCards(Predicate<Card> predicate) {
@@ -130,36 +130,37 @@ public class ProductionActions extends AnimationTimer {
 //        return foundCondition.get();
 //    }
 
-    private void produceDeals() {
-        selectedCard = (Card) list.get(atomicIndex.getAndIncrement());
-        selectedCard.select();
-//        model.getSources().get(Sources.valueOf(selectedCard.getDealSource())).addOne();
-    }
+//    private void produceDeals() {
+//        selectedCard = (Card) list.get(atomicIndex.getAndIncrement());
+//        selectedCard.select();
 
-    private void produceFactionBoard() {
-
-    }
-
-    private void executeAnimationTimer(Runnable method) {
-        productionMethod = method;
-        atomicIndex.set(0);
-        start();
-    }
-
+    /// /        model.getSources().get(Sources.valueOf(selectedCard.getDealSource())).addOne();
+//    }
+//
+//    private void produceFactionBoard() {
+//
+//    }
+//
+//    private void executeAnimationTimer(Runnable method) {
+//        productionMethod = method;
+//        atomicIndex.set(0);
+//        start();
+//    }
+//
     @Override
     public void handle(long currentTime) {
 //        if (currentTime < stoppedTime + DELAY || model.isCardInProcess()) {
 //            return;
 //        }
-        if (selectedCard != null) {
-            selectedCard.deselect();
-        }
-        if (atomicIndex.get() == list.size()) {
-            stop();
-            getProductionFromSpecificBlock();
-            return;
-        }
-        stoppedTime = currentTime;
-        productionMethod.run();
+//        if (selectedCard != null) {
+//            selectedCard.deselect();
+//        }
+//        if (atomicIndex.get() == list.size()) {
+//            stop();
+//            getProductionFromSpecificBlock();
+//            return;
+//        }
+//        stoppedTime = currentTime;
+//        productionMethod.run();
     }
 }
