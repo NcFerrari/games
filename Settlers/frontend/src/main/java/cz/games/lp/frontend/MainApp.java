@@ -2,7 +2,10 @@ package cz.games.lp.frontend;
 
 import cz.games.lp.common.enums.Factions;
 import cz.games.lp.frontend.api.IManager;
+import cz.games.lp.frontend.components.ScoreBoard;
+import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.enums.Texts;
+import cz.games.lp.frontend.enums.TransitionKeys;
 import cz.games.lp.frontend.models.CommonModel;
 import cz.games.lp.frontend.panes.UIPane;
 import javafx.application.Application;
@@ -41,11 +44,11 @@ public class MainApp extends Application {
 
     private void initModel() {
         model.setGameData(manager.getGameData());
+        model.setScoreBoard(new ScoreBoard(model));
 //        model.setCardSpeed(Duration.millis(manager.getAnimationSpeed()));
 //        model.setStyle("-fx-background: #078d6f; -fx-background-color: #078d6f");
 //        model.setHeaderStyle("-fx-background-color: #6ae7ba");
 //        model.setFactionBoard(new FactionBoard(model));
-//        model.setScoreBoard(new ScoreBoard(model));
 //        model.setActionManager(new ActionManager(model));
     }
 
@@ -59,10 +62,10 @@ public class MainApp extends Application {
     private void newGame() {
         clearTable();
         model.getGameData().newGame();
-
-        model.getGameData().setSelectedFaction(Factions.BARBARIAN_M);
-        model.getScoreBoard().createFactionToken();
+        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
         model.getSourcePane().generateNewSources();
+
+        initTransitionMapInModel();
         // 2 (prepare common cards)
 //        model.setCommonCards(manager.prepareCards(model.getManager().getCardWidth(), model.getManager().getCardHeight(), "commons", model.getCardSizeMap().get(CardType.COMMON)));
 //        model.setCommonCard(new Card("common", model));
@@ -76,6 +79,11 @@ public class MainApp extends Application {
 //        model.getScoreBoard().setFactionToken(manager.getFaction(), false);
         // 4 (first 4 cards)
 //        model.getActionManager().prepareFirstFourCards();
+    }
+
+    private void initTransitionMapInModel() {
+        model.getTransitionableMap().put(TransitionKeys.ROUND_POINTER, model.getScoreBoard().createRoundPointer());
+        model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
     }
 
     private void clearTable() {

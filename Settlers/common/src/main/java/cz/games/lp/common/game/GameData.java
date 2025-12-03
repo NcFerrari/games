@@ -44,4 +44,10 @@ public class GameData {
         Collections.shuffle(listOfCards);
         return listOfCards;
     }
+
+    public void nextRound() {
+        if (getRound() < 5) {
+            setRound(getRound() + 1);
+        }
+    }
 }

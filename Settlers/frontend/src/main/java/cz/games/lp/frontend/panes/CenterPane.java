@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.panes;
 
+import cz.games.lp.frontend.enums.TransitionKeys;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -22,7 +23,7 @@ public class CenterPane extends VBox {
         Button b = new Button("test");
 
         b.setOnAction(evt -> {
-            model.getScoreBoard().scorePoint(5);
+            model.getTransitionableMap().get(TransitionKeys.FACTION_TOKEN).execute(model);
         });
         incomingPane.getChildren().addAll(
                 model.getScoreBoard(),
