@@ -2,7 +2,6 @@ package cz.games.lp.frontend;
 
 import cz.games.lp.common.enums.Factions;
 import cz.games.lp.frontend.api.IManager;
-import cz.games.lp.frontend.components.RoundPhases;
 import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.enums.Texts;
 import cz.games.lp.frontend.enums.TransitionKeys;
@@ -27,7 +26,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        initModel();
+        model.setManager(manager);
+        model.setGameData(manager.getGameData());
+        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
         StackPane mainPane = new StackPane(new UIPane(model), new FrontPane(model));
         stage.setScene(new Scene(mainPane));
         stage.setWidth(model.getUIConfig().getWidth());
@@ -39,22 +40,13 @@ public class MainApp extends Application {
         newGame();
     }
 
-    private void initModel() {
-        model.setGameData(manager.getGameData());
-        model.setRoundPhases(new RoundPhases(model));
-    }
-
     private void newGame() {
         model.getGameData().newGame();
-        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
+        model.getFactionBoard().setImage();
         model.getSourcePane().generateNewSources();
         model.getRoundPhases().reset();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
         model.getCommonDeck().createCard(Texts.COMMON_CARD.get());
-        initTransitionMapInModel();
-    }
-
-    private void initTransitionMapInModel() {
         model.getTransitionableMap().put(TransitionKeys.ROUND_POINTER, model.getScoreBoard().createRoundPointer());
         model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
     }

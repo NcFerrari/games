@@ -19,7 +19,6 @@ public class ProductionActions extends AnimationTimer {
     private static final long DELAY = 1_000_000_000L;
     private final CommonModel model;
     private final AtomicInteger atomicIndex = new AtomicInteger();
-    private final ChoiceDialog choiceDialog;
 
     private List<Node> list;
     private boolean isAnimationTimerRunning;
@@ -31,7 +30,6 @@ public class ProductionActions extends AnimationTimer {
 
     public ProductionActions(CommonModel model) {
         this.model = model;
-        choiceDialog = new ChoiceDialog(model);
     }
 
     public void proceedProduction(Runnable switchPhase) {

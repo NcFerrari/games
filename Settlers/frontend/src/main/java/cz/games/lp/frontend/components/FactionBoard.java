@@ -5,18 +5,20 @@ import javafx.scene.Group;
 
 public class FactionBoard extends Group {
 
-//    private final ImageNode imageNode;
+    private final CommonModel model;
+    private final ImageNode imageNode;
 
     public FactionBoard(CommonModel model) {
-//        imageNode = new ImageNode(
-//                model.getManager().getCardWidth(),
-//                3 * model.getManager().getCardHeight(),
-//                5 * model.getManager().getCardWidth() / 3,
-//                5 * model.getManager().getCardHeight());
-//        getChildren().add(imageNode.getImageView());
+        this.model = model;
+        imageNode = new ImageNode(
+                model.getUIConfig().getCardWidth(),
+                3 * model.getUIConfig().getCardHeight(),
+                5 * model.getUIConfig().getCardWidth() / 3,
+                5 * model.getUIConfig().getCardHeight());
+        getChildren().add(imageNode.getImageView());
     }
 
-    public void setImage(String factionBoard) {
-//        imageNode.setImage("factions/faction_boards/" + factionBoard);
+    public void setImage() {
+        imageNode.setImage("factions/faction_boards/" + model.getGameData().getSelectedFaction().name().toLowerCase());
     }
 }

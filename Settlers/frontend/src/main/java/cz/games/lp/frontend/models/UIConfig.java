@@ -33,6 +33,10 @@ public class UIConfig {
     private final double phaseButtonHeight = height * 0.02239;
     private final double dealSpacing = -cardHeight + height * 0.02612;
     private final double cardInHandsWidth = width * 0.3285;
+    private final double bottomPaneHeight = height * 0.612;
+    private final double widthForImperialCardStack = width * 0.41365;
+    private final double dialogWidth = width * 0.164835;
+    private final double dialogHeight = height * 0.306122;
 
     public int getAnimationSpeed() {
         return ANIMATION_SPEED;

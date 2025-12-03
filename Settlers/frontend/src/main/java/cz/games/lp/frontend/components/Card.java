@@ -11,6 +11,8 @@ public class Card extends Group {
 
     private static final int BORDER_WIDTH = 4;
     private final Rectangle border;
+    @Getter
+    private final String cardId;
     @Setter
     @Getter
     private boolean samurai;
@@ -20,6 +22,7 @@ public class Card extends Group {
     }
 
     public Card(String path, String cardName, CommonModel model) {
+        cardId = cardName;
         ImageNode imageNode = new ImageNode(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight());
         imageNode.setImage("cards/" + path + "/" + cardName);
 

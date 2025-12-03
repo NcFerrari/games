@@ -14,7 +14,6 @@ public class SourcePane extends FlowPane {
 
     public SourcePane(CommonModel model) {
         this.model = model;
-        model.setSourcePane(this);
         setAlignment(Pos.CENTER);
         setStyle(model.getUIConfig().getHeaderStyle());
     }

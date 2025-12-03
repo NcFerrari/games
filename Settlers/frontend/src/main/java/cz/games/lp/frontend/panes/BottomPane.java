@@ -1,35 +1,44 @@
 package cz.games.lp.frontend.panes;
 
-//import cz.games.lp.backend.frontend.enums.CardType;
+import cz.games.lp.common.enums.CardTypes;
 import cz.games.lp.frontend.models.CommonModel;
+import javafx.geometry.NodeOrientation;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class BottomPane extends HBox {
-//    private final CardTypes[] cardTypesForImperialSides = {CardTypes.PRODUCTION, CardTypes.PROPERTIES, CardTypes.ACTION};
-    public BottomPane(CommonModel model) {
-        setPrefHeight(model.getUIConfig().getHeight() * 0.612);
+import java.util.Map;
 
-//        VBox factionSide = setSides(model, model.getBuiltFactionCards(), NodeOrientation.RIGHT_TO_LEFT);
-//        VBox commonSide = setSides(model, model.getBuiltCommonCards(), NodeOrientation.LEFT_TO_RIGHT);
-//        getChildren().addAll(factionSide, model.getFactionBoard(), commonSide);
+public class BottomPane extends HBox {
+
+    private final CardTypes[] cardTypesForImperialSides = {CardTypes.PRODUCTION, CardTypes.PROPERTIES, CardTypes.ACTION};
+    private final CommonModel model;
+
+    public BottomPane(CommonModel model) {
+        this.model = model;
+        setPrefHeight(model.getUIConfig().getBottomPaneHeight());
+
+        VBox factionSide = setSides(model.getFactionCards(), NodeOrientation.RIGHT_TO_LEFT);
+        VBox commonSide = setSides(model.getCommonCards(), NodeOrientation.LEFT_TO_RIGHT);
+
+        getChildren().addAll(factionSide, model.getFactionBoard(), commonSide);
     }
 
-//    private VBox setSides(PaneModel model, Map<CardType, HBox> cardPanes, NodeOrientation orientation) {
-//        VBox sideVBox = new VBox();
-//        sideVBox.setPrefWidth(model.getManager().getWidth() * 0.41365);
-//
-//        for (CardType cardType : model.getManager().getCardTypes()) {
-//            HBox boxForCards = new HBox();
-//            boxForCards.setNodeOrientation(orientation);
-//            boxForCards.setPrefHeight(model.getManager().getCardHeight());
-//            cardPanes.put(cardType, boxForCards);
-//
-//            ScrollPane scrollPane = new ScrollPane(boxForCards);
-//            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-//            scrollPane.setStyle(model.getStyle());
-//            sideVBox.getChildren().add(scrollPane);
-//        }
-//        return sideVBox;
-//    }
+    private VBox setSides(Map<CardTypes, HBox> cardPanes, NodeOrientation orientation) {
+        VBox sideVBox = new VBox();
+        sideVBox.setPrefWidth(model.getUIConfig().getWidthForImperialCardStack());
+
+        for (CardTypes cardType : cardTypesForImperialSides) {
+            HBox boxForCards = new HBox();
+            boxForCards.setNodeOrientation(orientation);
+            boxForCards.setPrefHeight(model.getUIConfig().getCardHeight());
+            cardPanes.put(cardType, boxForCards);
+
+            ScrollPane scrollPane = new ScrollPane(boxForCards);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setStyle(model.getUIConfig().getStyle());
+            sideVBox.getChildren().add(scrollPane);
+        }
+        return sideVBox;
+    }
 }

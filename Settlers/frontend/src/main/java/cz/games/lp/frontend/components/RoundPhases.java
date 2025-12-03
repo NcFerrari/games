@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class RoundPhases extends VBox {
 
+    private static final Phases[] ORDERED_PHASES = new Phases[]{Phases.LOOKOUT, Phases.PRODUCTION, Phases.ACTION, Phases.PASS_ACTION, Phases.CLEANUP};
     private final Map<Phases, Button> buttons = new LinkedHashMap<>();
     private final CommonModel model;
 
@@ -18,7 +19,7 @@ public class RoundPhases extends VBox {
         this.model = model;
         setPrefWidth(model.getUIConfig().getRoundPhasesButtonsWidth());
         setAlignment(Pos.CENTER);
-        for (Phases phase : model.getGameData().getOrderedPhases()) {
+        for (Phases phase : ORDERED_PHASES) {
             ImageNode imageNode = new ImageNode(model.getUIConfig().getPhaseButtonWidth(), model.getUIConfig().getPhaseButtonHeight());
             imageNode.setImage("phase_buttons/" + phase.name());
             Button button = new Button();
