@@ -24,8 +24,4 @@ public class CardDeckPane extends VBox {
     public void showCard(boolean visibleCard) {
         card.setVisible(visibleCard);
     }
-
-    public boolean isCardVisible() {
-        return card.isVisible();
-    }
 }

@@ -26,28 +26,34 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        model.setManager(manager);
-        model.setGameData(manager.getGameData());
-        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
-        StackPane mainPane = new StackPane(new UIPane(model), new FrontPane(model));
-        stage.setScene(new Scene(mainPane));
+        StackPane stackPane = new StackPane(new UIPane(model), new FrontPane(model));
+        Scene scene = new Scene(stackPane);
+        stage.setScene(scene);
         stage.setWidth(model.getUIConfig().getWidth());
         stage.setHeight(model.getUIConfig().getHeight());
         stage.setTitle(Texts.TITLE.get());
         stage.setResizable(false);
         stage.show();
 
+        initModel();
+
         newGame();
     }
 
+    private void initModel() {
+        model.setManager(manager);
+        model.setGameData(manager.getGameData());
+
+    }
+
     private void newGame() {
+        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
         model.getGameData().newGame();
         model.getFactionBoard().setImage();
         model.getSourcePane().generateNewSources();
         model.getRoundPhases().reset();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
         model.getCommonDeck().createCard(Texts.COMMON_CARD.get());
-        model.getTransitionableMap().put(TransitionKeys.ROUND_POINTER, model.getScoreBoard().createRoundPointer());
         model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
     }
 }

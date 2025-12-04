@@ -1,6 +1,7 @@
 package cz.games.lp.frontend.components;
 
 import cz.games.lp.frontend.components.transition_components.RoundPointer;
+import cz.games.lp.frontend.enums.TransitionKeys;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.scene.Group;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class ScoreAndRoundBoard extends Group {
     public ScoreAndRoundBoard(CommonModel model) {
         this.model = model;
         initBoard();
+        model.getTransitionableMap().put(TransitionKeys.ROUND_POINTER, createRoundPointer());
     }
 
     private void initBoard() {
