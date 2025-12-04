@@ -5,10 +5,9 @@ import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 
-public class FactionToken implements Transitionable {
+public class FactionToken extends TransitionGroup {
 
     private final TranslateTransition scoreTransition = new TranslateTransition();
-
     private final CommonModel model;
     private ImageNode token;
     private int score;
@@ -39,14 +38,14 @@ public class FactionToken implements Transitionable {
     }
 
     @Override
-    public void additionalFinish() {
+    protected void additionalFinish() {
         if (score == 50) {
             createFactionToken(true);
         }
     }
 
     @Override
-    public void playTransition() {
+    protected void playTransition() {
         score++;
         if (score % 10 == 0) {
             scoreYPosition++;
@@ -62,7 +61,7 @@ public class FactionToken implements Transitionable {
     }
 
     @Override
-    public Animation getAnimation() {
+    protected Animation getAnimation() {
         return scoreTransition;
     }
 }

@@ -14,19 +14,24 @@ import java.util.stream.IntStream;
 @Getter
 public class GameData {
 
-    private static final int FACTION_CARD_COUNT = 30;
-    private static final int COMMON_CARD_COUNT = 84;
-    private List<Integer> commonCards;
+    private final int factionCardCount;
+    private final int commonCardCount;
     private List<Integer> factionCards;
+    private List<Integer> commonCards;
     private Factions selectedFaction;
     private int round;
     private Phases currentPhase;
 
+    public GameData(int factionCardCount, int commonCardCount) {
+        this.factionCardCount = factionCardCount;
+        this.commonCardCount = commonCardCount;
+    }
+
     public void newGame() {
         setRound(1);
         currentPhase = Phases.LOOKOUT;
-        commonCards = fillCards(COMMON_CARD_COUNT);
-        factionCards = fillCards(FACTION_CARD_COUNT);
+        factionCards = fillCards(factionCardCount);
+        commonCards = fillCards(commonCardCount);
     }
 
     private List<Integer> fillCards(int cardCount) {

@@ -6,7 +6,7 @@ import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import lombok.Getter;
 
-public class RoundPointer implements Transitionable {
+public class RoundPointer extends TransitionGroup {
 
     private final TranslateTransition roundTransition = new TranslateTransition();
     private final CommonModel model;
@@ -23,7 +23,7 @@ public class RoundPointer implements Transitionable {
     }
 
     @Override
-    public void playTransition() {
+    protected void playTransition() {
         if (model.getGameData().getRound() < 1 || model.getGameData().getRound() > 5) {
             return;
         }

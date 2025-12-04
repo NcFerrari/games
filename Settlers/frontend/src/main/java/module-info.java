@@ -14,4 +14,5 @@ module frontend {
     exports cz.games.lp.frontend;
     exports cz.games.lp.frontend.models;
     exports cz.games.lp.frontend.components.transition_components;
+    exports cz.games.lp.frontend.enums;
 }

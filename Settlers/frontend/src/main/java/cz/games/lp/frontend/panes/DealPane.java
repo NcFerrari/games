@@ -1,6 +1,6 @@
 package cz.games.lp.frontend.panes;
 
-import cz.games.lp.frontend.components.Card;
+import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,7 +24,7 @@ public class DealPane extends ScrollPane {
     }
 
     public void makeADeal(Card card) {
-        card.setRotate(180);
-        cardPane.getChildren().add(card);
+        card.getNodes().setRotate(180);
+        cardPane.getChildren().add(card.getNodes());
     }
 }

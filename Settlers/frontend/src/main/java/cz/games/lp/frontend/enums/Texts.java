@@ -3,7 +3,7 @@ package cz.games.lp.frontend.enums;
 public enum Texts {
 
     TITLE("Imperial Settlers"),
-    COMMON_CARD("common"),
+    COMMON("common"),
     CHOICE("Výběr"),
     DIALOG_BUTTON("OK");
 

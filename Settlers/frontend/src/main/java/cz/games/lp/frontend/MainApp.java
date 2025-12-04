@@ -43,17 +43,17 @@ public class MainApp extends Application {
     private void initModel() {
         model.setManager(manager);
         model.setGameData(manager.getGameData());
-
     }
 
     private void newGame() {
-        model.getGameData().setSelectedFaction(Factions.ROMAN_F);
+        model.getGameData().setSelectedFaction(Factions.EGYPT_F);
         model.getGameData().newGame();
         model.getFactionBoard().setImage();
         model.getSourcePane().generateNewSources();
         model.getRoundPhases().reset();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
-        model.getCommonDeck().createCard(Texts.COMMON_CARD.get());
+        model.getCommonDeck().createCard(Texts.COMMON.get());
         model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
+        model.getFactionDeck().drawCard();
     }
 }

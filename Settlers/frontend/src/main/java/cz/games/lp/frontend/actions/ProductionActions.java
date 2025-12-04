@@ -1,17 +1,15 @@
 package cz.games.lp.frontend.actions;
 
-import cz.games.lp.frontend.components.Card;
+import cz.games.lp.frontend.components.transition_components.Card;
 //import cz.games.lp.backend.frontend.enums.CardType;
 //import cz.games.lp.backend.frontend.enums.Colors;
 //import cz.games.lp.backend.frontend.enums.ProductionBlocks;
 //import cz.games.lp.backend.frontend.enums.Sources;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.Node;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductionActions extends AnimationTimer {
