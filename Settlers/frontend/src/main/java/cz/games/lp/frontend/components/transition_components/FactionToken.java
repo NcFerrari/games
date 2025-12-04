@@ -8,7 +8,6 @@ import javafx.animation.TranslateTransition;
 public class FactionToken extends TransitionGroup {
 
     private final TranslateTransition scoreTransition = new TranslateTransition();
-    private final CommonModel model;
     private ImageNode token;
     private int score;
     private double scoreXPosition;
@@ -16,7 +15,7 @@ public class FactionToken extends TransitionGroup {
     private int xMove;
 
     public FactionToken(CommonModel model) {
-        this.model = model;
+        super(model);
         createFactionToken(false);
     }
 

@@ -24,6 +24,9 @@ public class CardDeckPane extends VBox {
     }
 
     public void drawCard() {
+        if (cardType.getCardList(model).isEmpty()) {
+            return;
+        }
         cardType.drawCard(model, cardType.getCardList(model).getFirst());
         if (cardType.getCardList(model).size() == 1) {
             card.getNodes().setVisible(false);

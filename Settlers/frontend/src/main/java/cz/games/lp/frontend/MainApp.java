@@ -54,6 +54,5 @@ public class MainApp extends Application {
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
         model.getCommonDeck().createCard(Texts.COMMON.get());
         model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
-        model.getFactionDeck().drawCard();
     }
 }

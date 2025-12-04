@@ -9,8 +9,8 @@ import lombok.Getter;
 
 public class Manager implements IManager {
 
-    private static final int FACTION_CARD_COUNT = 3;
-    private static final int COMMON_CARD_COUNT = 3;
+    private static final int FACTION_CARD_COUNT = 30;
+    private static final int COMMON_CARD_COUNT = 84;
     private final BackendManager backendManager = new BackendManager();
     @Getter
     private final GameData gameData;

@@ -25,6 +25,7 @@ public class Card extends TransitionGroup {
     private Runnable runnable;
 
     public Card(String cardName, CommonModel model) {
+        super(model);
         cardId = cardName;
         ImageNode imageNode = new ImageNode(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight());
         imageNode.setImage("cards/" + cardName);

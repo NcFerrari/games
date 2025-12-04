@@ -5,11 +5,17 @@ import javafx.animation.Animation;
 
 public abstract class TransitionGroup {
 
+    protected final CommonModel model;
+
+    protected TransitionGroup(CommonModel model) {
+        this.model = model;
+    }
+
     protected abstract void playTransition();
 
     protected abstract Animation getAnimation();
 
-    public void execute(CommonModel model) {
+    public void execute() {
         if (model.isTransitionRunning()) {
             return;
         }

@@ -9,12 +9,11 @@ import lombok.Getter;
 public class RoundPointer extends TransitionGroup {
 
     private final TranslateTransition roundTransition = new TranslateTransition();
-    private final CommonModel model;
     @Getter
     private final ImageNode pointer;
 
     public RoundPointer(double x, double y, CommonModel model) {
-        this.model = model;
+        super(model);
         pointer = new ImageNode(model.getUIConfig().getScoreBoardPointerWidth(), model.getUIConfig().getScoreBoardPointerHeight());
         pointer.setImage("round_pointer");
         pointer.getImageView().setX(x);

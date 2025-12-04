@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.components;
 
+import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.components.transition_components.RoundPointer;
 import cz.games.lp.frontend.enums.TransitionKeys;
 import cz.games.lp.frontend.models.CommonModel;
