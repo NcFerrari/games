@@ -26,9 +26,9 @@ public class CardDeckPane extends VBox {
         if (cardType.getCardList(model).isEmpty()) {
             return;
         }
-        cardType.drawCard(model, cardType.getCardList(model).getFirst());
+        cardType.drawCard(model, cardType.getNextCard(model));
         if (cardType.getCardList(model).size() == 1) {
-            card.getNodes().setVisible(false);
+            card.setVisible(false);
             setOnMouseClicked(null);
         }
     }
@@ -38,7 +38,7 @@ public class CardDeckPane extends VBox {
         card = new Card(cardPath, model);
         movingCard = new Card(cardPath, model);
         setOnMouseClicked(evt -> drawCard());
-        getChildren().add(card.getNodes());
+        getChildren().add(card);
     }
 
     public void removeCard() {

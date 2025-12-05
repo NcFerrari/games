@@ -56,10 +56,12 @@ public class MainApp extends Application {
         model.getSourcePane().generateNewSources();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
         model.setFactionToken(new FactionToken(model));
+
+        model.getActionManager().prepareFirstFourCards();
     }
 
     private void clearAll() {
-        model.getCardsInHand().getChildren().clear();
+        model.getCardsInHand().getCards().clear();
         model.getFactionCards().forEach((cardTypes, cards) -> cards.getChildren().clear());
         model.getDeals().clear();
         model.getCommonCards().forEach((cardTypes, cards) -> cards.getChildren().clear());

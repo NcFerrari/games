@@ -21,7 +21,7 @@ public class CenterPane extends VBox {
                 model.getDeals(),
                 model.getCommonDeck(),
                 space,
-                new CardsInHandPane(model)
+                model.getCardsInHand()
         );
         getChildren().add(incomingPane);
     }

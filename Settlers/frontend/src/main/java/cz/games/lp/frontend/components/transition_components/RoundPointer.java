@@ -4,6 +4,7 @@ import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 import lombok.Getter;
 
 public class RoundPointer extends TransitionGroup {
@@ -30,6 +31,7 @@ public class RoundPointer extends TransitionGroup {
         double newPosition = model.getUIConfig().getScoreYMove() * (model.getGameData().getRound() - 1);
         roundTransition.setFromY(pointer.getImageView().getTranslateY());
         roundTransition.setToY(newPosition);
+        roundTransition.setDuration(Duration.millis(model.getManager().getAnimationSpeed()));
         roundTransition.play();
     }
 

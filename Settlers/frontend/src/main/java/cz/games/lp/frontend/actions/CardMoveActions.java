@@ -12,18 +12,18 @@ public record CardMoveActions(CommonModel model) {
             return;
         }
         Card card = cardDeck.getMovingCard();
-        model.getFrontPane().getChildren().add(card.getNodes());
+        model.getFrontPane().getChildren().add(card);
         Bounds boundsFrom = cardDeck.getChildren().getFirst().localToScene(cardDeck.getChildren().getFirst().getBoundsInLocal());
-        card.getNodes().setLayoutX(boundsFrom.getMinX());
-        card.getNodes().setLayoutY(boundsFrom.getMinY());
-        card.getNodes().setTranslateX(0);
-        card.getNodes().setTranslateY(0);
+        card.setLayoutX(boundsFrom.getMinX());
+        card.setLayoutY(boundsFrom.getMinY());
+        card.setTranslateX(0);
+        card.setTranslateY(0);
         card.setGoalX(model.getCardsInHand().localToScene(model.getCardsInHand().getBoundsInLocal()).getMinX() - boundsFrom.getMinX());
         card.setGoalY(model.getCardsInHand().localToScene(model.getCardsInHand().getBoundsInLocal()).getMinY() - boundsFrom.getMinY());
         card.setOnFinishedAdditional(() -> {
-            model.getFrontPane().getChildren().remove(card.getNodes());
+            model.getFrontPane().getChildren().remove(card);
             String cardPath = String.format("%s/%s0%s%d", cardPrefix, cardPrefix.substring(0, 3), (cardId < 10 ? "0" : ""), cardId);
-            model.getCardsInHand().getChildren().add(new Card(cardPath, model).getNodes());
+            model.getCardsInHand().getCards().add(new Card(cardPath, model));
             cardDeck.removeCard();
         });
         card.execute();

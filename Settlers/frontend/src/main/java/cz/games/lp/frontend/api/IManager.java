@@ -8,4 +8,6 @@ public interface IManager {
     GameData getGameData();
 
     CardDTO getCard(String cardId);
+
+    int getAnimationSpeed();
 }

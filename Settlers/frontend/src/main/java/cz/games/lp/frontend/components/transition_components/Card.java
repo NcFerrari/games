@@ -4,9 +4,9 @@ import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,6 @@ public class Card extends TransitionGroup {
     private static final int BORDER_WIDTH = 4;
     private final TranslateTransition cardTransition = new TranslateTransition();
     @Getter
-    private final Group nodes = new Group();
     private final Rectangle border;
     @Getter
     private final String cardId;
@@ -34,8 +33,8 @@ public class Card extends TransitionGroup {
         border.setFill(null);
         border.setStrokeWidth(BORDER_WIDTH);
 
-        nodes.getChildren().addAll(imageNode.getImageView(), border);
-        cardTransition.setNode(nodes);
+        getChildren().addAll(imageNode.getImageView(), border);
+        cardTransition.setNode(this);
     }
 
     public void select() {
@@ -56,6 +55,7 @@ public class Card extends TransitionGroup {
 
     @Override
     protected void playTransition() {
+        cardTransition.setDuration(Duration.millis(model.getManager().getAnimationSpeed()));
         cardTransition.play();
     }
 

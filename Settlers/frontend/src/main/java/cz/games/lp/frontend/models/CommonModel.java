@@ -14,6 +14,7 @@ import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.components.transition_components.RoundPointer;
 import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.frontend.panes.CardDeckPane;
+import cz.games.lp.frontend.panes.CardsInHandPane;
 import cz.games.lp.frontend.panes.DealPane;
 import cz.games.lp.frontend.panes.SourcePane;
 import javafx.scene.layout.HBox;
@@ -42,7 +43,7 @@ public class CommonModel {
     private final RoundPhases roundPhases = new RoundPhases(this);
     private final DealPane deals = new DealPane(this);
     private final FactionBoard factionBoard = new FactionBoard(this);
-    private final HBox cardsInHand = new HBox();
+    private final CardsInHandPane cardsInHand = new CardsInHandPane(this);
     private IManager manager;
     private RoundPointer roundPointer;
     private FactionToken factionToken;

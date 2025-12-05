@@ -11,6 +11,7 @@ public class Manager implements IManager {
 
     private static final int FACTION_CARD_COUNT = 30;
     private static final int COMMON_CARD_COUNT = 84;
+    private static final int ANIMATION_SPEED = 300;
     private final BackendManager backendManager = new BackendManager();
     @Getter
     private final GameData gameData;
@@ -33,5 +34,10 @@ public class Manager implements IManager {
     @Override
     public CardDTO getCard(String cardId) {
         return backendManager.getCards().get(cardId);
+    }
+
+    @Override
+    public int getAnimationSpeed() {
+        return ANIMATION_SPEED;
     }
 }

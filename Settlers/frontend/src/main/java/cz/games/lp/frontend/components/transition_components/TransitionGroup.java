@@ -2,8 +2,10 @@ package cz.games.lp.frontend.components.transition_components;
 
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
+import javafx.scene.Group;
+import javafx.util.Duration;
 
-public abstract class TransitionGroup {
+public abstract class TransitionGroup extends Group {
 
     protected final CommonModel model;
 
