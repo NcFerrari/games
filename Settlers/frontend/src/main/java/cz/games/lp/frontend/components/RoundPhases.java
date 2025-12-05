@@ -50,8 +50,7 @@ public class RoundPhases extends VBox {
     private void addButtonListener(Phases phase) {
         switch (phase) {
             case LOOKOUT -> model.getActionManager().lookoutPhase();
-            case PRODUCTION -> {
-            }
+            case PRODUCTION -> model.getActionManager().productionPhase();
             case ACTION -> {
             }
             case PASS_ACTION -> {

@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.actions;
 
+import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.frontend.enums.Texts;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.AnimationTimer;
@@ -10,6 +11,7 @@ import java.util.function.Consumer;
 public class ActionManager extends AnimationTimer {
 
     private final CardMoveActions cardMoveActions;
+    private final ProductionActions productionActions;
     private final CommonModel model;
     private final AtomicInteger counter = new AtomicInteger();
     private Consumer<Long> consumerMethod;
@@ -17,6 +19,7 @@ public class ActionManager extends AnimationTimer {
     public ActionManager(CommonModel model) {
         this.model = model;
         cardMoveActions = new CardMoveActions(model);
+        productionActions = new ProductionActions(model);
     }
 
     public void drawFactionCard(Integer cardId) {
@@ -39,8 +42,8 @@ public class ActionManager extends AnimationTimer {
         counter.set(numberOfCards);
         consumerMethod = time -> {
             switch (counter.getAndDecrement()) {
-                case 3, 4 -> model.getFactionDeck().drawCard();
-                case 1, 2 -> model.getCommonDeck().drawCard();
+                case 3, 4 -> CardDeckTypes.FACTION.drawCard(model);
+                case 1, 2 -> CardDeckTypes.COMMON.drawCard(model);
                 default -> stop();
             }
         };
@@ -53,5 +56,9 @@ public class ActionManager extends AnimationTimer {
             return;
         }
         consumerMethod.accept(time);
+    }
+
+    public void productionPhase() {
+        productionActions.proceedProduction();
     }
 }

@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import lombok.Getter;
 
 public class CardsInHandPane extends ScrollPane {
 

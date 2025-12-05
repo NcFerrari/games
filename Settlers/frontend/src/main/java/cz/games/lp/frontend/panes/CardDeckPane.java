@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.panes;
 
+import cz.games.lp.common.enums.Phases;
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.frontend.models.CommonModel;
@@ -23,10 +24,10 @@ public class CardDeckPane extends VBox {
     }
 
     public void drawCard() {
-        if (cardType.getCardList(model).isEmpty()) {
+        if (!Phases.ACTION.equals(model.getGameData().getCurrentPhase())) {
             return;
         }
-        cardType.drawCard(model, cardType.getNextCard(model));
+        cardType.drawCard(model);
         if (cardType.getCardList(model).size() == 1) {
             card.setVisible(false);
             setOnMouseClicked(null);

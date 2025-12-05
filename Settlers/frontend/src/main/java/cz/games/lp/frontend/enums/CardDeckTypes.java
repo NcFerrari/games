@@ -23,11 +23,13 @@ public enum CardDeckTypes {
         return loadCardFunction.apply(model);
     }
 
-    public void drawCard(CommonModel model, Integer cardId) {
-        drawCardFunction.accept(model, cardId);
+    public void drawCard(CommonModel model) {
+        if (!getCardList(model).isEmpty()) {
+            drawCardFunction.accept(model, getNextCard(model));
+        }
     }
 
-    public Integer getNextCard(CommonModel model) {
+    private Integer getNextCard(CommonModel model) {
         if (getCardList(model).isEmpty()) {
             return -1;
         }

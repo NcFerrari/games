@@ -1,43 +1,19 @@
 package cz.games.lp.frontend.actions;
 
 import cz.games.lp.frontend.components.transition_components.Card;
-//import cz.games.lp.backend.frontend.enums.CardType;
-//import cz.games.lp.backend.frontend.enums.Colors;
-//import cz.games.lp.backend.frontend.enums.ProductionBlocks;
-//import cz.games.lp.backend.frontend.enums.Sources;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.AnimationTimer;
-import javafx.scene.Node;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductionActions extends AnimationTimer {
 
-    private static final long DELAY = 1_000_000_000L;
     private final CommonModel model;
-    private final AtomicInteger atomicIndex = new AtomicInteger();
-
-    private List<Node> list;
-    private boolean isAnimationTimerRunning;
-    private long stoppedTime = 0L;
-    private Card selectedCard;
-    private Runnable productionMethod;
-    private Runnable switchPhase;
-//    private ProductionBlocks nextProductionBlocks;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
     }
 
-    public void proceedProduction(Runnable switchPhase) {
-        this.switchPhase = switchPhase;
-        if (isAnimationTimerRunning) {
-            return;
-        }
-        isAnimationTimerRunning = true;
-//        nextProductionBlocks = ProductionBlocks.FACTIONS;
-        getProductionFromSpecificBlock();
+    public void proceedProduction() {
+        
     }
 
     private void getProductionFromSpecificBlock() {
