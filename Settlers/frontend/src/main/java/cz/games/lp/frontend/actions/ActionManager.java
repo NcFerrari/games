@@ -28,7 +28,15 @@ public class ActionManager extends AnimationTimer {
     }
 
     public void prepareFirstFourCards() {
-        counter.set(4);
+        dealCards(4);
+    }
+
+    public void lookoutPhase() {
+        dealCards(3);
+    }
+
+    private void dealCards(int numberOfCards) {
+        counter.set(numberOfCards);
         consumerMethod = time -> {
             switch (counter.getAndDecrement()) {
                 case 3, 4 -> model.getFactionDeck().drawCard();
