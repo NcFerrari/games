@@ -5,7 +5,8 @@ public enum Texts {
     TITLE("Imperial Settlers"),
     COMMON("common"),
     CHOICE("Výběr"),
-    DIALOG_BUTTON("OK");
+    DIALOG_BUTTON("OK"),
+    FACTION_CHOICE_TITLE("Výběr frakce");
 
     private final String text;
 

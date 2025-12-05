@@ -1,6 +1,5 @@
 package cz.games.lp.frontend;
 
-import cz.games.lp.common.enums.Factions;
 import cz.games.lp.frontend.api.IManager;
 import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.enums.Texts;
@@ -51,13 +50,19 @@ public class MainApp extends Application {
         model.getRoundPhases().reset();
         model.getCommonDeck().createCard(Texts.COMMON.get());
 
-        model.getGameData().setSelectedFaction(Factions.EGYPT_F);
-        model.getFactionBoard().setImage();
+        model.getFactionChoiceDialog().showAndWait();
+        model.getGameData().setSelectedFaction(model.getFactionChoiceDialog().getResult());
+        model.getFactionBoard().setImage(model.getGameData().getSelectedFaction());
         model.getSourcePane().generateNewSources();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
         model.setFactionToken(new FactionToken(model));
 
         model.getActionManager().prepareFirstFourCards();
+        mockData();
+    }
+
+    private void mockData() {
+
     }
 
     private void clearAll() {

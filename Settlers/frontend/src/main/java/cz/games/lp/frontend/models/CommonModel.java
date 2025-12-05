@@ -7,6 +7,7 @@ import cz.games.lp.frontend.actions.ActionManager;
 import cz.games.lp.frontend.api.IManager;
 import cz.games.lp.frontend.components.ChoiceDialog;
 import cz.games.lp.frontend.components.FactionBoard;
+import cz.games.lp.frontend.components.FactionChoiceDialog;
 import cz.games.lp.frontend.components.RoundPhases;
 import cz.games.lp.frontend.components.ScoreAndRoundBoard;
 import cz.games.lp.frontend.components.Supply;
@@ -36,6 +37,7 @@ public class CommonModel {
     private final UIConfig uIConfig = new UIConfig();
     private final ActionManager actionManager = new ActionManager(this);
     private final ChoiceDialog choiceDialog = new ChoiceDialog(this);
+    private final FactionChoiceDialog factionChoiceDialog = new FactionChoiceDialog(this);
     private final SourcePane sourcePane = new SourcePane(this);
     private final CardDeckPane factionDeck = new CardDeckPane(this, CardDeckTypes.FACTION);
     private final CardDeckPane commonDeck = new CardDeckPane(this, CardDeckTypes.COMMON);
