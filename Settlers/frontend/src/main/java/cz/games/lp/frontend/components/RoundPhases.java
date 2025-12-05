@@ -35,10 +35,14 @@ public class RoundPhases extends VBox {
 
     public void reset() {
         enabledOneButtonOnly(Phases.LOOKOUT);
+        model.getRoundPointer().execute();
     }
 
     private void enabledOneButtonOnly(Phases enabledPhase) {
         buttons.forEach((phase, button) -> button.setDisable(true));
+        if (enabledPhase == null) {
+            return;
+        }
         buttons.get(enabledPhase).setDisable(false);
         model.getGameData().setCurrentPhase(enabledPhase);
     }
@@ -54,6 +58,12 @@ public class RoundPhases extends VBox {
             case PASS_ACTION -> {
             }
             case CLEANUP -> {
+                model.getGameData().nextRound();
+                if (model.getGameData().getRound() < 6) {
+                    model.getRoundPointer().execute();
+                } else {
+                    enabledOneButtonOnly(null);
+                }
             }
             default -> throw new IllegalArgumentException("Not existing phase");
         }

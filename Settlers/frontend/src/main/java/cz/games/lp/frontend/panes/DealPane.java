@@ -27,4 +27,8 @@ public class DealPane extends ScrollPane {
         card.getNodes().setRotate(180);
         cardPane.getChildren().add(card.getNodes());
     }
+
+    public void clear() {
+        cardPane.getChildren().clear();
+    }
 }

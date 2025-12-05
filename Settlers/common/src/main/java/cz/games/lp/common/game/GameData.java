@@ -41,8 +41,6 @@ public class GameData {
     }
 
     public void nextRound() {
-        if (getRound() < 5) {
-            setRound(getRound() + 1);
-        }
+        setRound(getRound() + 1);
     }
 }

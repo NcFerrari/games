@@ -21,11 +21,11 @@ public record CardMoveActions(CommonModel model) {
         card.setGoalX(model.getCardsInHand().localToScene(model.getCardsInHand().getBoundsInLocal()).getMinX() - boundsFrom.getMinX());
         card.setGoalY(model.getCardsInHand().localToScene(model.getCardsInHand().getBoundsInLocal()).getMinY() - boundsFrom.getMinY());
         card.setOnFinishedAdditional(() -> {
-            cardDeck.removeCard();
             model.getFrontPane().getChildren().remove(card.getNodes());
             String cardPath = String.format("%s/%s0%s%d", cardPrefix, cardPrefix.substring(0, 3), (cardId < 10 ? "0" : ""), cardId);
             model.getCardsInHand().getChildren().add(new Card(cardPath, model).getNodes());
+            cardDeck.removeCard();
         });
-        cardDeck.getMovingCard().execute();
+        card.execute();
     }
 }

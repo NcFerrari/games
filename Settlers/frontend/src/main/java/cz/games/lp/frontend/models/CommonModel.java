@@ -1,6 +1,5 @@
 package cz.games.lp.frontend.models;
 
-import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.common.enums.CardTypes;
 import cz.games.lp.common.enums.Sources;
 import cz.games.lp.common.game.GameData;
@@ -11,8 +10,9 @@ import cz.games.lp.frontend.components.FactionBoard;
 import cz.games.lp.frontend.components.RoundPhases;
 import cz.games.lp.frontend.components.ScoreAndRoundBoard;
 import cz.games.lp.frontend.components.Supply;
-import cz.games.lp.frontend.components.transition_components.TransitionGroup;
-import cz.games.lp.frontend.enums.TransitionKeys;
+import cz.games.lp.frontend.components.transition_components.FactionToken;
+import cz.games.lp.frontend.components.transition_components.RoundPointer;
+import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.frontend.panes.CardDeckPane;
 import cz.games.lp.frontend.panes.DealPane;
 import cz.games.lp.frontend.panes.SourcePane;
@@ -30,7 +30,6 @@ import java.util.Map;
 public class CommonModel {
 
     private final Map<Sources, Supply> ownSupplies = new LinkedHashMap<>();
-    private final Map<TransitionKeys, TransitionGroup> transitionableMap = new EnumMap<>(TransitionKeys.class);
     private final Map<CardTypes, HBox> factionCards = new EnumMap<>(CardTypes.class);
     private final Map<CardTypes, HBox> commonCards = new EnumMap<>(CardTypes.class);
     private final UIConfig uIConfig = new UIConfig();
@@ -45,6 +44,8 @@ public class CommonModel {
     private final FactionBoard factionBoard = new FactionBoard(this);
     private final HBox cardsInHand = new HBox();
     private IManager manager;
+    private RoundPointer roundPointer;
+    private FactionToken factionToken;
     private Pane frontPane;
     private GameData gameData;
     private boolean transitionRunning;

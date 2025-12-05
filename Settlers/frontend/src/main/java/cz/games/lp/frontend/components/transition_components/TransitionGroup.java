@@ -19,8 +19,8 @@ public abstract class TransitionGroup {
         if (model.isTransitionRunning()) {
             return;
         }
-        playTransition();
         model.setTransitionRunning(true);
+        playTransition();
         getAnimation().setOnFinished(evt -> {
             additionalFinish();
             model.setTransitionRunning(false);

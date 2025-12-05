@@ -4,7 +4,6 @@ import cz.games.lp.common.enums.Factions;
 import cz.games.lp.frontend.api.IManager;
 import cz.games.lp.frontend.components.transition_components.FactionToken;
 import cz.games.lp.frontend.enums.Texts;
-import cz.games.lp.frontend.enums.TransitionKeys;
 import cz.games.lp.frontend.models.CommonModel;
 import cz.games.lp.frontend.panes.FrontPane;
 import cz.games.lp.frontend.panes.UIPane;
@@ -46,13 +45,23 @@ public class MainApp extends Application {
     }
 
     private void newGame() {
-        model.getGameData().setSelectedFaction(Factions.EGYPT_F);
+        clearAll();
+
         model.getGameData().newGame();
+        model.getRoundPhases().reset();
+        model.getCommonDeck().createCard(Texts.COMMON.get());
+
+        model.getGameData().setSelectedFaction(Factions.EGYPT_F);
         model.getFactionBoard().setImage();
         model.getSourcePane().generateNewSources();
-        model.getRoundPhases().reset();
         model.getFactionDeck().createCard(model.getGameData().getSelectedFaction().getFactionCardPath());
-        model.getCommonDeck().createCard(Texts.COMMON.get());
-        model.getTransitionableMap().put(TransitionKeys.FACTION_TOKEN, new FactionToken(model));
+        model.setFactionToken(new FactionToken(model));
+    }
+
+    private void clearAll() {
+        model.getCardsInHand().getChildren().clear();
+        model.getFactionCards().forEach((cardTypes, cards) -> cards.getChildren().clear());
+        model.getDeals().clear();
+        model.getCommonCards().forEach((cardTypes, cards) -> cards.getChildren().clear());
     }
 }

@@ -20,7 +20,6 @@ public class CardDeckPane extends VBox {
         this.cardType = cardType;
         setAlignment(Pos.CENTER);
         setPrefWidth(model.getUIConfig().getCardWidth());
-        setOnMouseClicked(evt -> drawCard());
     }
 
     public void drawCard() {
@@ -35,8 +34,10 @@ public class CardDeckPane extends VBox {
     }
 
     public void createCard(String cardPath) {
+        getChildren().clear();
         card = new Card(cardPath, model);
         movingCard = new Card(cardPath, model);
+        setOnMouseClicked(evt -> drawCard());
         getChildren().add(card.getNodes());
     }
 

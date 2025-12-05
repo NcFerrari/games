@@ -24,9 +24,9 @@ public class RoundPointer extends TransitionGroup {
     @Override
     protected void playTransition() {
         if (model.getGameData().getRound() < 1 || model.getGameData().getRound() > 5) {
+            model.setTransitionRunning(false);
             return;
         }
-        model.getGameData().nextRound();
         double newPosition = model.getUIConfig().getScoreYMove() * (model.getGameData().getRound() - 1);
         roundTransition.setFromY(pointer.getImageView().getTranslateY());
         roundTransition.setToY(newPosition);
