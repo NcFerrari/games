@@ -24,7 +24,7 @@ public class BottomPane extends HBox {
         getChildren().addAll(factionSide, model.getFactionBoard(), commonSide);
     }
 
-    private VBox setSides(Map<CardTypes, HBox> cardPanes, NodeOrientation orientation) {
+    private VBox setSides(Map<CardTypes, ScrollPane> cardPanes, NodeOrientation orientation) {
         VBox sideVBox = new VBox();
         sideVBox.setPrefWidth(model.getUIConfig().getWidthForImperialCardStack());
 
@@ -32,12 +32,12 @@ public class BottomPane extends HBox {
             HBox boxForCards = new HBox();
             boxForCards.setNodeOrientation(orientation);
             boxForCards.setPrefHeight(model.getUIConfig().getCardHeight());
-            cardPanes.put(cardType, boxForCards);
 
             ScrollPane scrollPane = new ScrollPane(boxForCards);
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             scrollPane.setStyle(model.getUIConfig().getStyle());
             sideVBox.getChildren().add(scrollPane);
+            cardPanes.put(cardType, scrollPane);
         }
         return sideVBox;
     }

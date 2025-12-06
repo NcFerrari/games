@@ -4,6 +4,8 @@ import cz.games.lp.frontend.enums.CardDeckTypes;
 import cz.games.lp.frontend.enums.Texts;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.AnimationTimer;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -14,6 +16,9 @@ public class ActionManager extends AnimationTimer {
     private final ProductionActions productionActions;
     private final CommonModel model;
     private final AtomicInteger counter = new AtomicInteger();
+    @Setter
+    @Getter
+    private boolean animationRunning;
     private Consumer<Long> consumerMethod;
 
     public ActionManager(CommonModel model) {
@@ -22,12 +27,12 @@ public class ActionManager extends AnimationTimer {
         productionActions = new ProductionActions(model);
     }
 
-    public void drawFactionCard(Integer cardId) {
-        cardMoveActions.drawCard(model.getFactionDeck(), model.getGameData().getSelectedFaction().getFactionCardPath(), cardId);
+    public void drawFactionCard(Integer cardNumber) {
+        cardMoveActions.drawCard(model.getFactionDeck(), model.getGameData().getSelectedFaction().getFactionCardPath(), cardNumber);
     }
 
-    public void drawCommonCard(Integer cardId) {
-        cardMoveActions.drawCard(model.getCommonDeck(), Texts.COMMON.get(), cardId);
+    public void drawCommonCard(Integer cardNumber) {
+        cardMoveActions.drawCard(model.getCommonDeck(), Texts.COMMON.get(), cardNumber);
     }
 
     public void prepareFirstFourCards() {
@@ -59,6 +64,11 @@ public class ActionManager extends AnimationTimer {
     }
 
     public void productionPhase() {
-        productionActions.proceedProduction();
+        if (animationRunning) {
+            return;
+        }
+        consumerMethod = productionActions.proceedProduction(this);
+        setAnimationRunning(true);
+        start();
     }
 }

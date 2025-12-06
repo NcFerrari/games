@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 public enum CardDeckTypes {
 
-    FACTION(model -> model.getGameData().getFactionCards(), (model, cardId) -> model.getActionManager().drawFactionCard(cardId)),
-    COMMON(model -> model.getGameData().getCommonCards(), (model, cardId) -> model.getActionManager().drawCommonCard(cardId));
+    FACTION(model -> model.getGameData().getFactionCards(), (model, cardNumber) -> model.getActionManager().drawFactionCard(cardNumber)),
+    COMMON(model -> model.getGameData().getCommonCards(), (model, cardNumber) -> model.getActionManager().drawCommonCard(cardNumber));
 
     private final Function<CommonModel, List<Integer>> loadCardFunction;
     private final BiConsumer<CommonModel, Integer> drawCardFunction;

@@ -17,23 +17,28 @@ public class Card extends TransitionGroup {
     @Getter
     private final Rectangle border;
     @Getter
-    private final String cardId;
+    private String cardId;
     @Setter
     @Getter
     private boolean samurai;
     private Runnable runnable;
 
-    public Card(String cardName, CommonModel model) {
+    public Card(CommonModel model) {
         super(model);
-        cardId = cardName;
-        ImageNode imageNode = new ImageNode(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight());
-        imageNode.setImage("cards/" + cardName);
 
         border = new Rectangle(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight() - BORDER_WIDTH * 1.5);
         border.setFill(null);
         border.setStrokeWidth(BORDER_WIDTH);
 
-        getChildren().addAll(imageNode.getImageView(), border);
+        getChildren().add(border);
+    }
+
+    public Card(String path, String cardId, CommonModel model) {
+        this(model);
+        this.cardId = cardId;
+        ImageNode imageNode = new ImageNode(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight());
+        imageNode.setImage("cards/" + path);
+        getChildren().addFirst(imageNode.getImageView());
         cardTransition.setNode(this);
     }
 

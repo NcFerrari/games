@@ -18,7 +18,7 @@ import cz.games.lp.frontend.panes.CardDeckPane;
 import cz.games.lp.frontend.panes.CardsInHandPane;
 import cz.games.lp.frontend.panes.DealPane;
 import cz.games.lp.frontend.panes.SourcePane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,8 +32,8 @@ import java.util.Map;
 public class CommonModel {
 
     private final Map<Sources, Supply> ownSupplies = new LinkedHashMap<>();
-    private final Map<CardTypes, HBox> factionCards = new EnumMap<>(CardTypes.class);
-    private final Map<CardTypes, HBox> commonCards = new EnumMap<>(CardTypes.class);
+    private final Map<CardTypes, ScrollPane> factionCards = new EnumMap<>(CardTypes.class);
+    private final Map<CardTypes, ScrollPane> commonCards = new EnumMap<>(CardTypes.class);
     private final UIConfig uIConfig = new UIConfig();
     private final ActionManager actionManager = new ActionManager(this);
     private final ChoiceDialog choiceDialog = new ChoiceDialog(this);

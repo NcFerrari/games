@@ -7,7 +7,7 @@ import javafx.geometry.Bounds;
 
 public record CardMoveActions(CommonModel model) {
 
-    public void drawCard(CardDeckPane cardDeck, String cardPrefix, Integer cardId) {
+    public void drawCard(CardDeckPane cardDeck, String cardPath, Integer cardNumber) {
         if (model.isTransitionRunning()) {
             return;
         }
@@ -22,8 +22,8 @@ public record CardMoveActions(CommonModel model) {
         card.setGoalY(model.getCardsInHand().localToScene(model.getCardsInHand().getBoundsInLocal()).getMinY() - boundsFrom.getMinY());
         card.setOnFinishedAdditional(() -> {
             model.getFrontPane().getChildren().remove(card);
-            String cardPath = String.format("%s/%s0%s%d", cardPrefix, cardPrefix.substring(0, 3), (cardId < 10 ? "0" : ""), cardId);
-            model.getCardsInHand().getCards().add(new Card(cardPath, model));
+            String cardId = String.format("%s0%s%d", cardPath.substring(0, 3), (cardNumber < 10 ? "0" : ""), cardNumber);
+            model.getCardsInHand().getCards().add(new Card(cardPath + cardId, cardId, model));
             cardDeck.removeCard();
         });
         card.execute();

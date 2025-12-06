@@ -36,8 +36,8 @@ public class CardDeckPane extends VBox {
 
     public void createCard(String cardPath) {
         getChildren().clear();
-        card = new Card(cardPath, model);
-        movingCard = new Card(cardPath, model);
+        card = new Card(cardPath, null, model);
+        movingCard = new Card(cardPath, null, model);
         setOnMouseClicked(evt -> drawCard());
         getChildren().add(card);
     }

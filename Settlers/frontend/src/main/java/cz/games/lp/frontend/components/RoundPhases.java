@@ -25,7 +25,7 @@ public class RoundPhases extends VBox {
             Button button = new Button();
             button.setGraphic(imageNode.getImageView());
             button.setOnAction(evt -> {
-                enabledOneButtonOnly(phase.getFollowingPhase());
+//                enabledOneButtonOnly(phase.getFollowingPhase());
                 addButtonListener(phase);
             });
             buttons.put(phase, button);
@@ -34,7 +34,7 @@ public class RoundPhases extends VBox {
     }
 
     public void reset() {
-        enabledOneButtonOnly(Phases.LOOKOUT);
+        enabledOneButtonOnly(model.getGameData().getCurrentPhase());
         model.getRoundPointer().execute();
     }
 
