@@ -11,6 +11,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
@@ -32,6 +34,9 @@ public class ProductionActions {
     }
 
     public Consumer<Long> proceedProduction(ActionManager actionManager) {
+        ObservableList<Node> factionCards = ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
+        ObservableList<Node> deals = model.getDeals().getDeals();
+        model.getFactionBoard().getFactionData();
         counter.set(((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().size());
         return time -> {
             if (time - stopTime.get() < DELAY * 1_000_000) {

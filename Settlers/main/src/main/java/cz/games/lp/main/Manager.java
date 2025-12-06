@@ -2,9 +2,10 @@ package cz.games.lp.main;
 
 import cz.games.lp.backend.BackendManager;
 import cz.games.lp.common.dto.CardDTO;
+import cz.games.lp.common.dto.FactionDTO;
+import cz.games.lp.common.game.GameData;
 import cz.games.lp.frontend.MainApp;
 import cz.games.lp.frontend.api.IManager;
-import cz.games.lp.common.game.GameData;
 import lombok.Getter;
 
 public class Manager implements IManager {
@@ -26,14 +27,20 @@ public class Manager implements IManager {
 
     private void start() {
         backendManager.log(getClass()).info("starting Application...");
-        backendManager.prepareCardData();
+        backendManager.prepareCardAndFactionData();
         backendManager.log(getClass()).info("creating new game");
         MainApp.run(this);
+
     }
 
     @Override
     public CardDTO getCard(String cardId) {
         return backendManager.getCards().get(cardId);
+    }
+
+    @Override
+    public FactionDTO getFaction(String faction) {
+        return backendManager.getFactions().get(faction);
     }
 
     @Override

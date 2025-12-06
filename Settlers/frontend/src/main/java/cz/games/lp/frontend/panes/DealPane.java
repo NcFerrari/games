@@ -2,8 +2,10 @@ package cz.games.lp.frontend.panes;
 
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.models.CommonModel;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
@@ -26,6 +28,10 @@ public class DealPane extends ScrollPane {
     public void makeADeal(Card card) {
         card.setRotate(180);
         cardPane.getChildren().add(card);
+    }
+
+    public ObservableList<Node> getDeals() {
+        return cardPane.getChildren();
     }
 
     public void clear() {
