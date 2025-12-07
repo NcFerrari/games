@@ -74,10 +74,10 @@ public class MainApp extends Application {
     private void mockData() {
         model.getGameData().setCurrentPhase(Phases.PRODUCTION);
         initFactionComponents(Factions.BARBARIAN_M);
-        int[] cards = new int[]{24, 21, 20, 13, 12, 3, 2, 1};
+        int[] cards = new int[]{11,10,9,7,6,5,4,3,2,1};
         for (Integer c : cards) {
-            String cardId = "bar" + (c < 10 ? "00" : "0") + c;
-            Card card = new Card("barbarian/" + cardId, cardId, model);
+            String cardId = "jap" + (c < 10 ? "00" : "0") + c;
+            Card card = new Card("japan/" + cardId, cardId, model);
             ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
         }
     }

@@ -67,8 +67,8 @@ public class ActionManager extends AnimationTimer {
         if (animationRunning) {
             return;
         }
-        consumerMethod = productionActions.proceedProduction(this);
         setAnimationRunning(true);
+        consumerMethod = productionActions.proceedProduction(this);
         start();
     }
 }

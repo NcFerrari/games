@@ -16,13 +16,14 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 public class ProductionActions {
 
-    private static final double DELAY = 1_000;
+    private static final double DELAY = 1000;
     private final CommonModel model;
     private final AtomicLong stopTime = new AtomicLong();
     private final AtomicInteger counter = new AtomicInteger();
@@ -36,19 +37,21 @@ public class ProductionActions {
     public Consumer<Long> proceedProduction(ActionManager actionManager) {
         ObservableList<Node> factionCards = ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
         ObservableList<Node> deals = model.getDeals().getDeals();
-        model.getFactionBoard().getFactionData();
-        counter.set(((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().size());
+        List<Sources> factionBoardSources = model.getFactionBoard().getFactionData().getFactionProduction();
+        ObservableList<Node> commonCards = ((HBox) model.getCommonCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
+
+        counter.set(factionCards.size());
         return time -> {
             if (time - stopTime.get() < DELAY * 1_000_000) {
                 return;
             }
-            stopTime.set(time);
             selectedCard.deselect();
             if (counter.get() == 0) {
                 actionManager.stop();
                 actionManager.setAnimationRunning(false);
                 return;
             }
+            stopTime.set(time);
 
             double hValue = 1.0 / ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().size();
             model.getFactionCards().get(CardTypes.PRODUCTION).setHvalue(1 - hValue * (counter.get() - 1));
