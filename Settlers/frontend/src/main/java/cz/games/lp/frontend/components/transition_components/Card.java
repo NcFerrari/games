@@ -12,7 +12,6 @@ import lombok.Setter;
 
 public class Card extends TransitionGroup {
 
-    private static final int BORDER_WIDTH = 4;
     private final TranslateTransition cardTransition = new TranslateTransition();
     @Getter
     private final Rectangle border;
@@ -26,9 +25,9 @@ public class Card extends TransitionGroup {
     public Card(CommonModel model) {
         super(model);
 
-        border = new Rectangle(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight() - BORDER_WIDTH * 1.5);
+        border = new Rectangle(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight() - model.getUIConfig().getBorderWidth() * 1.5);
         border.setFill(null);
-        border.setStrokeWidth(BORDER_WIDTH);
+        border.setStrokeWidth(model.getUIConfig().getBorderWidth());
 
         getChildren().add(border);
     }

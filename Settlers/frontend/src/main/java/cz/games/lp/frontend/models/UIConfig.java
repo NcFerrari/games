@@ -9,6 +9,7 @@ public class UIConfig {
     private static final int ANIMATION_SPEED = 400;
     private static final String STYLE = "-fx-background: #078d6f; -fx-background-color: #078d6f";
     private static final String HEADER_STYLE = "-fx-background-color: #6ae7ba";
+    private static final int BORDER_WIDTH = 4;
     private final double width = Screen.getPrimary().getBounds().getWidth() - 100;
     private final double height = Screen.getPrimary().getBounds().getHeight() - 100;
     private final double supplyWidth = width / 18.2;
@@ -37,9 +38,17 @@ public class UIConfig {
     private final double widthForImperialCardStack = width * 0.41365;
     private final double dialogWidth = width * 0.164835;
     private final double dialogHeight = height * 0.306122;
+    private final double factionBoardBorderX = width * 0.013736;
+    private final double factionBoardBorderY = height * 0.0612245;
+    private final double factionBoardBorderWidth = width * 0.04945;
+    private final double factionBoardBorderHeight = height * 0.10204;
 
     public int getAnimationSpeed() {
         return ANIMATION_SPEED;
+    }
+
+    public int getBorderWidth() {
+        return BORDER_WIDTH;
     }
 
     public String getStyle() {
