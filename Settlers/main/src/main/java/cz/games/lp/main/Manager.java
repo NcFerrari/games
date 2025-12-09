@@ -30,7 +30,6 @@ public class Manager implements IManager {
         backendManager.prepareCardAndFactionData();
         backendManager.log(getClass()).info("creating new game");
         MainApp.run(this);
-
     }
 
     @Override

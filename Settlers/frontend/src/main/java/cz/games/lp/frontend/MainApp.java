@@ -74,11 +74,47 @@ public class MainApp extends Application {
     private void mockData() {
         model.getGameData().setCurrentPhase(Phases.PRODUCTION);
         initFactionComponents(Factions.BARBARIAN_M);
-        int[] cards = new int[]{11,10,9,7,6,5,4,3,2,1};
-        for (Integer c : cards) {
+        int[] barbars = new int[]{24, 21, 20, 13, 12, 3, 2, 1};
+        for (Integer c : barbars) {
+            String cardId = "bar" + (c < 10 ? "00" : "0") + c;
+            Card card = new Card("barbarian/" + cardId, cardId, model);
+            ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
+        }
+        int[] japans = new int[]{11, 10, 9, 7, 6, 5, 4, 3, 2, 1};
+        for (Integer c : japans) {
             String cardId = "jap" + (c < 10 ? "00" : "0") + c;
             Card card = new Card("japan/" + cardId, cardId, model);
             ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
+        }
+        int[] romans = new int[]{29, 28, 27, 26, 25, 24, 23, 21, 20, 18, 17, 11};
+        for (Integer c : romans) {
+            String cardId = "rom0" + c;
+            Card card = new Card("roman/" + cardId, cardId, model);
+            ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
+        }
+        int[] egypt = new int[]{30, 29, 28, 27, 26, 12, 11, 4, 2};
+        for (Integer c : egypt) {
+            String cardId = "egy" + (c < 10 ? "00" : "0") + c;
+            Card card = new Card("egypt/" + cardId, cardId, model);
+            ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
+        }
+        int[] commmons = new int[]{7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 26, 27, 28, 29, 62, 63, 64, 65, 66, 67, 68};
+        for (Integer c : commmons) {
+            String cardId = "com" + (c < 10 ? "00" : "0") + c;
+            Card card = new Card("common/" + cardId, cardId, model);
+            ((HBox) model.getCommonCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
+        }
+        int[] deals = new int[]{1, 2, 3};
+        for (Integer c : deals) {
+            String cardId = "bar00" + c;
+            Card card = new Card("barbarian/" + cardId, cardId, model);
+            model.getDeals().makeADeal(card);
+        }
+        int[] deals2 = new int[]{11, 15, 5, 13, 10, 12, 23, 24, 2, 3, 9, 29, 8, 26};
+        for (Integer c : deals2) {
+            String cardId = "jap" + (c < 10 ? "00" : "0") + c;
+            Card card = new Card("japan/" + cardId, cardId, model);
+            model.getDeals().makeADeal(card);
         }
     }
 
