@@ -85,6 +85,18 @@ public class ProductionActions {
         counter.set(factionCards.size());
     }
 
+    private void selectCard(ObservableList<Node> list, ScrollPane scrollPane, double hValue, double vValue, ProductionBlocks nextProductionBlock) {
+        selectedCard.deselect();
+        selectedCard = (Card) list.get(counter.getAndIncrement());
+
+        selectedCard.select();
+        smoothScroll(scrollPane, hValue, vValue);
+        //PROCESS
+        if (counter.get() == 0) {
+            block = nextProductionBlock;
+        }
+    }
+
     private void factions(ObservableList<Node> factionCards) {
         selectedCard.deselect();
         selectedCard = (Card) factionCards.get(counter.decrementAndGet());
