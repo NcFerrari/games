@@ -2,11 +2,11 @@ package cz.games.lp.frontend.models;
 
 import javafx.stage.Screen;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class UIConfig {
 
-    private static final int ANIMATION_SPEED = 400;
     private static final String STYLE = "-fx-background: #078d6f; -fx-background-color: #078d6f";
     private static final String HEADER_STYLE = "-fx-background-color: #6ae7ba";
     private static final int BORDER_WIDTH = 4;
@@ -42,10 +42,8 @@ public class UIConfig {
     private final double factionBoardBorderY = height * 0.0612245;
     private final double factionBoardBorderWidth = width * 0.04945;
     private final double factionBoardBorderHeight = height * 0.10204;
-
-    public int getAnimationSpeed() {
-        return ANIMATION_SPEED;
-    }
+    @Setter
+    private int animationSpeed = 400;
 
     public int getBorderWidth() {
         return BORDER_WIDTH;

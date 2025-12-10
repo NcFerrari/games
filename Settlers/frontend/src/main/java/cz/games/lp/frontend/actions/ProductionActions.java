@@ -1,6 +1,7 @@
 package cz.games.lp.frontend.actions;
 
 import cz.games.lp.common.enums.CardTypes;
+import cz.games.lp.common.enums.Conditions;
 import cz.games.lp.common.enums.Sources;
 import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.components.transition_components.Card;
@@ -26,10 +27,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 public class ProductionActions {
 
-    private static final double DELAY = 1000;
     private final CommonModel model;
     private final AtomicLong stopTime = new AtomicLong();
     private final AtomicInteger counter = new AtomicInteger();
@@ -44,6 +45,7 @@ public class ProductionActions {
     private ObservableList<Node> factionCards;
     private ObservableList<Node> deals;
     private ObservableList<Node> commonCards;
+    private long delay;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
@@ -52,17 +54,26 @@ public class ProductionActions {
 
     public Consumer<Long> proceedProduction(ActionManager actionManager) {
         updateData();
-        block = ProductionBlocks.FACTIONS;
         return time -> {
-            if (time - stopTime.get() < DELAY * 1_000_000) {
+            delay = model.getUIConfig().getAnimationSpeed() * 2_000_000L;
+            if (time - stopTime.get() < delay) {
                 return;
             }
             stopTime.set(time);
             switch (block) {
-                case ProductionBlocks.FACTIONS -> factions(factionCards);
-                case ProductionBlocks.DEALS -> deals(deals);
-                case ProductionBlocks.FACTION_BOARD -> factionBoard();
-                case ProductionBlocks.COMMONS -> commons(commonCards);
+                case ProductionBlocks.FACTIONS -> {
+                    highlightCard(factionCards, model.getFactionCards().get(CardTypes.PRODUCTION), factionHValue, 0, ProductionBlocks.DEALS, counter.decrementAndGet(), -1, () -> processCard(selectedCard));
+                    factionHValue += moveFactionBy;
+                }
+                case ProductionBlocks.DEALS -> {
+                    highlightCard(deals, model.getDeals(), 0, dealVvalue, ProductionBlocks.FACTION_BOARD, counter.incrementAndGet(), deals.size(), () -> makeDeal(selectedCard));
+                    dealVvalue += moveDealBy;
+                }
+                case ProductionBlocks.FACTION_BOARD -> highlightFactionBoard();
+                case ProductionBlocks.COMMONS -> {
+                    highlightCard(commonCards, model.getCommonCards().get(CardTypes.PRODUCTION), commonHvalue, 0, ProductionBlocks.DEFAULT, counter.getAndIncrement(), commonCards.size(), () -> processCard(selectedCard));
+                    commonHvalue += moveCommonBy;
+                }
                 default -> {
                     selectedCard.deselect();
                     actionManager.setAnimationRunning(false);
@@ -70,6 +81,20 @@ public class ProductionActions {
                 }
             }
         };
+    }
+
+    private void processCard(Card selectedCard) {
+        if (selectedCard.getCardData().getCondition() != null) {
+            processCondition(selectedCard.getCardData().getCondition());
+        }
+    }
+
+    private void makeDeal(Card selectedCard) {
+
+    }
+
+    private void processFactionBoard() {
+
     }
 
     private void updateData() {
@@ -83,66 +108,28 @@ public class ProductionActions {
         moveCommonBy = 1.0 / (commonCards.size() - 1);
         commonHvalue = 0;
         counter.set(factionCards.size());
+        block = ProductionBlocks.FACTIONS;
     }
 
-    private void selectCard(ObservableList<Node> list, ScrollPane scrollPane, double hValue, double vValue, ProductionBlocks nextProductionBlock) {
+    private void highlightCard(ObservableList<Node> list, ScrollPane scrollPane, double hValue, double vValue, ProductionBlocks nextProductionBlock, int index, int finish, Runnable processProducution) {
+        if (index == finish) {
+            block = nextProductionBlock;
+            return;
+        }
         selectedCard.deselect();
-        selectedCard = (Card) list.get(counter.getAndIncrement());
-
+        selectedCard = (Card) list.get(index);
         selectedCard.select();
         smoothScroll(scrollPane, hValue, vValue);
-        //PROCESS
-        if (counter.get() == 0) {
-            block = nextProductionBlock;
-        }
+        processProducution.run();
     }
 
-    private void factions(ObservableList<Node> factionCards) {
-        selectedCard.deselect();
-        selectedCard = (Card) factionCards.get(counter.decrementAndGet());
-
-        selectedCard.select();
-        smoothScroll(model.getFactionCards().get(CardTypes.PRODUCTION), factionHValue, 0);
-        addSourceWithEffect(List.of(Sources.STONE, Sources.WOOD));
-        if (counter.get() == 0) {
-            block = ProductionBlocks.DEALS;
-        }
-        factionHValue += moveFactionBy;
-    }
-
-    private void deals(ObservableList<Node> deals) {
-        selectedCard.deselect();
-        selectedCard = (Card) deals.get(counter.getAndIncrement());
-
-        selectedCard.select();
-        smoothScroll(model.getDeals(), 0, dealVvalue);
-        //PROCESS DEAL
-        if (counter.get() == deals.size()) {
-            block = ProductionBlocks.FACTION_BOARD;
-        }
-        dealVvalue += moveDealBy;
-    }
-
-    private void factionBoard() {
+    private void highlightFactionBoard() {
         selectedCard.deselect();
         model.getFactionBoard().select();
-        //PROCESS BOARD
+        processFactionBoard();
         model.getFactionBoard().deselect();
         counter.set(0);
         block = ProductionBlocks.COMMONS;
-    }
-
-    private void commons(ObservableList<Node> commonCards) {
-        selectedCard.deselect();
-        selectedCard = (Card) commonCards.get(counter.getAndIncrement());
-
-        selectedCard.select();
-        smoothScroll(model.getCommonCards().get(CardTypes.PRODUCTION), commonHvalue, 0);
-        //PROCESS CARD
-        if (counter.get() == commonCards.size()) {
-            block = ProductionBlocks.DEFAULT;
-        }
-        commonHvalue += moveCommonBy;
     }
 
     private void smoothScroll(ScrollPane scrollPane, double targetHvalue, double targetVvalue) {
@@ -176,13 +163,13 @@ public class ProductionActions {
                 }
             };
 
-            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(DELAY / sources.size()), imageNode.getImageView());
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
             translateTransition.setToY(-2 * model.getUIConfig().getFactionTokenHeight());
 
-            FadeTransition fadeTransition = new FadeTransition(Duration.millis(DELAY / sources.size()), imageNode.getImageView());
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
             fadeTransition.setToValue(0);
 
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(DELAY / sources.size()), imageNode.getImageView());
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
             scaleTransition.setToX(2);
             scaleTransition.setToY(2);
 
@@ -193,5 +180,15 @@ public class ProductionActions {
             sequentialTransition.getChildren().add(parallelTransition);
         });
         sequentialTransition.play();
+    }
+
+    public void processCondition(Conditions condition) {
+        int count = switch (condition) {
+//            case Conditions.FACTION_CARD_2 -> ;
+//            case Conditions.SAMURAI_3 -> ;
+            default ->
+                    CardsOperation.getCardsCountWithCondition(model, card -> card.getCardData().getColors().contains(condition.getColor()));
+        };
+//        IntStream.range(0, count).mapToObj(i -> selectedCard.getCardData().getCardEffect().getSource()).toList();
     }
 }

@@ -4,6 +4,7 @@ import cz.games.lp.common.enums.Sources;
 import cz.games.lp.frontend.components.Supply;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.geometry.Pos;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.FlowPane;
 
 import java.util.List;
@@ -26,11 +27,22 @@ public class SourcePane extends FlowPane {
         for (Sources source : model.getGameData().getSelectedFaction().getSourcesInOwnSupply()) {
             model.getOwnSupplies().put(source, new Supply(source, model));
         }
+        getChildren().clear();
+        addScrollBar();
         addSourcesIntoPane();
     }
 
+    private void addScrollBar() {
+        Slider slider = new Slider();
+        slider.setMax(500);
+        slider.setMin(50);
+        slider.setMajorTickUnit(10);
+        slider.setValue(400);
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> model.getUIConfig().setAnimationSpeed(newValue.intValue()));
+        getChildren().add(slider);
+    }
+
     private void addSourcesIntoPane() {
-        getChildren().clear();
         List<Supply> supplies = model.getOwnSupplies()
                 .values()
                 .stream()

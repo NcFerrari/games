@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.components.transition_components;
 
+import cz.games.lp.common.dto.CardDTO;
 import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
@@ -21,6 +22,8 @@ public class Card extends TransitionGroup {
     @Getter
     private boolean samurai;
     private Runnable runnable;
+    @Getter
+    private CardDTO cardData;
 
     public Card(CommonModel model) {
         super(model);
@@ -39,6 +42,7 @@ public class Card extends TransitionGroup {
         imageNode.setImage("cards/" + path);
         getChildren().addFirst(imageNode.getImageView());
         cardTransition.setNode(this);
+        loadCardData();
     }
 
     public void select() {
@@ -75,5 +79,9 @@ public class Card extends TransitionGroup {
 
     public void setOnFinishedAdditional(Runnable runnable) {
         this.runnable = runnable;
+    }
+
+    private void loadCardData() {
+        cardData = model.getManager().getCardData(cardId);
     }
 }

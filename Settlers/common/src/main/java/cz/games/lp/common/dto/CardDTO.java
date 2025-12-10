@@ -26,4 +26,9 @@ public class CardDTO {
     private List<CardEffects> orEffect = new ArrayList<>();
     private List<Sources> sourcesForBuild = new ArrayList<>();
     private List<Sources> sourcesFromDestroy = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return String.format("%s[ID:%s, TYPE:%S]", cardName, cardId, cardType);
+    }
 }

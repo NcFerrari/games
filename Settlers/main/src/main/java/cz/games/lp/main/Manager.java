@@ -8,6 +8,8 @@ import cz.games.lp.frontend.MainApp;
 import cz.games.lp.frontend.api.IManager;
 import lombok.Getter;
 
+import java.util.List;
+
 public class Manager implements IManager {
 
     private static final int FACTION_CARD_COUNT = 30;
@@ -33,7 +35,7 @@ public class Manager implements IManager {
     }
 
     @Override
-    public CardDTO getCard(String cardId) {
+    public CardDTO getCardData(String cardId) {
         return backendManager.getCards().get(cardId);
     }
 
@@ -45,5 +47,10 @@ public class Manager implements IManager {
     @Override
     public int getAnimationSpeed() {
         return ANIMATION_SPEED;
+    }
+
+    @Override
+    public List<CardDTO> getMockList() {
+        return backendManager.getCards().values().stream().filter(card -> card.getCondition() != null).toList();
     }
 }

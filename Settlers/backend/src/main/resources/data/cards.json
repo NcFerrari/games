@@ -404,14 +404,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "bar022",
     "cardName": "Hradiště",
     "cardType": "PROPERTIES",
     "colors": [
       "BLACK"
     ],
-    "condition": "BLACK",
+    "condition": "BLACK_6",
     "dealSource": "WOOD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -500,7 +500,7 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT",
+    "cardEffectForPosition": "FOUR_SCORE_POINTS",
     "cardId": "bar027",
     "cardName": "Modla",
     "cardType": "PROPERTIES",
@@ -686,8 +686,6 @@
   },
   {
     "cardEffect": [
-      "SETTLER",
-      "SETTLER",
       "SETTLER"
     ],
     "cardEffectForPosition": null,
@@ -697,7 +695,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "PINK",
+    "condition": "PINK_3",
     "dealSource": "SETTLER",
     "orEffect": [],
     "sourcesForBuild": [
@@ -710,8 +708,6 @@
   },
   {
     "cardEffect": [
-      "SETTLER",
-      "SETTLER",
       "SETTLER"
     ],
     "cardEffectForPosition": null,
@@ -721,7 +717,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "PINK",
+    "condition": "PINK_3",
     "dealSource": "SETTLER",
     "orEffect": [],
     "sourcesForBuild": [
@@ -754,8 +750,6 @@
   },
   {
     "cardEffect": [
-      "SCORE_POINT",
-      "SCORE_POINT",
       "SCORE_POINT"
     ],
     "cardEffectForPosition": null,
@@ -765,7 +759,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "SAMURAI",
+    "condition": "SAMURAI_3",
     "dealSource": "STONE",
     "orEffect": [],
     "sourcesForBuild": [
@@ -779,8 +773,6 @@
   },
   {
     "cardEffect": [
-      "SCORE_POINT",
-      "SCORE_POINT",
       "SCORE_POINT"
     ],
     "cardEffectForPosition": null,
@@ -790,7 +782,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "SAMURAI",
+    "condition": "SAMURAI_3",
     "dealSource": "GOLD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -813,7 +805,7 @@
     "colors": [
       "BLUE"
     ],
-    "condition": "FACTION_CARD",
+    "condition": "FACTION_CARD_2",
     "dealSource": "CARD",
     "orEffect": [
       "FACTION_CARD"
@@ -1110,7 +1102,7 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SAMURAI,SAMURAI",
+    "cardEffectForPosition": "TWO_SAMURAIS",
     "cardId": "jap026",
     "cardName": "Ninjové",
     "cardType": "ACTION",
@@ -1130,7 +1122,7 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SAMURAI,SAMURAI",
+    "cardEffectForPosition": "TWO_SAMURAIS",
     "cardId": "jap027",
     "cardName": "Ninjové",
     "cardType": "ACTION",
@@ -1393,7 +1385,6 @@
   },
   {
     "cardEffect": [
-      "FACTION_CARD",
       "FACTION_CARD"
     ],
     "cardEffectForPosition": null,
@@ -1403,7 +1394,7 @@
     "colors": [
       "BLUE"
     ],
-    "condition": "FACTION_CARD",
+    "condition": "FACTION_CARD_2",
     "dealSource": "CARD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -1808,7 +1799,7 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "CARD,CARD",
+    "cardEffectForPosition": "TWO_CARDS",
     "cardId": "egy001",
     "cardName": "Poušť",
     "cardType": "ACTION",
@@ -1823,8 +1814,6 @@
   },
   {
     "cardEffect": [
-      "STONE",
-      "STONE",
       "STONE"
     ],
     "cardEffectForPosition": null,
@@ -1834,7 +1823,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "GRAY",
+    "condition": "GRAY_3",
     "dealSource": "CARD",
     "orEffect": [],
     "sourcesForBuild": [
@@ -1888,7 +1877,7 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SETTLER,SETTLER",
+    "cardEffectForPosition": "TWO_SETTLERS",
     "cardId": "egy005",
     "cardName": "Oáza",
     "cardType": "PROPERTIES",
@@ -2383,14 +2372,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "com001",
     "cardName": "Socha",
     "cardType": "PROPERTIES",
     "colors": [
       "GRAY"
     ],
-    "condition": "GRAY",
+    "condition": "GRAY_6_CARD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2427,14 +2416,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "com003",
     "cardName": "Sklad dřeva",
     "cardType": "PROPERTIES",
     "colors": [
       "BROWN"
     ],
-    "condition": "BROWN",
+    "condition": "BROWN_6_CARD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2607,8 +2596,6 @@
   },
   {
     "cardEffect": [
-      "STONE",
-      "STONE",
       "STONE"
     ],
     "cardEffectForPosition": null,
@@ -2618,7 +2605,7 @@
     "colors": [
       "GRAY"
     ],
-    "condition": "GRAY",
+    "condition": "GRAY_3",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2747,8 +2734,6 @@
   },
   {
     "cardEffect": [
-      "SETTLER",
-      "SETTLER",
       "SETTLER"
     ],
     "cardEffectForPosition": null,
@@ -2758,7 +2743,7 @@
     "colors": [
       "PINK"
     ],
-    "condition": "PINK",
+    "condition": "PINK_3",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2930,8 +2915,6 @@
   },
   {
     "cardEffect": [
-      "FOOD",
-      "FOOD",
       "FOOD"
     ],
     "cardEffectForPosition": null,
@@ -2941,7 +2924,7 @@
     "colors": [
       "RED"
     ],
-    "condition": "RED",
+    "condition": "RED_3",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -2978,8 +2961,6 @@
   },
   {
     "cardEffect": [
-      "GOLD",
-      "GOLD",
       "GOLD"
     ],
     "cardEffectForPosition": null,
@@ -2989,7 +2970,7 @@
     "colors": [
       "GOLD"
     ],
-    "condition": "GOLD",
+    "condition": "GOLD_3",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -3027,8 +3008,6 @@
   },
   {
     "cardEffect": [
-      "WOOD",
-      "WOOD",
       "WOOD"
     ],
     "cardEffectForPosition": null,
@@ -3038,7 +3017,7 @@
     "colors": [
       "BROWN"
     ],
-    "condition": "BROWN",
+    "condition": "BROWN_3",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -3964,14 +3943,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "com075",
     "cardName": "Pekař",
     "cardType": "PROPERTIES",
     "colors": [
       "RED"
     ],
-    "condition": "RED",
+    "condition": "RED_6_CARD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -4048,14 +4027,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "com079",
     "cardName": "Rynek",
     "cardType": "PROPERTIES",
     "colors": [
       "PINK"
     ],
-    "condition": "PINK",
+    "condition": "PINK_6_CARD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
@@ -4092,14 +4071,14 @@
   },
   {
     "cardEffect": [],
-    "cardEffectForPosition": "SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,SCORE_POINT,CARD",
+    "cardEffectForPosition": "SCORE_POINT",
     "cardId": "com081",
     "cardName": "Noclehárna",
     "cardType": "PROPERTIES",
     "colors": [
       "GOLD"
     ],
-    "condition": "GOLD",
+    "condition": "GOLD_6_CARD",
     "dealSource": null,
     "orEffect": [],
     "sourcesForBuild": [
