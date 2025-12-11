@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.actions;
 
+import cz.games.lp.common.enums.CardEffects;
 import cz.games.lp.common.enums.CardTypes;
 import cz.games.lp.common.enums.Conditions;
 import cz.games.lp.common.enums.Sources;
@@ -31,6 +32,7 @@ import java.util.stream.IntStream;
 
 public class ProductionActions {
 
+    private final SequentialTransition pointsTransition = new SequentialTransition();
     private final CommonModel model;
     private final AtomicLong stopTime = new AtomicLong();
     private final AtomicInteger counter = new AtomicInteger();
@@ -45,7 +47,7 @@ public class ProductionActions {
     private ObservableList<Node> factionCards;
     private ObservableList<Node> deals;
     private ObservableList<Node> commonCards;
-    private long delay;
+    private double delay;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
@@ -55,8 +57,8 @@ public class ProductionActions {
     public Consumer<Long> proceedProduction(ActionManager actionManager) {
         updateData();
         return time -> {
-            delay = model.getUIConfig().getAnimationSpeed() * 2_000_000L;
-            if (time - stopTime.get() < delay) {
+            delay = model.getUIConfig().getAnimationSpeed();
+            if (time - stopTime.get() < delay * 1_000_000L) {
                 return;
             }
             stopTime.set(time);
@@ -86,6 +88,10 @@ public class ProductionActions {
     private void processCard(Card selectedCard) {
         if (selectedCard.getCardData().getCondition() != null) {
             processCondition(selectedCard.getCardData().getCondition());
+        } else if (!selectedCard.getCardData().getOrEffect().isEmpty()) {
+            System.out.println(selectedCard.getCardData());
+        } else {
+            addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), false);
         }
     }
 
@@ -145,7 +151,7 @@ public class ProductionActions {
         timeline.play();
     }
 
-    private void addSourceWithEffect(List<Sources> sources) {
+    private void addSourceWithEffect(List<Sources> sources, boolean point) {
         SequentialTransition sequentialTransition = new SequentialTransition();
         sources.forEach(source -> {
             ImageNode imageNode = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
@@ -159,7 +165,11 @@ public class ProductionActions {
                 @Override
                 protected void interpolate(double v) {
                     imageNode.getImageView().setVisible(true);
-                    model.getOwnSupplies().get(source).addOne();
+                    if (point) {
+                        model.getFactionToken().execute();
+                    } else {
+                        model.getOwnSupplies().get(source).addOne();
+                    }
                 }
             };
 
@@ -183,12 +193,19 @@ public class ProductionActions {
     }
 
     public void processCondition(Conditions condition) {
-        int count = switch (condition) {
+        List<Sources> list;
+        switch (condition) {
 //            case Conditions.FACTION_CARD_2 -> ;
-//            case Conditions.SAMURAI_3 -> ;
-            default ->
-                    CardsOperation.getCardsCountWithCondition(model, card -> card.getCardData().getColors().contains(condition.getColor()));
-        };
-//        IntStream.range(0, count).mapToObj(i -> selectedCard.getCardData().getCardEffect().getSource()).toList();
+            case Conditions.SAMURAI_3 -> {
+                int count = CardsOperation.getCardsCountWithCondition(model, Card::hasSamurai, Conditions.SAMURAI_3.getLimit());
+                list = IntStream.range(0, count).mapToObj(i -> Sources.SCORE_POINT).toList();
+                addSourceWithEffect(list, true);
+            }
+            default -> {
+                int count = CardsOperation.getCardsCountWithCondition(model, card -> card.getCardData().getColors().contains(condition.getColor()), selectedCard.getCardData().getCondition().getLimit());
+                list = IntStream.range(0, count).mapToObj(i -> selectedCard.getCardData().getCardEffect().getFirst().getSource()).toList();
+                addSourceWithEffect(list, false);
+            }
+        }
     }
 }

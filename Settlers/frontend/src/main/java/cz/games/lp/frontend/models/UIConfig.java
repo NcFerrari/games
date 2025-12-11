@@ -10,6 +10,9 @@ public class UIConfig {
     private static final String STYLE = "-fx-background: #078d6f; -fx-background-color: #078d6f";
     private static final String HEADER_STYLE = "-fx-background-color: #6ae7ba";
     private static final int BORDER_WIDTH = 4;
+    private static final int MAX_ANIMATION_SPEED = 2000;
+    private static final int MIN_ANIMATION_SPEED = 50;
+    private static final int TICK_ANIMATION_SPEED = 10;
     private final double width = Screen.getPrimary().getBounds().getWidth() - 100;
     private final double height = Screen.getPrimary().getBounds().getHeight() - 100;
     private final double supplyWidth = width / 18.2;
@@ -43,7 +46,7 @@ public class UIConfig {
     private final double factionBoardBorderWidth = width * 0.04945;
     private final double factionBoardBorderHeight = height * 0.10204;
     @Setter
-    private int animationSpeed = 400;
+    private int animationSpeed = 1000;
 
     public int getBorderWidth() {
         return BORDER_WIDTH;
@@ -55,5 +58,17 @@ public class UIConfig {
 
     public String getHeaderStyle() {
         return HEADER_STYLE;
+    }
+
+    public double getMaxAnimationSpeed() {
+        return MAX_ANIMATION_SPEED;
+    }
+
+    public double getMinAnimationSpeed() {
+        return MIN_ANIMATION_SPEED;
+    }
+
+    public double getTickAnimationSpeed() {
+        return TICK_ANIMATION_SPEED;
     }
 }

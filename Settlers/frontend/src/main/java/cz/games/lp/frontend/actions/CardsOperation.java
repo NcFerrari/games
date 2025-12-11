@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class CardsOperation {
 
-    public static int getCardsCountWithCondition(CommonModel model, Predicate<Card> condition) {
+    public static int getCardsCountWithCondition(CommonModel model, Predicate<Card> condition, int limit) {
         int sum = 0;
         sum += (int) Stream.of(
                         model.getFactionCards().values(),
@@ -25,6 +25,7 @@ public class CardsOperation {
                 .filter(Card.class::isInstance)
                 .map(Card.class::cast)
                 .filter(condition)
+                .limit(limit)
                 .count();
         return sum;
     }

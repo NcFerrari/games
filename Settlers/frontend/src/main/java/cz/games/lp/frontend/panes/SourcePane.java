@@ -34,10 +34,10 @@ public class SourcePane extends FlowPane {
 
     private void addScrollBar() {
         Slider slider = new Slider();
-        slider.setMax(500);
-        slider.setMin(50);
-        slider.setMajorTickUnit(10);
-        slider.setValue(400);
+        slider.setMax(model.getUIConfig().getMaxAnimationSpeed());
+        slider.setMin(model.getUIConfig().getMinAnimationSpeed());
+        slider.setMajorTickUnit(model.getUIConfig().getTickAnimationSpeed());
+        slider.setValue(model.getUIConfig().getAnimationSpeed());
         slider.valueProperty().addListener((observable, oldValue, newValue) -> model.getUIConfig().setAnimationSpeed(newValue.intValue()));
         getChildren().add(slider);
     }

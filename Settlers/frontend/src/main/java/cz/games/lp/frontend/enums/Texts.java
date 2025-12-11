@@ -6,7 +6,8 @@ public enum Texts {
     COMMON("common"),
     CHOICE("Výběr"),
     DIALOG_BUTTON("OK"),
-    FACTION_CHOICE_TITLE("Výběr frakce");
+    FACTION_CHOICE_TITLE("Výběr frakce"),
+    JAPAN("JAPAN");
 
     private final String text;
 

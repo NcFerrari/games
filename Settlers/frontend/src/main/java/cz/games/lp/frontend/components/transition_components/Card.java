@@ -2,6 +2,7 @@ package cz.games.lp.frontend.components.transition_components;
 
 import cz.games.lp.common.dto.CardDTO;
 import cz.games.lp.frontend.components.ImageNode;
+import cz.games.lp.frontend.enums.Texts;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
@@ -19,11 +20,11 @@ public class Card extends TransitionGroup {
     @Getter
     private String cardId;
     @Setter
-    @Getter
     private boolean samurai;
     private Runnable runnable;
     @Getter
     private CardDTO cardData;
+    private final ImageNode samuraiImage;
 
     public Card(CommonModel model) {
         super(model);
@@ -31,8 +32,11 @@ public class Card extends TransitionGroup {
         border = new Rectangle(model.getUIConfig().getCardWidth(), model.getUIConfig().getCardHeight() - model.getUIConfig().getBorderWidth() * 1.5);
         border.setFill(null);
         border.setStrokeWidth(model.getUIConfig().getBorderWidth());
-
         getChildren().add(border);
+
+        samuraiImage = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
+        samuraiImage.getImageView().setX(model.getUIConfig().getCardWidth() - model.getUIConfig().getFactionTokenWidth());
+        samuraiImage.setImage("source/settler");
     }
 
     public Card(String path, String cardId, CommonModel model) {
@@ -83,5 +87,17 @@ public class Card extends TransitionGroup {
 
     private void loadCardData() {
         cardData = model.getManager().getCardData(cardId);
+    }
+
+    public void addSamurai() {
+        if (!model.getManager().getGameData().getSelectedFaction().name().startsWith(Texts.JAPAN.get())) {
+            return;
+        }
+        samurai = true;
+        getChildren().add(samuraiImage.getImageView());
+    }
+
+    public boolean hasSamurai() {
+        return samurai;
     }
 }
