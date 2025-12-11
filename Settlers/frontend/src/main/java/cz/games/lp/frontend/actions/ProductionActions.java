@@ -4,21 +4,13 @@ import cz.games.lp.common.enums.CardEffects;
 import cz.games.lp.common.enums.CardTypes;
 import cz.games.lp.common.enums.Conditions;
 import cz.games.lp.common.enums.Sources;
-import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.enums.ProductionBlocks;
 import cz.games.lp.frontend.models.CommonModel;
-import javafx.animation.AnimationTimer;
-import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.ParallelTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -33,7 +25,6 @@ import java.util.stream.IntStream;
 
 public class ProductionActions {
 
-    private final AnimationTimer pointAnimation;
     private final CommonModel model;
     private final AtomicLong stopTime = new AtomicLong();
     private final AtomicInteger counter = new AtomicInteger();
@@ -49,34 +40,18 @@ public class ProductionActions {
     private ObservableList<Node> deals;
     private ObservableList<Node> commonCards;
     private double delay;
-    private int scorePointToAdd;
-    private boolean pointAnimationIsRunning;
     private HighlightMessenger data;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
         selectedCard = new Card(model);
-        pointAnimation = new AnimationTimer() {
-            @Override
-            public void handle(long time) {
-                if (scorePointToAdd == 0) {
-                    pointAnimationIsRunning = false;
-                    stop();
-                    return;
-                }
-                if (!model.isTransitionRunning()) {
-                    model.getFactionToken().execute();
-                    scorePointToAdd--;
-                }
-            }
-        };
     }
 
-    public Consumer<Long> proceedProduction(ActionManager actionManager) {
+    public Consumer<Long> proceedProduction() {
         updateData();
         return time -> {
             delay = model.getUIConfig().getAnimationSpeed();
-            if (time - stopTime.get() < delay * 1_000_000L || pointAnimationIsRunning || model.getChoiceDialog().isShowing()) {
+            if (time - stopTime.get() < delay * 1_000_000L || model.getActionManager().isPointAnimationIsRunning() || model.getChoiceDialog().isShowing()) {
                 return;
             }
             switch (block) {
@@ -98,8 +73,8 @@ public class ProductionActions {
                 }
                 default -> {
                     selectedCard.deselect();
-                    actionManager.setAnimationRunning(false);
-                    actionManager.stop();
+                    model.getActionManager().setAnimationRunning(false);
+                    model.getActionManager().stop();
                 }
             }
         };
@@ -109,8 +84,10 @@ public class ProductionActions {
         if (selectedCard.getCardData().getCondition() != null) {
             processCondition(selectedCard.getCardData().getCondition());
         } else if (!selectedCard.getCardData().getOrEffect().isEmpty()) {
+            model.getChoiceDialog().addItems(selectedCard, delay, selectedCard.getCardData().getCardEffect(), selectedCard.getCardData().getOrEffect());
+            model.getChoiceDialog().show();
         } else {
-            addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), false);
+            model.getActionManager().addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), false, selectedCard, delay);
         }
     }
 
@@ -174,68 +151,22 @@ public class ProductionActions {
         timeline.play();
     }
 
-    private void addSourceWithEffect(List<Sources> sources, boolean point) {
-        SequentialTransition sequentialTransition = new SequentialTransition();
-        sources.forEach(source -> {
-            ImageNode imageNode = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
-            imageNode.setImage("source/" + source.name().toLowerCase());
-            imageNode.getImageView().setX(model.getUIConfig().getCardWidth() / 2 - imageNode.getImageView().getFitWidth() / 2);
-            imageNode.getImageView().setY(3 * model.getUIConfig().getCardHeight() / 4 - imageNode.getImageView().getFitHeight() / 2);
-            imageNode.getImageView().setVisible(false);
-            selectedCard.getChildren().add(imageNode.getImageView());
-
-            Transition transition = new Transition() {
-                @Override
-                protected void interpolate(double v) {
-                    imageNode.getImageView().setVisible(true);
-                    if (point) {
-                        pointAnimationIsRunning = true;
-                        pointAnimation.start();
-                    } else if (Sources.COMMON_CARD.equals(source)) {
-                        model.getActionManager().drawCommonCard(model.getGameData().getCommonCards().getFirst());
-                        model.getGameData().getCommonCards().removeFirst();
-                    } else {
-                        model.getOwnSupplies().get(source).addOne();
-                    }
-                }
-            };
-
-            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
-            translateTransition.setToY(-2 * model.getUIConfig().getFactionTokenHeight());
-
-            FadeTransition fadeTransition = new FadeTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
-            fadeTransition.setToValue(0);
-
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(delay / sources.size()), imageNode.getImageView());
-            scaleTransition.setToX(2);
-            scaleTransition.setToY(2);
-
-            ParallelTransition parallelTransition = new ParallelTransition();
-            parallelTransition.getChildren().addAll(transition, translateTransition, fadeTransition, scaleTransition);
-            parallelTransition.setOnFinished(e -> selectedCard.getChildren().remove(imageNode.getImageView()));
-
-            sequentialTransition.getChildren().add(parallelTransition);
-        });
-        sequentialTransition.play();
-    }
-
     public void processCondition(Conditions condition) {
         List<Sources> list;
         switch (condition) {
             case Conditions.FACTION_CARD_2 -> {
-                model.getChoiceDialog().addItems(selectedCard.getCardData().getCardEffect(), selectedCard.getCardData().getOrEffect());
+                model.getChoiceDialog().addItems(null, 0, selectedCard.getCardData().getCardEffect(), selectedCard.getCardData().getOrEffect());
                 model.getChoiceDialog().show();
             }
             case Conditions.SAMURAI_3 -> {
                 int count = CardsOperation.getCardsCountWithCondition(model, Card::hasSamurai, Conditions.SAMURAI_3.getLimit());
-                scorePointToAdd = count;
                 list = IntStream.range(0, count).mapToObj(i -> Sources.SCORE_POINT).toList();
-                addSourceWithEffect(list, true);
+                model.getActionManager().addSourceWithEffect(list, true, selectedCard, delay);
             }
             default -> {
                 int count = CardsOperation.getCardsCountWithCondition(model, card -> card.getCardData().getColors().contains(condition.getColor()), selectedCard.getCardData().getCondition().getLimit());
                 list = IntStream.range(0, count).mapToObj(i -> selectedCard.getCardData().getCardEffect().getFirst().getSource()).toList();
-                addSourceWithEffect(list, false);
+                model.getActionManager().addSourceWithEffect(list, false, selectedCard, delay);
             }
         }
     }

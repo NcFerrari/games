@@ -75,7 +75,7 @@ public class MainApp extends Application {
         model.getGameData().setCurrentPhase(Phases.PRODUCTION);
         model.getManager().getGameData().setSelectedFaction(Factions.ROMAN_F);
         initFactionComponents(Factions.ROMAN_F);
-        int[] egypt = new int[]{30, 29, 28, 27, 26, 12, 11, 4, 2};
+        int[] egypt = new int[]{4};
         for (Integer c : egypt) {
             String cardId = "egy" + (c < 10 ? "00" : "0") + c;
             Card card = new Card("egypt/" + cardId, cardId, model);
