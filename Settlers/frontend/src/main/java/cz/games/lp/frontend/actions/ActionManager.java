@@ -102,21 +102,22 @@ public class ActionManager extends AnimationTimer {
         start();
     }
 
-    public void addSourceWithEffect(List<Sources> sources, boolean points, Card selectedCard, double delay) {
+    public void addSourceWithEffect(List<Sources> sources, Card nodeForEffect) {
         SequentialTransition sequentialTransition = new SequentialTransition();
+        double delay = model.getUIConfig().getAnimationSpeed();
         sources.forEach(source -> {
             ImageNode imageNode = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
             imageNode.setImage("source/" + source.name().toLowerCase());
             imageNode.getImageView().setX(model.getUIConfig().getCardWidth() / 2 - imageNode.getImageView().getFitWidth() / 2);
             imageNode.getImageView().setY(3 * model.getUIConfig().getCardHeight() / 4 - imageNode.getImageView().getFitHeight() / 2);
             imageNode.getImageView().setVisible(false);
-            selectedCard.getChildren().add(imageNode.getImageView());
+            nodeForEffect.getChildren().add(imageNode.getImageView());
 
             Transition transition = new Transition() {
                 @Override
                 protected void interpolate(double v) {
                     imageNode.getImageView().setVisible(true);
-                    if (points) {
+                    if (Sources.SCORE_POINT.equals(source)) {
                         model.getActionManager().setScorePointToAdd(1);
                         pointAnimationIsRunning = true;
                         pointAnimation.start();
@@ -141,7 +142,7 @@ public class ActionManager extends AnimationTimer {
 
             ParallelTransition parallelTransition = new ParallelTransition();
             parallelTransition.getChildren().addAll(transition, translateTransition, fadeTransition, scaleTransition);
-            parallelTransition.setOnFinished(e -> selectedCard.getChildren().remove(imageNode.getImageView()));
+            parallelTransition.setOnFinished(e -> nodeForEffect.getChildren().remove(imageNode.getImageView()));
 
             sequentialTransition.getChildren().add(parallelTransition);
         });

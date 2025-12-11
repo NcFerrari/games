@@ -58,7 +58,7 @@ public class ChoiceDialog extends Dialog<List<CardEffects>> {
                     imageNode = new ImageNode(model.getUIConfig().getFactionTokenWidth(), model.getUIConfig().getFactionTokenHeight());
                     imageNode.setImage("source/" + effect.getSource().name().toLowerCase());
                     vBox.setOnMousePressed(e -> {
-                        model.getActionManager().addSourceWithEffect(list.stream().map(CardEffects::getSource).toList(), CardEffects.SCORE_POINT.equals(list.getFirst()), selectedCard, delay);
+                        model.getActionManager().addSourceWithEffect(list.stream().map(CardEffects::getSource).toList(), selectedCard);
                         getDialogPane().getScene().getWindow().hide();
                     });
                 }

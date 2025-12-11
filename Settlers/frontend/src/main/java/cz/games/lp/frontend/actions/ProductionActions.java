@@ -87,7 +87,7 @@ public class ProductionActions {
             model.getChoiceDialog().addItems(selectedCard, delay, selectedCard.getCardData().getCardEffect(), selectedCard.getCardData().getOrEffect());
             model.getChoiceDialog().show();
         } else {
-            model.getActionManager().addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), false, selectedCard, delay);
+            model.getActionManager().addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), selectedCard);
         }
     }
 
@@ -161,12 +161,12 @@ public class ProductionActions {
             case Conditions.SAMURAI_3 -> {
                 int count = CardsOperation.getCardsCountWithCondition(model, Card::hasSamurai, Conditions.SAMURAI_3.getLimit());
                 list = IntStream.range(0, count).mapToObj(i -> Sources.SCORE_POINT).toList();
-                model.getActionManager().addSourceWithEffect(list, true, selectedCard, delay);
+                model.getActionManager().addSourceWithEffect(list, selectedCard);
             }
             default -> {
                 int count = CardsOperation.getCardsCountWithCondition(model, card -> card.getCardData().getColors().contains(condition.getColor()), selectedCard.getCardData().getCondition().getLimit());
                 list = IntStream.range(0, count).mapToObj(i -> selectedCard.getCardData().getCardEffect().getFirst().getSource()).toList();
-                model.getActionManager().addSourceWithEffect(list, false, selectedCard, delay);
+                model.getActionManager().addSourceWithEffect(list, selectedCard);
             }
         }
     }
