@@ -23,7 +23,7 @@ public record CardMoveActions(CommonModel model) {
         card.setOnFinishedAdditional(() -> {
             model.getFrontPane().getChildren().remove(card);
             String cardId = String.format("%s0%s%d", cardPath.substring(0, 3), (cardNumber < 10 ? "0" : ""), cardNumber);
-            model.getCardsInHand().getCards().add(new Card(cardPath + cardId, cardId, model));
+            model.getCardsInHand().getCards().add(new Card(cardPath + "/" + cardId, cardId, model));
             cardDeck.removeCard();
         });
         card.execute();

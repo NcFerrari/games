@@ -8,6 +8,7 @@ import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.enums.ProductionBlocks;
 import cz.games.lp.frontend.models.CommonModel;
+import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -32,7 +33,7 @@ import java.util.stream.IntStream;
 
 public class ProductionActions {
 
-    private final SequentialTransition pointsTransition = new SequentialTransition();
+    private final AnimationTimer pointAnimation;
     private final CommonModel model;
     private final AtomicLong stopTime = new AtomicLong();
     private final AtomicInteger counter = new AtomicInteger();
@@ -48,17 +49,33 @@ public class ProductionActions {
     private ObservableList<Node> deals;
     private ObservableList<Node> commonCards;
     private double delay;
+    private int scorePointToAdd;
+    private boolean pointAnimationIsRunning;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
         selectedCard = new Card(model);
+        pointAnimation = new AnimationTimer() {
+            @Override
+            public void handle(long time) {
+                if (scorePointToAdd == 0) {
+                    pointAnimationIsRunning = false;
+                    stop();
+                    return;
+                }
+                if (!model.isTransitionRunning()) {
+                    model.getFactionToken().execute();
+                    scorePointToAdd--;
+                }
+            }
+        };
     }
 
     public Consumer<Long> proceedProduction(ActionManager actionManager) {
         updateData();
         return time -> {
             delay = model.getUIConfig().getAnimationSpeed();
-            if (time - stopTime.get() < delay * 1_000_000L) {
+            if (time - stopTime.get() < delay * 1_000_000L || pointAnimationIsRunning || model.getChoiceDialog().isShowing()) {
                 return;
             }
             stopTime.set(time);
@@ -104,6 +121,9 @@ public class ProductionActions {
     }
 
     private void updateData() {
+        model.getFactionCards().get(CardTypes.PRODUCTION).setHvalue(0);
+        model.getDeals().setVvalue(0);
+        model.getCommonCards().get(CardTypes.PRODUCTION).setHvalue(0);
         factionCards = ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
         deals = model.getDeals().getDeals();
         commonCards = ((HBox) model.getCommonCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
@@ -166,7 +186,8 @@ public class ProductionActions {
                 protected void interpolate(double v) {
                     imageNode.getImageView().setVisible(true);
                     if (point) {
-                        model.getFactionToken().execute();
+                        pointAnimationIsRunning = true;
+                        pointAnimation.start();
                     } else {
                         model.getOwnSupplies().get(source).addOne();
                     }
@@ -195,9 +216,13 @@ public class ProductionActions {
     public void processCondition(Conditions condition) {
         List<Sources> list;
         switch (condition) {
-//            case Conditions.FACTION_CARD_2 -> ;
+            case Conditions.FACTION_CARD_2 -> {
+                model.getChoiceDialog().addItems(selectedCard.getCardData().getCardEffect(), selectedCard.getCardData().getOrEffect());
+                model.getChoiceDialog().show();
+            }
             case Conditions.SAMURAI_3 -> {
                 int count = CardsOperation.getCardsCountWithCondition(model, Card::hasSamurai, Conditions.SAMURAI_3.getLimit());
+                scorePointToAdd = count;
                 list = IntStream.range(0, count).mapToObj(i -> Sources.SCORE_POINT).toList();
                 addSourceWithEffect(list, true);
             }

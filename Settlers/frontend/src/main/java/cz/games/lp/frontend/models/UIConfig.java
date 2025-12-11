@@ -39,12 +39,12 @@ public class UIConfig {
     private final double cardInHandsWidth = width * 0.3285;
     private final double bottomPaneHeight = height * 0.612;
     private final double widthForImperialCardStack = width * 0.41365;
-    private final double dialogWidth = width * 0.164835;
-    private final double dialogHeight = height * 0.306122;
     private final double factionBoardBorderX = width * 0.013736;
     private final double factionBoardBorderY = height * 0.0612245;
     private final double factionBoardBorderWidth = width * 0.04945;
     private final double factionBoardBorderHeight = height * 0.10204;
+    private final double dialogAdditionalWidth = width * 0.014634;
+    private final double dialogAdditionalHeight = height * 0.037313;
     @Setter
     private int animationSpeed = 1000;
 

@@ -1,6 +1,5 @@
 package cz.games.lp.frontend;
 
-import cz.games.lp.common.dto.CardDTO;
 import cz.games.lp.common.enums.CardTypes;
 import cz.games.lp.common.enums.Factions;
 import cz.games.lp.common.enums.Phases;
@@ -76,12 +75,12 @@ public class MainApp extends Application {
         model.getGameData().setCurrentPhase(Phases.PRODUCTION);
         model.getManager().getGameData().setSelectedFaction(Factions.JAPAN_M);
         initFactionComponents(Factions.JAPAN_M);
-        int[] japans = new int[]{11, 10, 9, 7, 6, 5, 4, 3, 2, 1};
+        int[] japans = new int[]{10, 9, 7, 6, 5, 4, 3, 2, 1, 11};
         for (Integer c : japans) {
             String cardId = "jap" + (c < 10 ? "00" : "0") + c;
             Card card = new Card("japan/" + cardId, cardId, model);
             ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
-            if (c > 7) {
+            if (c > 5) {
                 card.addSamurai();
             }
         }
