@@ -27,7 +27,8 @@ public class ChoiceDialog extends Dialog<Void> {
         getDialogPane().setContent(contentPane);
     }
 
-    public void addItems(List<CardEffects>... listOfLists) {
+    @SafeVarargs
+    public final void addItems(List<CardEffects>... listOfLists) {
         setWidth(model.getUIConfig().getCardWidth() * listOfLists.length + model.getUIConfig().getDialogAdditionalWidth());
         setHeight(model.getUIConfig().getCardHeight() + model.getUIConfig().getDialogAdditionalHeight());
         contentPane.getChildren().clear();

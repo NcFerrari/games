@@ -51,6 +51,7 @@ public class ProductionActions {
     private double delay;
     private int scorePointToAdd;
     private boolean pointAnimationIsRunning;
+    private HighlightMessenger data;
 
     public ProductionActions(CommonModel model) {
         this.model = model;
@@ -78,19 +79,21 @@ public class ProductionActions {
             if (time - stopTime.get() < delay * 1_000_000L || pointAnimationIsRunning || model.getChoiceDialog().isShowing()) {
                 return;
             }
-            stopTime.set(time);
             switch (block) {
                 case ProductionBlocks.FACTIONS -> {
-                    highlightCard(factionCards, model.getFactionCards().get(CardTypes.PRODUCTION), factionHValue, 0, ProductionBlocks.DEALS, counter.decrementAndGet(), -1, () -> processCard(selectedCard));
+                    data = new HighlightMessenger(factionCards, model.getFactionCards().get(CardTypes.PRODUCTION), factionHValue, 0, ProductionBlocks.DEALS, counter.decrementAndGet(), -1, () -> processCard(selectedCard), time);
+                    highlightCard(data);
                     factionHValue += moveFactionBy;
                 }
                 case ProductionBlocks.DEALS -> {
-                    highlightCard(deals, model.getDeals(), 0, dealVvalue, ProductionBlocks.FACTION_BOARD, counter.incrementAndGet(), deals.size(), () -> makeDeal(selectedCard));
+                    data = new HighlightMessenger(deals, model.getDeals(), 0, dealVvalue, ProductionBlocks.FACTION_BOARD, counter.incrementAndGet(), deals.size(), () -> makeDeal(selectedCard), time);
+                    highlightCard(data);
                     dealVvalue += moveDealBy;
                 }
                 case ProductionBlocks.FACTION_BOARD -> highlightFactionBoard();
                 case ProductionBlocks.COMMONS -> {
-                    highlightCard(commonCards, model.getCommonCards().get(CardTypes.PRODUCTION), commonHvalue, 0, ProductionBlocks.DEFAULT, counter.getAndIncrement(), commonCards.size(), () -> processCard(selectedCard));
+                    data = new HighlightMessenger(commonCards, model.getCommonCards().get(CardTypes.PRODUCTION), commonHvalue, 0, ProductionBlocks.DEFAULT, counter.getAndIncrement(), commonCards.size(), () -> processCard(selectedCard), time);
+                    highlightCard(data);
                     commonHvalue += moveCommonBy;
                 }
                 default -> {
@@ -106,7 +109,6 @@ public class ProductionActions {
         if (selectedCard.getCardData().getCondition() != null) {
             processCondition(selectedCard.getCardData().getCondition());
         } else if (!selectedCard.getCardData().getOrEffect().isEmpty()) {
-            System.out.println(selectedCard.getCardData());
         } else {
             addSourceWithEffect(selectedCard.getCardData().getCardEffect().stream().map(CardEffects::getSource).toList(), false);
         }
@@ -137,16 +139,17 @@ public class ProductionActions {
         block = ProductionBlocks.FACTIONS;
     }
 
-    private void highlightCard(ObservableList<Node> list, ScrollPane scrollPane, double hValue, double vValue, ProductionBlocks nextProductionBlock, int index, int finish, Runnable processProducution) {
-        if (index == finish) {
-            block = nextProductionBlock;
+    private void highlightCard(HighlightMessenger data) {
+        if (data.index == data.finish) {
+            block = data.nextProductionBlock;
             return;
         }
+        stopTime.set(data.time);
         selectedCard.deselect();
-        selectedCard = (Card) list.get(index);
+        selectedCard = (Card) data.list.get(data.index);
         selectedCard.select();
-        smoothScroll(scrollPane, hValue, vValue);
-        processProducution.run();
+        smoothScroll(data.scrollPane, data.hValue, data.vValue);
+        data.processProduction.run();
     }
 
     private void highlightFactionBoard() {
@@ -188,6 +191,9 @@ public class ProductionActions {
                     if (point) {
                         pointAnimationIsRunning = true;
                         pointAnimation.start();
+                    } else if (Sources.COMMON_CARD.equals(source)) {
+                        model.getActionManager().drawCommonCard(model.getGameData().getCommonCards().getFirst());
+                        model.getGameData().getCommonCards().removeFirst();
                     } else {
                         model.getOwnSupplies().get(source).addOne();
                     }
@@ -232,5 +238,11 @@ public class ProductionActions {
                 addSourceWithEffect(list, false);
             }
         }
+    }
+
+    private record HighlightMessenger(ObservableList<Node> list, ScrollPane scrollPane, double hValue, double vValue,
+                                      ProductionBlocks nextProductionBlock, int index, int finish,
+                                      Runnable processProduction, long time) {
+
     }
 }

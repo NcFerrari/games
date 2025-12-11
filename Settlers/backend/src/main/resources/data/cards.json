@@ -1396,7 +1396,9 @@
     ],
     "condition": "FACTION_CARD_2",
     "dealSource": "CARD",
-    "orEffect": [],
+    "orEffect": [
+      "FACTION_CARD"
+    ],
     "sourcesForBuild": [
       "STONE",
       "STONE",
