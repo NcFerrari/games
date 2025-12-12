@@ -1,7 +1,6 @@
 package cz.games.lp.frontend.actions;
 
 import cz.games.lp.common.enums.Sources;
-import cz.games.lp.frontend.api.SourceContainer;
 import cz.games.lp.frontend.components.ImageNode;
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.enums.CardDeckTypes;
@@ -103,7 +102,7 @@ public class ActionManager extends AnimationTimer {
         start();
     }
 
-    public void addSourceWithEffect(List<Sources> sources, SourceContainer nodeForEffect) {
+    public void addSourceWithEffect(List<Sources> sources, Card nodeForEffect) {
         SequentialTransition sequentialTransition = new SequentialTransition();
         double delay = model.getUIConfig().getAnimationSpeed();
         sources.forEach(source -> {

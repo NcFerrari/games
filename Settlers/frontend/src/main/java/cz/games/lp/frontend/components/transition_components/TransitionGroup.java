@@ -1,11 +1,10 @@
 package cz.games.lp.frontend.components.transition_components;
 
-import cz.games.lp.frontend.api.SourceContainer;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.animation.Animation;
 import javafx.scene.Group;
 
-public abstract class TransitionGroup extends Group implements SourceContainer {
+public abstract class TransitionGroup extends Group {
 
     protected final CommonModel model;
 
