@@ -92,7 +92,7 @@ public class ProductionActions {
     }
 
     private void makeDeal(Card selectedCard) {
-
+        model.getActionManager().addSourceWithEffect(List.of(selectedCard.getCardData().getDealSource()), selectedCard);
     }
 
     private void processFactionBoard() {

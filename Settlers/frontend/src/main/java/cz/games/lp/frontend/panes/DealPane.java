@@ -1,5 +1,6 @@
 package cz.games.lp.frontend.panes;
 
+import cz.games.lp.frontend.api.SourceContainer;
 import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.collections.ObservableList;
@@ -9,7 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
-public class DealPane extends ScrollPane {
+public class DealPane extends ScrollPane implements SourceContainer {
 
     private final VBox cardPane;
 
@@ -36,5 +37,10 @@ public class DealPane extends ScrollPane {
 
     public void clear() {
         cardPane.getChildren().clear();
+    }
+
+    @Override
+    public ObservableList<Node> getChildren() {
+        return null;
     }
 }
