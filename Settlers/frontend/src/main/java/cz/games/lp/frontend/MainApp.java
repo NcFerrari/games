@@ -80,18 +80,18 @@ public class MainApp extends Application {
 //            Card card = new Card("common/" + cardId, cardId, model);
 //            ((HBox) model.getCommonCards().get(CardTypes.PRODUCTION).getContent()).getChildren().add(card);
 //        }
-        int[] deals = new int[]{1, 2, 3};
-        for (Integer c : deals) {
-            String cardId = "bar00" + c;
-            Card card = new Card("barbarian/" + cardId, cardId, model);
-            model.getDeals().makeADeal(card);
-        }
-        int[] deals2 = new int[]{11, 15, 5, 13, 10, 12, 23, 24, 2, 3, 9, 29, 8, 26};
-        for (Integer c : deals2) {
-            String cardId = "jap" + (c < 10 ? "00" : "0") + c;
-            Card card = new Card("japan/" + cardId, cardId, model);
-            model.getDeals().makeADeal(card);
-        }
+//        int[] deals = new int[]{1, 2, 3};
+//        for (Integer c : deals) {
+//            String cardId = "bar00" + c;
+//            Card card = new Card("barbarian/" + cardId, cardId, model);
+//            model.getDeals().makeADeal(card);
+//        }
+//        int[] deals2 = new int[]{11, 15, 5, 13, 10, 12, 23, 24, 2, 3, 9, 29, 8, 26};
+//        for (Integer c : deals2) {
+//            String cardId = "jap" + (c < 10 ? "00" : "0") + c;
+//            Card card = new Card("japan/" + cardId, cardId, model);
+//            model.getDeals().makeADeal(card);
+//        }
     }
 
     private void clearAll() {

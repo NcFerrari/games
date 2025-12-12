@@ -61,7 +61,7 @@ public class ProductionActions {
                     factionHValue += moveFactionBy;
                 }
                 case ProductionBlocks.DEALS -> {
-                    data = new HighlightMessenger(deals, model.getDeals(), 0, dealVvalue, ProductionBlocks.FACTION_BOARD, counter.incrementAndGet(), deals.size(), () -> makeDeal(selectedCard), time);
+                    data = new HighlightMessenger(deals, model.getDeals().getScrollPane(), 0, dealVvalue, ProductionBlocks.FACTION_BOARD, counter.incrementAndGet(), deals.size(), () -> makeDeal(selectedCard), time);
                     highlightCard(data);
                     dealVvalue += moveDealBy;
                 }
@@ -101,10 +101,10 @@ public class ProductionActions {
 
     private void updateData() {
         model.getFactionCards().get(CardTypes.PRODUCTION).setHvalue(0);
-        model.getDeals().setVvalue(0);
+        model.getDeals().getScrollPane().setVvalue(0);
         model.getCommonCards().get(CardTypes.PRODUCTION).setHvalue(0);
         factionCards = ((HBox) model.getFactionCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
-        deals = model.getDeals().getDeals();
+        deals = model.getDeals().getCards();
         commonCards = ((HBox) model.getCommonCards().get(CardTypes.PRODUCTION).getContent()).getChildren();
         moveFactionBy = 1.0 / (factionCards.size() - 1);
         factionHValue = 0;

@@ -1,6 +1,7 @@
 package cz.games.lp.frontend.components;
 
 import cz.games.lp.common.enums.Phases;
+import cz.games.lp.frontend.components.transition_components.Card;
 import cz.games.lp.frontend.models.CommonModel;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -50,7 +51,8 @@ public class RoundPhases extends VBox {
     private void addButtonListener(Phases phase) {
         switch (phase) {
             case LOOKOUT -> model.getActionManager().lookoutPhase();
-            case PRODUCTION -> model.getActionManager().productionPhase();
+//            case PRODUCTION -> model.getActionManager().productionPhase();
+            case PRODUCTION -> model.getDeals().makeADeal(new Card("barbarian/bar004", "bar004", model));
             case ACTION -> {
             }
             case PASS_ACTION -> {
